@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AppVault — World's Top Apps</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--surface:#111118;--surface2:#1a1a24;--border:rgba(255,255,255,0.07);--accent:#6c63ff;--accent2:#ff6b9d;--accent3:#00d4aa;--text:#f0f0f8;--muted:#7070a0;--card:#13131e}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:.5}
+header{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);background:rgba(10,10,15,.88);border-bottom:1px solid var(--border);padding:.85rem 2rem;display:flex;align-items:center;gap:1rem}
+.logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;flex-shrink:0}
+.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem}
+.logo-text{font-family:'Space Mono',monospace;font-size:1.15rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.search-wrap{flex:1;max-width:480px;margin:0 auto;position:relative}
+.search-wrap input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:.6rem 1rem .6rem 2.6rem;color:var(--text);font-family:'Inter',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s,box-shadow .2s}
+.search-wrap input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(108,99,255,.15)}
+.search-wrap::before{content:'🔍';position:absolute;left:.8rem;top:50%;transform:translateY(-50%);font-size:.8rem;pointer-events:none}
+.hbtn{padding:.5rem 1.1rem;border-radius:9px;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s;border:none;flex-shrink:0}
+.hbtn-g{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.hbtn-g:hover{color:var(--text)}
+.hbtn-p{background:linear-gradient(135deg,var(--accent),#8b5cf6);color:#fff;box-shadow:0 4px 16px rgba(108,99,255,.35)}
+.hbtn-p:hover{transform:translateY(-1px)}
+.hero{position:relative;overflow:hidden;padding:2.8rem 2rem 2rem;text-align:center}
+.glow{position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:700px;height:350px;background:radial-gradient(ellipse,rgba(108,99,255,.18) 0%,transparent 70%);pointer-events:none}
+.hero-content{position:relative;z-index:1;animation:up .8s ease both}
+@keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(108,99,255,.14);border:1px solid rgba(108,99,255,.3);border-radius:100px;padding:.3rem .9rem;font-size:.78rem;color:#a89fff;margin-bottom:1rem}
+.hero h1{font-size:clamp(1.9rem,4.5vw,3.2rem);font-weight:900;line-height:1.15;margin-bottom:.6rem;letter-spacing:-1.5px}
+.hero h1 span{background:linear-gradient(135deg,var(--accent),var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--muted);font-size:1rem;max-width:480px;margin:0 auto}
+.stats{margin:0 2rem 2rem;padding:1.1rem 1.5rem;background:var(--surface2);border:1px solid var(--border);border-radius:14px;display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;animation:up .8s .4s ease both;opacity:0}
+.stat{text-align:center}
+.stat-n{font-family:'Space Mono',monospace;font-size:1.4rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-l{font-size:.72rem;color:var(--muted)}
+.sec{padding:0 2rem 2rem;animation:up .8s .15s ease both;opacity:0}
+.sec-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.sec-t{font-size:1.05rem;font-weight:700}
+.more{color:var(--accent);font-size:.82rem;font-weight:600;cursor:pointer;opacity:.8}
+.more:hover{opacity:1}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.9rem}
+.feat-card{border-radius:16px;overflow:hidden;position:relative;min-height:170px;cursor:pointer;transition:transform .3s,box-shadow .3s}
+.feat-card:first-child{grid-column:span 2;min-height:210px}
+.feat-card:hover{transform:translateY(-3px);box-shadow:0 18px 36px rgba(0,0,0,.45)}
+.feat-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .4s}
+.feat-card:hover .feat-bg{transform:scale(1.05)}
+.feat-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.88) 0%,rgba(0,0,0,.15) 55%,transparent 100%)}
+.feat-info{position:absolute;bottom:0;left:0;right:0;padding:1.1rem;display:flex;align-items:flex-end;justify-content:space-between;gap:.8rem}
+.feat-row{display:flex;align-items:center;gap:.75rem}
+.feat-ico{width:48px;height:48px;border-radius:13px;overflow:hidden;flex-shrink:0;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.15)}
+.feat-ico img{width:100%;height:100%;object-fit:cover}
+.feat-tag{font-size:.68rem;background:rgba(255,255,255,.13);backdrop-filter:blur(6px);padding:.2rem .55rem;border-radius:100px;margin-bottom:.35rem;display:inline-block;border:1px solid rgba(255,255,255,.1)}
+.feat-title{font-size:1rem;font-weight:700;line-height:1.2}
+.feat-sub{font-size:.72rem;color:rgba(255,255,255,.6);margin-top:.15rem}
+.feat-btn{flex-shrink:0;background:#fff;color:#111;border:none;border-radius:9px;padding:.45rem 1rem;font-family:'Inter',sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;transition:all .2s}
+.feat-btn:hover{background:var(--accent);color:#fff}
+.tabs{padding:0 2rem 1.2rem;animation:up .8s .25s ease both;opacity:0}
+.tab-list{display:flex;gap:.45rem;overflow-x:auto;scrollbar-width:none;padding-bottom:.2rem}
+.tab-list::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:.4rem 1rem;border-radius:100px;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--muted);transition:all .2s}
+.tab.on{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 4px 12px rgba(108,99,255,.35)}
+.tab:hover:not(.on){color:var(--text);border-color:rgba(255,255,255,.18)}
+.apps-sec{padding:0 2rem 3rem;animation:up .8s .35s ease both;opacity:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:.9rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:1rem;display:flex;gap:.85rem;align-items:center;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(108,99,255,.05),transparent);opacity:0;transition:opacity .3s}
+.card:hover{border-color:rgba(108,99,255,.3);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.card:hover::before{opacity:1}
+.aicon{width:54px;height:54px;border-radius:13px;overflow:hidden;flex-shrink:0;position:relative;z-index:1;display:flex;align-items:center;justify-content:center}
+.aicon img{width:100%;height:100%;object-fit:cover;border-radius:13px}
+.adetail{flex:1;min-width:0;position:relative;z-index:1}
+.aname{font-size:.9rem;font-weight:700;margin-bottom:.12rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.adev{font-size:.72rem;color:var(--muted);margin-bottom:.4rem}
+.ameta{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap}
+.stars{color:#fbbf24;font-size:.72rem;letter-spacing:-.5px}
+.rcnt{font-size:.7rem;color:var(--muted)}
+.adl{font-size:.7rem;color:var(--accent);font-weight:600}
+.ibtn-wrap{flex-shrink:0;z-index:1}
+.ibtn{background:rgba(108,99,255,.15);border:1px solid rgba(108,99,255,.4);color:var(--accent);border-radius:8px;padding:.38rem .85rem;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+.ibtn:hover{background:var(--accent);color:#fff;box-shadow:0 4px 10px rgba(108,99,255,.4)}
+.ibtn.got{background:rgba(0,212,170,.1);border-color:rgba(0,212,170,.4);color:var(--accent3)}
+.rank-b{position:absolute;top:.55rem;right:.55rem;background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;font-size:.6rem;font-weight:800;padding:.18rem .42rem;border-radius:5px;font-family:'Space Mono',monospace;z-index:2}
+.src-lbl{font-size:.62rem;color:var(--muted);opacity:.6;margin-top:.5rem;text-align:center}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(10px);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.overlay.on{opacity:1;pointer-events:all}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:22px;width:90%;max-width:480px;padding:1.8rem;transform:scale(.95) translateY(18px);transition:transform .3s;position:relative;max-height:88vh;overflow-y:auto}
+.overlay.on .modal{transform:scale(1) translateY(0)}
+.mclose{position:absolute;top:1.1rem;right:1.1rem;background:var(--surface2);border:1px solid var(--border);color:var(--muted);border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem}
+.mclose:hover{color:var(--text)}
+.mhead{display:flex;gap:.9rem;align-items:flex-start;margin-bottom:1.3rem}
+.micon{width:68px;height:68px;border-radius:17px;overflow:hidden;flex-shrink:0;background:var(--surface2);display:flex;align-items:center;justify-content:center}
+.micon img{width:100%;height:100%;object-fit:cover}
+.mtitle{font-size:1.25rem;font-weight:800;margin-bottom:.2rem}
+.mdev{font-size:.82rem;color:var(--muted);margin-bottom:.45rem}
+.mtags{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.5rem}
+.mtag{font-size:.68rem;background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:.18rem .45rem;color:var(--muted)}
+.mrating-row{display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:#fbbf24}
+.mdesc{font-size:.88rem;color:rgba(240,240,248,.72);line-height:1.7;margin-bottom:1.3rem;margin-top:.8rem}
+.mstats{display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;margin-bottom:.6rem}
+.ms{background:var(--surface2);border-radius:11px;padding:.7rem;text-align:center}
+.ms-v{font-size:.95rem;font-weight:700;margin-bottom:.1rem}
+.ms-k{font-size:.62rem;color:var(--muted)}
+.msrc{font-size:.62rem;color:var(--muted);opacity:.55;text-align:center;margin-bottom:1rem}
+.mbtn{width:100%;padding:.8rem;border-radius:13px;border:none;background:linear-gradient(135deg,var(--accent),#8b5cf6);color:#fff;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 5px 18px rgba(108,99,255,.35)}
+.mbtn:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(108,99,255,.5)}
+.toast{position:fixed;bottom:1.8rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--surface2);border:1px solid var(--border);border-radius:13px;padding:.7rem 1.4rem;font-size:.88rem;font-weight:600;z-index:999;transition:transform .4s cubic-bezier(.175,.885,.32,1.275);backdrop-filter:blur(12px);box-shadow:0 8px 24px rgba(0,0,0,.4);white-space:nowrap}
+.toast.on{transform:translateX(-50%) translateY(0)}
+@media(max-width:700px){header{padding:.7rem 1rem;flex-wrap:wrap}.search-wrap{order:3;max-width:100%;width:100%}.hero,.sec,.tabs,.stats,.apps-sec{padding-right:1rem;padding-left:1rem}.feat-grid{grid-template-columns:1fr}.feat-card:first-child{grid-column:span 1}.stats{margin:0 1rem 1.5rem;gap:1rem}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="#" class="logo">
+    <div class="logo-icon">🚀</div>
+    <span class="logo-text">AppVault</span>
+  </a>
+  <div class="search-wrap">
+    <input type="text" placeholder="Search apps: TikTok, ChatGPT, Spotify..." id="si" oninput="filter()">
+  </div>
+  <button class="hbtn hbtn-g" onclick="toast('💡 Coming soon!')">Sign In</button>
+  <button class="hbtn hbtn-p">Publish App</button>
+</header>
+
+<section class="hero">
+  <div class="glow"></div>
+  <div class="hero-content">
+    <div class="badge">📊 Real stats · Source: Appfigures & AppMagic 2024–2025</div>
+    <h1>The World's<br><span>Top Apps, All Here</span></h1>
+    <p>50+ leading apps with verified real download numbers and monthly active users</p>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat"><div class="stat-n">773M</div><div class="stat-l">TikTok downloads 2024</div></div>
+  <div class="stat"><div class="stat-n">770M</div><div class="stat-l">ChatGPT downloads 2025</div></div>
+  <div class="stat"><div class="stat-n">50+</div><div class="stat-l">Leading apps</div></div>
+  <div class="stat"><div class="stat-n">2025</div><div class="stat-l">Updated data</div></div>
+</div>
+
+<!-- FEATURED -->
+<section class="sec" style="padding-top:1.2rem">
+  <div class="sec-h"><h2 class="sec-t">🔥 Most Downloaded in 2024</h2><a class="more" onclick="setcat('all')">View all →</a></div>
+  <div class="feat-grid">
+    <div class="feat-card" onclick="openByName('TikTok')">
+      <div class="feat-bg" style="background:linear-gradient(135deg,#010101,#ff0050 60%,#ff2d55)"></div>
+      <div class="feat-ov"></div>
+      <div class="feat-info">
+        <div class="feat-row">
+          <div class="feat-ico"><img src="https://logo.clearbit.com/tiktok.com" onerror="this.outerHTML='🎵'" alt="TikTok"></div>
+          <div>
+            <div class="feat-tag">🎵 Entertainment · Free</div>
+            <div class="feat-title">TikTok</div>
+            <div class="feat-sub">#1 in 2024 · 773 million downloads</div>
+          </div>
+        </div>
+        <button class="feat-btn">Install</button>
+      </div>
+    </div>
+    <div class="feat-card" onclick="openByName('ChatGPT')">
+      <div class="feat-bg" style="background:linear-gradient(135deg,#065f46,#10a37f)"></div>
+      <div class="feat-ov"></div>
+      <div class="feat-info">
+        <div class="feat-row">
+          <div class="feat-ico"><img src="https://logo.clearbit.com/openai.com" onerror="this.outerHTML='🤖'" alt="ChatGPT"></div>
+          <div>
+            <div class="feat-tag">🤖 AI · #1 in 2025</div>
+            <div class="feat-title">ChatGPT</div>
+            <div class="feat-sub">770M downloads 2025</div>
+          </div>
+        </div>
+        <button class="feat-btn">Install</button>
+      </div>
+    </div>
+    <div class="feat-card" onclick="openByName('Instagram')">
+      <div class="feat-bg" style="background:linear-gradient(135deg,#405de6,#c13584,#fd1d1d)"></div>
+      <div class="feat-ov"></div>
+      <div class="feat-info">
+        <div class="feat-row">
+          <div class="feat-ico"><img src="https://logo.clearbit.com/instagram.com" onerror="this.outerHTML='📸'" alt="Instagram"></div>
+          <div>
+            <div class="feat-tag">📸 Social</div>
+            <div class="feat-title">Instagram</div>
+            <div class="feat-sub">#2 in 2024 · 759M</div>
+          </div>
+        </div>
+        <button class="feat-btn">Install</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TABS -->
+<section class="tabs">
+  <div class="tab-list">
+    <button class="tab on"  onclick="settab(this,'all')">🌟 All</button>
+    <button class="tab" onclick="settab(this,'social')">💬 Social</button>
+    <button class="tab" onclick="settab(this,'entertainment')">🎬 Entertainment</button>
+    <button class="tab" onclick="settab(this,'games')">🎮 Games</button>
+    <button class="tab" onclick="settab(this,'shopping')">🛒 Shopping</button>
+    <button class="tab" onclick="settab(this,'productivity')">⚡ Productivity</button>
+    <button class="tab" onclick="settab(this,'finance')">💰 Finance</button>
+    <button class="tab" onclick="settab(this,'ai')">🤖 AI</button>
+    <button class="tab" onclick="settab(this,'transport')">🚗 Travel</button>
+    <button class="tab" onclick="settab(this,'tools')">🔧 Tools</button>
+    <button class="tab" onclick="settab(this,'health')">💪 Health</button>
+    <button class="tab" onclick="settab(this,'education')">📚 Education</button>
+  </div>
+</section>
+
+<!-- GRID -->
+<section class="apps-sec">
+  <div class="sec-h">
+    <h2 class="sec-t">📱 All Leading Apps</h2>
+    <span style="color:var(--muted);font-size:.82rem" id="cnt"></span>
+  </div>
+  <div class="grid" id="grid"></div>
+  <p class="src-lbl">📊 Data sources: Appfigures, AppMagic, Business of Apps, Statista — 2024/2025</p>
+</section>
+
+<!-- MODAL -->
+<div class="overlay" id="ov" onclick="closeOuter(event)">
+  <div class="modal">
+    <button class="mclose" onclick="closeModal()">✕</button>
+    <div class="mhead">
+      <div id="mIconWrap" class="micon"></div>
+      <div style="flex:1;min-width:0">
+        <div class="mtitle" id="mT"></div>
+        <div class="mdev"   id="mD"></div>
+        <div class="mtags"  id="mTg"></div>
+        <div class="mrating-row" id="mStars"></div>
+      </div>
+    </div>
+    <p class="mdesc" id="mDesc"></p>
+    <div class="mstats">
+      <div class="ms"><div class="ms-v" id="mDl"  style="color:#6c63ff"></div><div class="ms-k">Annual Downloads</div></div>
+      <div class="ms"><div class="ms-v" id="mMAU" style="color:#00d4aa"></div><div class="ms-k">Monthly Active Users</div></div>
+      <div class="ms"><div class="ms-v" id="mSz"  style="color:#fbbf24"></div><div class="ms-k">App Size</div></div>
+    </div>
+    <p class="msrc" id="mSrc"></p>
+    <button class="mbtn" id="mBtn" onclick="installModal()">📥 Install for Free</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function iconHTML(app,sz='54px',r='13px'){
+  return `<div style="width:${sz};height:${sz};border-radius:${r};overflow:hidden;background:${app.color};flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+    <img src="https://logo.clearbit.com/${app.logo}" style="width:100%;height:100%;object-fit:cover" loading="lazy"
+      onerror="this.outerHTML='<span style=font-size:1.45rem>${app.fb}</span>'">
+  </div>`;
+}
+function starsHTML(r){return '★'.repeat(Math.floor(r))+'☆'.repeat(5-Math.floor(r))}
+
+const APPS = [
+  // SOCIAL
+  {id:0,  name:'TikTok',            dev:'ByteDance',          cat:'entertainment', logo:'tiktok.com',       fb:'🎵', color:'linear-gradient(135deg,#010101,#ff0050)',
+    r:4.7, dl:'773M', mau:'1.5B',  sz:'120 MB', rank:1,  free:true,
+    tags:['Entertainment','Short Video','Social'],
+    desc:'TikTok topped the most-downloaded app charts in 2024 with 773 million installs worldwide, narrowly beating Instagram. Over 1.5 billion monthly active users across 150+ countries.',
+    src:'Appfigures / AppMagic 2024'},
+
+  {id:1,  name:'Instagram',         dev:'Meta',               cat:'social',        logo:'instagram.com',    fb:'📸', color:'linear-gradient(135deg,#405de6,#c13584,#fd1d1d)',
+    r:4.6, dl:'759M', mau:'2B',    sz:'85 MB',  rank:2,  free:true,
+    tags:['Photos','Reels','Social'],
+    desc:'Instagram ranked #2 globally in 2024 with 759 million downloads. India alone accounted for ~40% of all installs. Over 2 billion monthly active users worldwide.',
+    src:'Appfigures / AppMagic 2024'},
+
+  {id:2,  name:'Facebook',          dev:'Meta',               cat:'social',        logo:'facebook.com',     fb:'👥', color:'linear-gradient(135deg,#1877f2,#0a5dc9)',
+    r:4.3, dl:'571M', mau:'3.27B', sz:'72 MB',  rank:3,  free:true,
+    tags:['Social','News','Family'],
+    desc:'Facebook placed third in 2024 with 571 million downloads. Still the world\'s largest social network with 3.27 billion monthly active users across all demographics.',
+    src:'Appfigures / AppMagic 2024'},
+
+  {id:3,  name:'WhatsApp',          dev:'Meta',               cat:'social',        logo:'whatsapp.com',     fb:'💬', color:'linear-gradient(135deg,#075e54,#25d366)',
+    r:4.8, dl:'527M', mau:'2.78B', sz:'45 MB',  rank:4,  free:true,
+    tags:['Messaging','Calls','Encrypted'],
+    desc:'WhatsApp ranked #4 with 527 million downloads. The world\'s top free communication app with 2.78 billion monthly users and full end-to-end encryption.',
+    src:'Appfigures / AppMagic 2024'},
+
+  {id:4,  name:'Threads',           dev:'Meta',               cat:'social',        logo:'threads.net',      fb:'🧵', color:'linear-gradient(135deg,#000,#333)',
+    r:4.1, dl:'322M', mau:'275M',  sz:'50 MB',  rank:5,  free:true,
+    tags:['Text','Social','Discussions'],
+    desc:'Threads entered the global top 10 in 2024 with 322 million downloads, just a year after launch. India, the US, and Brazil lead in installs.',
+    src:'Appfigures / AppMagic 2024'},
+
+  {id:5,  name:'Snapchat',          dev:'Snap Inc.',          cat:'social',        logo:'snapchat.com',     fb:'👻', color:'linear-gradient(135deg,#fffc00,#c8b800)',
+    r:4.3, dl:'290M', mau:'850M',  sz:'160 MB', rank:6,  free:true,
+    tags:['Photos','Stories','AR'],
+    desc:'Snapchat recorded 290 million downloads in 2024 with 850 million monthly active users. Pioneer of augmented reality (AR) filters used by millions daily.',
+    src:'Business of Apps 2024'},
+
+  {id:6,  name:'Telegram',          dev:'Telegram FZ-LLC',   cat:'social',        logo:'telegram.org',     fb:'✈️', color:'linear-gradient(135deg,#2ca5e0,#1e88c9)',
+    r:4.8, dl:'220M', mau:'900M',  sz:'55 MB',  rank:7,  free:true,
+    tags:['Messaging','Channels','Secure'],
+    desc:'Telegram achieved 220 million annual downloads and 900 million monthly active users. The go-to platform for channels, large groups, and end-to-end encrypted messaging.',
+    src:'Business of Apps 2024'},
+
+  {id:7,  name:'LinkedIn',          dev:'Microsoft',          cat:'social',        logo:'linkedin.com',     fb:'💼', color:'linear-gradient(135deg,#0077b5,#004d77)',
+    r:4.4, dl:'130M', mau:'1B',    sz:'95 MB',  rank:8,  free:true,
+    tags:['Work','Jobs','Professional'],
+    desc:'LinkedIn recorded 130 million annual downloads with 1 billion registered users across 200+ countries. The world\'s #1 professional networking platform.',
+    src:'Business of Apps 2024'},
+
+  {id:8,  name:'X (Twitter)',       dev:'X Corp.',            cat:'social',        logo:'x.com',            fb:'𝕏',  color:'linear-gradient(135deg,#000,#1a1a1a)',
+    r:4.0, dl:'120M', mau:'619M',  sz:'82 MB',  rank:9,  free:true,
+    tags:['News','Discussions','Real-time'],
+    desc:'X (formerly Twitter) recorded 120 million downloads and 619 million monthly active users. The leading platform for breaking news and real-time global conversations.',
+    src:'Business of Apps 2024'},
+
+  {id:9,  name:'WhatsApp Business', dev:'Meta',               cat:'social',        logo:'whatsapp.com',     fb:'🏪', color:'linear-gradient(135deg,#075e54,#128c7e)',
+    r:4.6, dl:'200M', mau:'500M',  sz:'48 MB',  rank:10, free:true,
+    tags:['Business','Customers','Commerce'],
+    desc:'WhatsApp Business reached 200 million downloads — the most-downloaded business app globally in 2025. Used by 500 million monthly active SMEs worldwide.',
+    src:'Business of Apps 2025'},
+
+  // ENTERTAINMENT
+  {id:10, name:'YouTube',           dev:'Google',             cat:'entertainment', logo:'youtube.com',      fb:'▶️', color:'linear-gradient(135deg,#ff0000,#cc0000)',
+    r:4.7, dl:'300M', mau:'2.7B',  sz:'65 MB',  rank:11, free:true,
+    tags:['Video','Streaming','YouTube'],
+    desc:'YouTube recorded 300 million annual downloads. The largest video platform with 2.7 billion monthly active users. In July 2024 alone, 13.65 million downloads were recorded.',
+    src:'AppMagic / Google 2024'},
+
+  {id:11, name:'Spotify',           dev:'Spotify AB',         cat:'entertainment', logo:'spotify.com',      fb:'🎵', color:'linear-gradient(135deg,#191414,#1db954)',
+    r:4.7, dl:'150M', mau:'678M',  sz:'45 MB',  rank:12, free:true,
+    tags:['Music','Podcast','Streaming'],
+    desc:'Spotify recorded 150 million downloads and 678 million monthly active users (including 268M paid subscribers). Library of 100+ million tracks and podcasts.',
+    src:'Spotify Q4 2024'},
+
+  {id:12, name:'Netflix',           dev:'Netflix Inc.',       cat:'entertainment', logo:'netflix.com',      fb:'🎬', color:'linear-gradient(135deg,#141414,#e50914)',
+    r:4.6, dl:'70M',  mau:'301M',  sz:'58 MB',  rank:13, free:false,
+    tags:['Movies','Series','4K'],
+    desc:'Netflix recorded 70 million downloads with 301 million paid subscribers across 190+ countries. The world\'s leading original content streaming platform.',
+    src:'Netflix Q4 2024'},
+
+  {id:13, name:'CapCut',            dev:'ByteDance',          cat:'tools',         logo:'capcut.com',       fb:'✂️', color:'linear-gradient(135deg,#000,#ff6b35)',
+    r:4.8, dl:'400M', mau:'300M',  sz:'175 MB', rank:14, free:true,
+    tags:['Video Editing','AI','Effects'],
+    desc:'CapCut surpassed 400 million annual downloads, ranking #1 on the App Store globally in both 2023 and 2024. Powered by advanced AI tools for content creators.',
+    src:'Appfigures 2024'},
+
+  {id:14, name:'Disney+',           dev:'Disney',             cat:'entertainment', logo:'disneyplus.com',   fb:'⭐', color:'linear-gradient(135deg,#001f5c,#113ccf)',
+    r:4.5, dl:'60M',  mau:'157M',  sz:'52 MB',  rank:15, free:false,
+    tags:['Movies','Marvel','Star Wars'],
+    desc:'Disney+ has 157 million subscribers. Home to Marvel, Star Wars, Pixar, and National Geographic — all in one place.',
+    src:'Disney Q4 2024'},
+
+  {id:15, name:'Twitch',            dev:'Amazon',             cat:'entertainment', logo:'twitch.tv',        fb:'💜', color:'linear-gradient(135deg,#6441a5,#2a0e61)',
+    r:4.4, dl:'40M',  mau:'140M',  sz:'82 MB',  rank:16, free:true,
+    tags:['Live Streaming','Gaming','Community'],
+    desc:'Twitch has 140 million monthly active users. The world\'s #1 live streaming platform for gaming and interactive entertainment.',
+    src:'Business of Apps 2024'},
+
+  // GAMES
+  {id:16, name:'Roblox',            dev:'Roblox Corp.',       cat:'games',         logo:'roblox.com',       fb:'🎲', color:'linear-gradient(135deg,#e31c1c,#c41111)',
+    r:4.5, dl:'180M', mau:'88M',   sz:'195 MB', rank:17, free:true,
+    tags:['Games','Virtual Worlds','Social'],
+    desc:'Roblox topped the mobile gaming charts in 2024 with 180M downloads, overtaking Subway Surfers after 4 years. 88 million daily active users.',
+    src:'Appfigures 2024'},
+
+  {id:17, name:'Subway Surfers',    dev:'SYBO Games',         cat:'games',         logo:'subwaysurfers.com', fb:'🏄', color:'linear-gradient(135deg,#ff9f43,#ee5a24)',
+    r:4.4, dl:'150M', mau:'50M',   sz:'120 MB', rank:18, free:true,
+    tags:['Runner','Casual','Free'],
+    desc:'Subway Surfers recorded 150M downloads. It held the #1 most-downloaded mobile game spot for over 4 years before Roblox overtook it in 2024.',
+    src:'Appfigures 2024'},
+
+  {id:18, name:'PUBG Mobile',       dev:'Krafton',            cat:'games',         logo:'pubg.com',         fb:'🔫', color:'linear-gradient(135deg,#1a1a2e,#e94560)',
+    r:4.4, dl:'75M',  mau:'100M',  sz:'680 MB', rank:19, free:true,
+    tags:['Battle Royale','Shooter','Multiplayer'],
+    desc:'PUBG Mobile recorded 75M annual downloads and 100M monthly active users. The definitive battle royale experience on mobile.',
+    src:'Business of Apps 2024'},
+
+  {id:19, name:'Free Fire',         dev:'Garena',             cat:'games',         logo:'garena.com',       fb:'🔥', color:'linear-gradient(135deg,#ff4800,#ff9500)',
+    r:4.3, dl:'60M',  mau:'80M',   sz:'350 MB', rank:20, free:true,
+    tags:['Battle Royale','Mobile','Casual'],
+    desc:'Free Fire recorded 60M annual downloads. Most popular in the Arab world, South Asia, and Latin America. Optimized for budget smartphones.',
+    src:'Garena 2024'},
+
+  {id:20, name:'Candy Crush',       dev:'King',               cat:'games',         logo:'king.com',         fb:'🍬', color:'linear-gradient(135deg,#ff6b9d,#c44569)',
+    r:4.5, dl:'70M',  mau:'200M',  sz:'88 MB',  rank:21, free:true,
+    tags:['Puzzle','Casual','Addictive'],
+    desc:'Candy Crush recorded 70M annual downloads and 200M monthly active users. The highest-grossing casual game in history.',
+    src:'King / Business of Apps 2024'},
+
+  {id:21, name:'Minecraft',         dev:'Mojang',             cat:'games',         logo:'minecraft.net',    fb:'⛏️', color:'linear-gradient(135deg,#4c9900,#2d5900)',
+    r:4.7, dl:'40M',  mau:'170M',  sz:'420 MB', rank:22, free:false,
+    tags:['Building','Adventure','Creative'],
+    desc:'Minecraft recorded 40M annual downloads and 170M monthly active users. The best-selling game in history with over 300M copies sold.',
+    src:'Microsoft 2024'},
+
+  // SHOPPING
+  {id:22, name:'Temu',              dev:'PDD Holdings',       cat:'shopping',      logo:'temu.com',         fb:'🛍️', color:'linear-gradient(135deg,#ff5722,#e64a19)',
+    r:4.2, dl:'500M', mau:'167M',  sz:'78 MB',  rank:23, free:true,
+    tags:['Shopping','Deals','Free Shipping'],
+    desc:'Temu grew by 164 million downloads in 2024 reaching 500M annual installs, surpassing Amazon. The US accounts for 14% of its total downloads.',
+    src:'Appfigures / AppMagic 2024'},
+
+  {id:23, name:'Amazon',            dev:'Amazon Inc.',        cat:'shopping',      logo:'amazon.com',       fb:'📦', color:'linear-gradient(135deg,#232f3e,#ff9900)',
+    r:4.7, dl:'150M', mau:'300M',  sz:'65 MB',  rank:24, free:true,
+    tags:['Shopping','Delivery','Prime'],
+    desc:'Amazon recorded 150M annual downloads. The world\'s most trusted shopping app. Prime membership exceeds 200 million subscribers globally.',
+    src:'Business of Apps 2024'},
+
+  {id:24, name:'Shein',             dev:'Shein Group',        cat:'shopping',      logo:'shein.com',        fb:'👗', color:'linear-gradient(135deg,#000,#ff4081)',
+    r:4.0, dl:'130M', mau:'100M',  sz:'55 MB',  rank:25, free:true,
+    tags:['Fashion','Clothing','Trends'],
+    desc:'Shein recorded 130M annual downloads with revenue exceeding $45 billion in 2023. The fastest-growing fashion platform in the world.',
+    src:'Business of Apps 2024'},
+
+  {id:25, name:'eBay',              dev:'eBay Inc.',          cat:'shopping',      logo:'ebay.com',         fb:'🏷️', color:'linear-gradient(135deg,#e53238,#0064d2)',
+    r:4.3, dl:'60M',  mau:'132M',  sz:'48 MB',  rank:26, free:true,
+    tags:['Auctions','Buy','Sell'],
+    desc:'eBay recorded 60M annual downloads and 132M monthly active users. The largest peer-to-peer commerce platform with 1.7 billion live listings.',
+    src:'eBay 2024'},
+
+  // PRODUCTIVITY
+  {id:26, name:'Google Drive',      dev:'Google',             cat:'productivity',  logo:'google.com',       fb:'💾', color:'linear-gradient(135deg,#4285f4,#0f9d58)',
+    r:4.6, dl:'150M', mau:'1B',    sz:'30 MB',  rank:27, free:true,
+    tags:['Storage','Files','Cloud'],
+    desc:'Google Drive recorded 150M annual downloads with 1 billion users. 15 GB free cloud storage with full Google Workspace integration.',
+    src:'Google 2024'},
+
+  {id:27, name:'Microsoft Teams',   dev:'Microsoft',          cat:'productivity',  logo:'microsoft.com',    fb:'🏢', color:'linear-gradient(135deg,#464775,#6264a7)',
+    r:4.4, dl:'100M', mau:'320M',  sz:'105 MB', rank:28, free:true,
+    tags:['Work','Meetings','Team'],
+    desc:'Teams recorded 100M annual downloads and 320M daily active users. The all-in-one teamwork platform integrated with Microsoft 365.',
+    src:'Microsoft 2024'},
+
+  {id:28, name:'Zoom',              dev:'Zoom Video Comm.',   cat:'productivity',  logo:'zoom.us',          fb:'📹', color:'linear-gradient(135deg,#2d8cff,#0e6ad4)',
+    r:4.4, dl:'80M',  mau:'300M',  sz:'88 MB',  rank:29, free:true,
+    tags:['Meetings','Video','Work'],
+    desc:'Zoom recorded 80M annual downloads and 300M daily meeting participants. At its Covid peak, 38M downloads were recorded in January 2021 alone.',
+    src:'Business of Apps 2024'},
+
+  {id:29, name:'Notion',            dev:'Notion Labs',        cat:'productivity',  logo:'notion.so',        fb:'📝', color:'linear-gradient(135deg,#000,#444)',
+    r:4.6, dl:'30M',  mau:'100M',  sz:'45 MB',  rank:30, free:true,
+    tags:['Notes','Organization','Team'],
+    desc:'Notion recorded 30M annual downloads and 100M users. An all-in-one workspace combining notes, databases, and project management.',
+    src:'Notion 2024'},
+
+  // FINANCE
+  {id:30, name:'PayPal',            dev:'PayPal Inc.',        cat:'finance',       logo:'paypal.com',       fb:'💳', color:'linear-gradient(135deg,#003087,#009cde)',
+    r:4.5, dl:'80M',  mau:'220M',  sz:'35 MB',  rank:31, free:true,
+    tags:['Payments','Transfers','Secure'],
+    desc:'PayPal recorded 80M annual downloads and 220M active accounts. The most trusted online payment system in 200+ countries since 1998.',
+    src:'PayPal Q4 2024'},
+
+  {id:31, name:'Cash App',          dev:'Block Inc.',         cat:'finance',       logo:'cash.app',         fb:'💵', color:'linear-gradient(135deg,#00d64f,#00a53d)',
+    r:4.6, dl:'50M',  mau:'57M',   sz:'28 MB',  rank:32, free:true,
+    tags:['Wallet','Bitcoin','Transfers'],
+    desc:'Cash App recorded 50M annual downloads and 57M monthly active users in the US and UK. Instant money transfers and Bitcoin/stock investing.',
+    src:'Block Inc. 2024'},
+
+  {id:32, name:'Binance',           dev:'Binance Holdings',   cat:'finance',       logo:'binance.com',      fb:'₿',  color:'linear-gradient(135deg,#1e2026,#f0b90b)',
+    r:4.5, dl:'40M',  mau:'150M',  sz:'55 MB',  rank:33, free:true,
+    tags:['Crypto','Trading','Bitcoin'],
+    desc:'Binance recorded 40M annual downloads and 150M registered users. The world\'s largest crypto exchange with daily trading volume exceeding $20 billion.',
+    src:'Binance 2024'},
+
+  // AI
+  {id:33, name:'ChatGPT',           dev:'OpenAI',             cat:'ai',            logo:'openai.com',       fb:'🤖', color:'linear-gradient(135deg,#10a37f,#065f46)',
+    r:4.8, dl:'770M', mau:'300M',  sz:'42 MB',  rank:1,  free:true,
+    tags:['AI','Chat','Creative'],
+    desc:'ChatGPT ranked #1 globally in 2025 with 770M downloads, surpassing TikTok and Instagram. Top app on both the App Store and Google Play simultaneously.',
+    src:'Business of Apps 2025'},
+
+  {id:34, name:'Google Gemini',     dev:'Google DeepMind',    cat:'ai',            logo:'google.com',       fb:'✨', color:'linear-gradient(135deg,#4285f4,#9c27b0)',
+    r:4.5, dl:'180M', mau:'35M',   sz:'38 MB',  rank:2,  free:true,
+    tags:['AI','Google','Assistant'],
+    desc:'Google Gemini ranked #2 among AI apps globally in 2025. #1 in Saudi Arabia (10M downloads) and Turkey. Powered by Google\'s most advanced AI models.',
+    src:'Business of Apps 2025'},
+
+  {id:35, name:'Microsoft Copilot', dev:'Microsoft',          cat:'ai',            logo:'microsoft.com',    fb:'🪄', color:'linear-gradient(135deg,#0078d4,#00b4d8)',
+    r:4.4, dl:'50M',  mau:'20M',   sz:'35 MB',  rank:3,  free:true,
+    tags:['AI','Office','Microsoft'],
+    desc:'Microsoft Copilot is embedded in Office 365. Helps write documents, analyze data, and create presentations using artificial intelligence.',
+    src:'Microsoft 2024'},
+
+  {id:36, name:'Claude',            dev:'Anthropic',          cat:'ai',            logo:'anthropic.com',    fb:'🧠', color:'linear-gradient(135deg,#d97706,#b45309)',
+    r:4.9, dl:'20M',  mau:'10M',   sz:'30 MB',  rank:4,  free:true,
+    tags:['AI','Safe','Analysis'],
+    desc:'Claude by Anthropic — an AI assistant specialized in advanced analysis and writing. Considered the safest and most value-aligned AI model available.',
+    src:'Anthropic 2024'},
+
+  // TRANSPORT
+  {id:37, name:'Google Maps',       dev:'Google',             cat:'transport',     logo:'google.com',       fb:'🗺️', color:'linear-gradient(135deg,#4285f4,#34a853)',
+    r:4.8, dl:'140M', mau:'2B',    sz:'95 MB',  rank:38, free:true,
+    tags:['Maps','Navigation','GPS'],
+    desc:'Google Maps recorded 140M annual downloads and 2 billion monthly active users. In July 2024 alone, 11.9 million downloads were logged in a single month.',
+    src:'AppMagic / Google 2024'},
+
+  {id:38, name:'Uber',              dev:'Uber Technologies',  cat:'transport',     logo:'uber.com',         fb:'🚗', color:'linear-gradient(135deg,#000,#1c1c1c)',
+    r:4.5, dl:'137M', mau:'150M',  sz:'52 MB',  rank:39, free:true,
+    tags:['Rides','Transport','Fast'],
+    desc:'Uber is the most-downloaded travel app in 2025 with 137M downloads. Operating in 70+ countries and 10,000+ cities worldwide.',
+    src:'Business of Apps 2025'},
+
+  {id:39, name:'Airbnb',            dev:'Airbnb Inc.',        cat:'transport',     logo:'airbnb.com',       fb:'🏠', color:'linear-gradient(135deg,#ff5a5f,#ff385c)',
+    r:4.7, dl:'45M',  mau:'150M',  sz:'48 MB',  rank:40, free:true,
+    tags:['Travel','Stays','Tourism'],
+    desc:'Airbnb is the most-downloaded accommodation app in 2025 with 45M downloads. Over 7 million listings in 220 countries.',
+    src:'Business of Apps 2025'},
+
+  {id:40, name:'Booking.com',       dev:'Booking Holdings',   cat:'transport',     logo:'booking.com',      fb:'🏨', color:'linear-gradient(135deg,#003580,#0052a5)',
+    r:4.7, dl:'60M',  mau:'100M',  sz:'42 MB',  rank:41, free:true,
+    tags:['Hotels','Travel','Booking'],
+    desc:'Booking.com recorded 60M annual downloads. 28+ million accommodation options in 220 countries with best-price guarantee.',
+    src:'Booking Holdings 2024'},
+
+  // TOOLS
+  {id:41, name:'Google Chrome',     dev:'Google',             cat:'tools',         logo:'google.com',       fb:'🌐', color:'linear-gradient(135deg,#4285f4,#34a853)',
+    r:4.5, dl:'120M', mau:'3.45B', sz:'195 MB', rank:42, free:true,
+    tags:['Browser','Internet','Google'],
+    desc:'Chrome recorded 120M annual downloads. The most used browser with 3.45 billion users — 65% of the global browser market share.',
+    src:'StatCounter 2024'},
+
+  {id:42, name:'Canva',             dev:'Canva Pty Ltd',      cat:'tools',         logo:'canva.com',        fb:'🎨', color:'linear-gradient(135deg,#7209b7,#3a0ca3)',
+    r:4.8, dl:'100M', mau:'185M',  sz:'68 MB',  rank:43, free:true,
+    tags:['Design','Graphics','Templates'],
+    desc:'Canva recorded 100M annual downloads and 185M monthly active users in 190+ countries. The company is valued at $49 billion.',
+    src:'Canva 2024'},
+
+  {id:43, name:'Adobe Photoshop',   dev:'Adobe Inc.',         cat:'tools',         logo:'adobe.com',        fb:'🖼️', color:'linear-gradient(135deg,#001e36,#31a8ff)',
+    r:4.6, dl:'25M',  mau:'33M',   sz:'250 MB', rank:44, free:false,
+    tags:['Photography','Editing','Pro'],
+    desc:'Photoshop recorded 25M annual downloads. The industry standard for photo editing since 1988. Over 33M Creative Cloud subscribers.',
+    src:'Adobe 2024'},
+
+  // HEALTH
+  {id:44, name:'Calm',              dev:'Calm.com Inc.',      cat:'health',        logo:'calm.com',         fb:'🧘', color:'linear-gradient(135deg,#1c4e6b,#2980b9)',
+    r:4.8, dl:'50M',  mau:'100M',  sz:'42 MB',  rank:45, free:true,
+    tags:['Meditation','Sleep','Wellness'],
+    desc:'Calm recorded 50M annual downloads. The world\'s #1 mental health app with over 4 million paid subscribers. Sleep stories and guided meditations.',
+    src:'Business of Apps 2024'},
+
+  {id:45, name:'Strava',            dev:'Strava Inc.',        cat:'health',        logo:'strava.com',       fb:'🏃', color:'linear-gradient(135deg,#fc4c02,#cc3a00)',
+    r:4.6, dl:'52M',  mau:'135M',  sz:'82 MB',  rank:46, free:true,
+    tags:['Running','Sports','GPS'],
+    desc:'Strava recorded 52M downloads — nearly reaching the #1 health app spot in 2025. 135M users from the global athlete community.',
+    src:'Business of Apps 2025'},
+
+  {id:46, name:'MyFitnessPal',      dev:'Under Armour',       cat:'health',        logo:'myfitnesspal.com', fb:'🏋️', color:'linear-gradient(135deg,#0f9b58,#087840)',
+    r:4.5, dl:'30M',  mau:'200M',  sz:'35 MB',  rank:47, free:true,
+    tags:['Nutrition','Calories','Fitness'],
+    desc:'MyFitnessPal recorded 30M annual downloads and 200M registered users. Database of 14 million foods with integration for 50+ fitness devices.',
+    src:'Business of Apps 2024'},
+
+  // EDUCATION
+  {id:47, name:'Duolingo',          dev:'Duolingo Inc.',      cat:'education',     logo:'duolingo.com',     fb:'🦉', color:'linear-gradient(135deg,#58cc02,#1cb0f6)',
+    r:4.7, dl:'130M', mau:'113M',  sz:'45 MB',  rank:48, free:true,
+    tags:['Languages','Learning','Fun'],
+    desc:'Duolingo has been the #1 education app globally for several consecutive years with 130M annual downloads and 113M daily active users. 40 languages available.',
+    src:'Business of Apps 2025'},
+
+  {id:48, name:'Khan Academy',      dev:'Khan Academy',       cat:'education',     logo:'khanacademy.org',  fb:'🎓', color:'linear-gradient(135deg,#14bf96,#0a8c6c)',
+    r:4.7, dl:'30M',  mau:'18M',   sz:'38 MB',  rank:49, free:true,
+    tags:['Education','Free','Math'],
+    desc:'Khan Academy recorded 30M annual downloads. Free education for everyone since 2006 — math, science, and coding for 18M+ students worldwide.',
+    src:'Khan Academy 2024'},
+
+  {id:49, name:'Coursera',          dev:'Coursera Inc.',      cat:'education',     logo:'coursera.org',     fb:'📖', color:'linear-gradient(135deg,#0056d2,#0039a6)',
+    r:4.5, dl:'25M',  mau:'148M',  sz:'42 MB',  rank:50, free:true,
+    tags:['Courses','Certificates','Universities'],
+    desc:'Coursera recorded 25M annual downloads and 148M registered learners. Partnerships with 325+ universities including MIT and Stanford.',
+    src:'Coursera 2024'},
+];
+
+let cat='all', modal=null;
+const GOT=new Set();
+
+function starsHTML(r){return '★'.repeat(Math.floor(r))+'☆'.repeat(5-Math.floor(r))}
+
+function render(list){
+  document.getElementById('cnt').textContent=`${list.length} apps`;
+  document.getElementById('grid').innerHTML=list.map((a,i)=>`
+    <div class="card" onclick="openModal(${a.id})" style="animation:up .35s ${Math.min(i*.025,.55)}s ease both;opacity:0">
+      ${a.rank<=5?`<div class="rank-b">#${a.rank}</div>`:''}
+      ${iconHTML(a,'54px','13px')}
+      <div class="adetail">
+        <div class="aname">${a.name}</div>
+        <div class="adev">${a.dev}</div>
+        <div class="ameta">
+          <span class="stars">${starsHTML(a.r)}</span>
+          <span class="rcnt">${a.r}</span>
+          <span class="adl">↓${a.dl}</span>
+        </div>
+      </div>
+      <div class="ibtn-wrap">
+        <button class="ibtn ${GOT.has(a.id)?'got':''}" onclick="event.stopPropagation();qinstall(${a.id},this)">
+          ${GOT.has(a.id)?'✓ Installed':a.free?'Install':'Buy'}
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function settab(el,c){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on'); cat=c; filter();
+}
+function setcat(c){cat=c;filter();}
+
+function filter(){
+  const q=document.getElementById('si').value.toLowerCase();
+  let l=APPS;
+  if(cat!=='all') l=l.filter(a=>a.cat===cat);
+  if(q) l=l.filter(a=>a.name.toLowerCase().includes(q)||a.dev.toLowerCase().includes(q)||a.tags.some(t=>t.toLowerCase().includes(q)));
+  l.sort((a,b)=>parseFloat(b.dl)-parseFloat(a.dl));
+  render(l);
+}
+
+function openModal(id){
+  const a=APPS.find(x=>x.id===id); if(!a)return; modal=a;
+  document.getElementById('mIconWrap').innerHTML=iconHTML(a,'68px','17px');
+  document.getElementById('mT').textContent=a.name;
+  document.getElementById('mD').textContent='by '+a.dev;
+  document.getElementById('mTg').innerHTML=a.tags.map(t=>`<span class="mtag">${t}</span>`).join('');
+  document.getElementById('mStars').innerHTML=`<span>${starsHTML(a.r)}</span><span style="color:var(--muted)">${a.r} / 5</span>`;
+  document.getElementById('mDesc').textContent=a.desc;
+  document.getElementById('mDl').textContent=a.dl;
+  document.getElementById('mMAU').textContent=a.mau;
+  document.getElementById('mSz').textContent=a.sz;
+  document.getElementById('mSrc').textContent='📊 Source: '+a.src;
+  const btn=document.getElementById('mBtn');
+  if(GOT.has(id)){btn.textContent='✓ Installed';btn.style.background='linear-gradient(135deg,#059669,#00d4aa)';}
+  else{btn.textContent=a.free?'📥 Install for Free':'💳 Buy App';btn.style.background='';}
+  document.getElementById('ov').classList.add('on');
+}
+function openByName(n){const a=APPS.find(x=>x.name===n);if(a)openModal(a.id);}
+function closeModal(){document.getElementById('ov').classList.remove('on');}
+function closeOuter(e){if(e.target===document.getElementById('ov'))closeModal();}
+function installModal(){
+  if(!modal)return; doInstall(modal.id);
+  const btn=document.getElementById('mBtn');
+  btn.textContent='✓ Installed'; btn.style.background='linear-gradient(135deg,#059669,#00d4aa)';
+  filter();
+}
+function qinstall(id,btn){doInstall(id);btn.textContent='✓ Installed';btn.classList.add('got');}
+function doInstall(id){GOT.add(id);const a=APPS.find(x=>x.id===id);toast(`✅ ${a.name} installed successfully!`);}
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('on');
+  clearTimeout(window._tt); window._tt=setTimeout(()=>t.classList.remove('on'),2800);
+}
+filter();
+</script>
+</body>
+</html>
