@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AppVault — World's Top Apps</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06070a;--s1:#0d0f14;--s2:#131620;--s3:#1a1e2e;--b1:rgba(255,255,255,0.06);--b2:rgba(255,255,255,0.11);--lime:#c8ff00;--cyan:#00e5ff;--pink:#ff2d78;--text:#eef0f6;--muted:#5a6080;--muted2:#8890b0}
+body.light{--bg:#f0f2f7;--s1:#ffffff;--s2:#e8ebf4;--s3:#dde1ef;--b1:rgba(0,0,0,0.07);--b2:rgba(0,0,0,0.12);--text:#0d0f1a;--muted:#8890b0;--muted2:#5a6080}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;min-height:100vh;transition:background .3s,color .3s}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:9999}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--s3);border-radius:2px}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:200;display:flex;align-items:center;gap:1.5rem;padding:0 2.5rem;height:60px;background:rgba(6,7,10,.93);backdrop-filter:blur(24px);border-bottom:1px solid var(--b1);transition:background .3s}
+body.light header{background:rgba(240,242,247,.93)}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
+.logo-mark{width:30px;height:30px;background:var(--lime);border-radius:6px;display:flex;align-items:center;justify-content:center}
+.logo-mark svg{width:15px;height:15px}
+.logo-name{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:2px;color:var(--text)}
+.logo-name span{color:var(--lime)}
+.hdr-search{flex:1;max-width:440px;margin:0 auto;position:relative}
+.hdr-search input{width:100%;background:var(--s2);border:1px solid var(--b2);border-radius:8px;padding:.5rem 1rem .5rem 2.4rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.875rem;outline:none;transition:border-color .2s,box-shadow .2s}
+.hdr-search input:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(200,255,0,.08)}
+.hdr-search input::placeholder{color:var(--muted)}
+.hdr-search::before{content:'';position:absolute;left:.8rem;top:50%;transform:translateY(-50%);width:14px;height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%235a6080' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat center/14px;pointer-events:none}
+.hdr-pill{display:flex;align-items:center;gap:5px;background:rgba(200,255,0,.08);border:1px solid rgba(200,255,0,.2);border-radius:100px;padding:.3rem .75rem;font-size:.72rem;font-weight:600;color:var(--lime);flex-shrink:0}
+.hdr-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--lime);box-shadow:0 0 8px var(--lime);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;padding:5rem 2.5rem 4rem}
+.hglow1{position:absolute;top:-120px;left:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(200,255,0,.07) 0%,transparent 70%);pointer-events:none}
+.hglow2{position:absolute;bottom:-80px;right:-50px;width:400px;height:400px;background:radial-gradient(circle,rgba(0,229,255,.05) 0%,transparent 70%);pointer-events:none}
+.hero-inner{position:relative;z-index:1;max-width:900px;animation:fadeUp .7s ease both}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;color:var(--lime);letter-spacing:2px;text-transform:uppercase;margin-bottom:1.5rem}
+.hero-eyebrow::before{content:'';width:24px;height:2px;background:var(--lime)}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,9vw,8rem);line-height:.9;letter-spacing:3px;color:var(--text);margin-bottom:1.5rem}
+.hero h1 em{font-style:normal;color:transparent;-webkit-text-stroke:2px var(--lime)}
+.hero h1 .hollow{display:block;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.15)}
+.hero-sub{font-size:1.05rem;color:var(--muted2);font-weight:300;max-width:480px;line-height:1.7;margin-bottom:2.5rem}
+.hero-stats{display:flex;gap:0;border:1px solid var(--b2);border-radius:12px;overflow:hidden;width:fit-content;animation:fadeUp .7s .15s ease both;opacity:0}
+.hstat{padding:1rem 1.75rem;border-right:1px solid var(--b2);text-align:center}
+.hstat:last-child{border-right:none}
+.hstat-n{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:1px;color:var(--lime);line-height:1;margin-bottom:2px}
+.hstat-l{font-size:.65rem;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;font-weight:500}
+
+/* FEATURED */
+.featured{padding:0 2.5rem 2.5rem;animation:fadeUp .7s .25s ease both;opacity:0}
+.sec-label{display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:1.2rem}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--b2)}
+.feat-scroll{display:flex;gap:1rem;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.feat-scroll::-webkit-scrollbar{display:none}
+.feat-card{flex-shrink:0;width:260px;border-radius:14px;overflow:hidden;position:relative;height:160px;cursor:pointer;transition:transform .3s,box-shadow .3s}
+.feat-card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.5)}
+.feat-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .5s}
+.feat-card:hover .feat-bg{transform:scale(1.06)}
+.feat-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.2) 55%,transparent 100%)}
+.feat-body{position:absolute;bottom:0;left:0;right:0;padding:.9rem;display:flex;align-items:flex-end;justify-content:space-between;gap:.5rem}
+.feat-left{display:flex;align-items:center;gap:.6rem}
+.feat-ico{width:40px;height:40px;border-radius:10px;overflow:hidden;flex-shrink:0;border:1.5px solid rgba(255,255,255,.2)}
+.feat-ico img{width:100%;height:100%;object-fit:cover}
+.feat-tag{font-size:.58rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--lime);margin-bottom:2px}
+.feat-title{font-size:.9rem;font-weight:700;line-height:1.1}
+.feat-sub{font-size:.62rem;color:rgba(255,255,255,.5);margin-top:2px}
+.feat-get{flex-shrink:0;background:var(--lime);color:#000;border:none;border-radius:7px;padding:.4rem .85rem;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:800;cursor:pointer;transition:all .2s;letter-spacing:.3px}
+.feat-get:hover{background:#d8ff20;transform:scale(1.05)}
+
+/* TABS */
+.tabs-bar{padding:0 2.5rem 0;position:sticky;top:60px;z-index:100;background:var(--bg);border-bottom:1px solid var(--b1);animation:fadeUp .7s .35s ease both;opacity:0}
+.tabs-inner{display:flex;gap:.3rem;overflow-x:auto;scrollbar-width:none;padding:.7rem 0}
+.tabs-inner::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:.38rem .95rem;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;border:1px solid transparent;background:transparent;color:var(--muted2);transition:all .18s;white-space:nowrap}
+.tab:hover{color:var(--text);background:var(--s2)}
+.tab.on{background:var(--lime);color:#000;border-color:var(--lime)}
+
+/* GRID */
+.apps-sec{padding:1.8rem 2.5rem 5rem;animation:fadeUp .7s .45s ease both;opacity:0}
+.grid-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.grid-title{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px}
+.grid-cnt{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);background:var(--s2);border:1px solid var(--b2);padding:.28rem .7rem;border-radius:100px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--b1);border:1px solid var(--b1);border-radius:16px;overflow:hidden}
+.card{background:var(--s1);padding:1.1rem;display:flex;gap:.9rem;align-items:center;cursor:pointer;transition:background .18s;position:relative;overflow:hidden}
+.card:hover{background:var(--s2)}
+.card::after{content:'';position:absolute;left:0;top:0;width:2px;height:100%;background:var(--lime);transform:scaleY(0);transition:transform .2s;transform-origin:bottom}
+.card:hover::after{transform:scaleY(1)}
+.c-ico{width:52px;height:52px;border-radius:12px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
+.c-ico img{width:100%;height:100%;object-fit:cover;border-radius:12px}
+.c-body{flex:1;min-width:0;position:relative;z-index:1}
+.c-name{font-size:.88rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:.1rem}
+.c-dev{font-size:.7rem;color:var(--muted);margin-bottom:.42rem}
+.c-meta{display:flex;align-items:center;gap:.45rem}
+.c-stars{color:#f59e0b;font-size:.64rem;letter-spacing:-1px}
+.c-rating{font-size:.68rem;color:var(--muted2)}
+.c-dl{font-family:'JetBrains Mono',monospace;font-size:.63rem;color:var(--lime);font-weight:700;background:rgba(200,255,0,.08);padding:.1rem .42rem;border-radius:4px}
+.c-right{display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;flex-shrink:0;position:relative;z-index:1}
+.c-rank{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--muted)}
+.c-rank.top{color:#f59e0b}
+.c-btn{background:var(--s3);border:1px solid var(--b2);border-radius:7px;padding:.33rem .72rem;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:700;color:var(--text);cursor:pointer;transition:all .18s;white-space:nowrap}
+.c-btn:hover{background:var(--lime);color:#000;border-color:var(--lime)}
+
+/* MODAL */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(12px);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .3s}
+.ov.on{opacity:1;pointer-events:all}
+.modal{background:var(--s1);border:1px solid var(--b2);border-radius:20px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;transform:translateY(24px) scale(.97);transition:transform .3s cubic-bezier(.34,1.56,.64,1);position:relative}
+.ov.on .modal{transform:translateY(0) scale(1)}
+.m-top{position:relative;padding:1.5rem 1.5rem 1.2rem;border-bottom:1px solid var(--b1)}
+.m-close{position:absolute;top:1.2rem;right:1.2rem;width:28px;height:28px;background:var(--s3);border:1px solid var(--b2);border-radius:7px;color:var(--muted2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:all .18s}
+.m-close:hover{color:var(--text)}
+.m-head{display:flex;gap:1rem;align-items:flex-start}
+.m-icon{width:72px;height:72px;border-radius:16px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.m-icon img{width:100%;height:100%;object-fit:cover}
+.m-name{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;line-height:1;margin-bottom:4px}
+.m-dev{font-size:.8rem;color:var(--muted);margin-bottom:.5rem}
+.m-tags{display:flex;gap:.3rem;flex-wrap:wrap}
+.m-tag{font-size:.62rem;font-weight:600;background:var(--s3);border:1px solid var(--b2);border-radius:4px;padding:.16rem .45rem;color:var(--muted2);text-transform:uppercase;letter-spacing:.5px}
+.m-stars{display:flex;align-items:center;gap:6px;margin-top:6px}
+.m-stars span:first-child{color:#f59e0b;font-size:.78rem}
+.m-stars span:last-child{font-size:.76rem;color:var(--muted2)}
+.m-body{padding:1.5rem}
+.m-desc{font-size:.88rem;color:var(--muted2);line-height:1.75;font-weight:300;margin-bottom:1.5rem}
+.m-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--b1);border:1px solid var(--b1);border-radius:12px;overflow:hidden;margin-bottom:1rem}
+.m-kpi{background:var(--s2);padding:1rem .75rem;text-align:center}
+.m-kpi-v{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:1px;color:var(--lime);line-height:1;margin-bottom:4px}
+.m-kpi-k{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.m-src{font-size:.65rem;color:var(--muted);text-align:center;margin-bottom:1.25rem;font-family:'JetBrains Mono',monospace}
+.m-btns{display:flex;gap:.6rem}
+.m-btn-gp{flex:1;display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem;background:var(--lime);color:#000;border:none;border-radius:11px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:800;cursor:pointer;text-decoration:none;transition:all .2s}
+.m-btn-gp:hover{background:#d8ff20;transform:translateY(-1px)}
+.m-btn-web{display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.85rem 1.1rem;background:var(--s2);color:var(--text);border:1px solid var(--b2);border-radius:11px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s;white-space:nowrap}
+.m-btn-web:hover{border-color:rgba(255,255,255,.25)}
+
+/* TOAST */
+.toast{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--s2);border:1px solid var(--b2);border-radius:10px;padding:.65rem 1.2rem;font-size:.85rem;font-weight:600;z-index:9998;transition:transform .4s cubic-bezier(.175,.885,.32,1.275);backdrop-filter:blur(12px);box-shadow:0 8px 24px rgba(0,0,0,.4);white-space:nowrap;pointer-events:none}
+.toast.on{transform:translateX(-50%) translateY(0)}
+.empty{text-align:center;padding:4rem 2rem;display:none}
+.empty h3{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;color:var(--muted);margin-bottom:.5rem}
+.empty p{color:var(--muted);font-size:.88rem}
+
+/* THEME TOGGLE */
+.theme-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--b2);background:var(--s2);color:var(--muted2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;flex-shrink:0}
+.theme-btn:hover{border-color:var(--lime);color:var(--lime)}
+/* COMPARE */
+.cmp-btn{display:flex;align-items:center;gap:5px;padding:.3rem .75rem;border-radius:8px;border:1px solid var(--b2);background:var(--s2);color:var(--muted2);font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s;flex-shrink:0;white-space:nowrap}
+.cmp-btn:hover,.cmp-btn.on{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,.08)}
+.apk-lib-btn{display:flex;align-items:center;gap:5px;padding:.3rem .75rem;border-radius:8px;border:1px solid rgba(200,255,0,.25);background:rgba(200,255,0,.07);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:700;cursor:pointer;transition:all .2s;flex-shrink:0;white-space:nowrap}
+.apk-lib-btn:hover{background:rgba(200,255,0,.15);border-color:var(--lime)}
+.cmp-count{background:var(--cyan);color:#000;border-radius:100px;padding:0 .35rem;font-size:.65rem;font-weight:800;display:none}
+.cmp-btn.has-items .cmp-count{display:inline}
+.hdr-right{display:flex;align-items:center;gap:.7rem;flex-shrink:0}
+/* SORT */
+.controls-bar{padding:.75rem 2.5rem;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;border-bottom:1px solid var(--b1);background:var(--bg)}
+.sort-group{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+.sort-label{font-family:'JetBrains Mono',monospace;font-size:.63rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700}
+.sort-btn{padding:.3rem .7rem;border-radius:6px;border:1px solid var(--b2);background:transparent;color:var(--muted2);font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:4px}
+.sort-btn:hover{color:var(--text);background:var(--s2)}
+.sort-btn.on{background:var(--s3);border-color:var(--lime);color:var(--lime)}
+/* CMP CARD */
+.card.cmp-selected::after{transform:scaleY(1);background:var(--cyan)}
+.card.cmp-selected{background:rgba(0,229,255,.04)}
+.cmp-check{position:absolute;top:.5rem;right:.5rem;width:18px;height:18px;border:2px solid var(--b2);border-radius:5px;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:.6rem;transition:all .2s;z-index:2;pointer-events:none;opacity:0}
+.cmp-mode .cmp-check{opacity:1}
+.card.cmp-selected .cmp-check{background:var(--cyan);border-color:var(--cyan);color:#000}
+/* COMPARE PANEL */
+.cmp-panel{position:fixed;bottom:0;left:0;right:0;z-index:400;background:var(--s1);border-top:1px solid var(--b2);padding:.75rem 2.5rem;display:flex;align-items:center;gap:1rem;transform:translateY(100%);transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+.cmp-panel.on{transform:translateY(0)}
+.cmp-slots{display:flex;gap:.75rem;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+.cmp-slots::-webkit-scrollbar{display:none}
+.cmp-slot{display:flex;align-items:center;gap:.5rem;background:var(--s2);border:1px solid var(--b2);border-radius:10px;padding:.4rem .75rem;flex-shrink:0}
+.cmp-slot-name{font-size:.78rem;font-weight:600;white-space:nowrap}
+.cmp-slot-rm{width:18px;height:18px;border-radius:4px;border:none;background:var(--s3);color:var(--muted2);cursor:pointer;font-size:.65rem;display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0}
+.cmp-slot-rm:hover{background:rgba(255,45,120,.15);color:var(--pink)}
+.cmp-panel-go{background:var(--cyan);color:#000;border:none;border-radius:10px;padding:.6rem 1.2rem;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:800;cursor:pointer;transition:all .2s;flex-shrink:0;white-space:nowrap}
+.cmp-panel-go:hover{background:#20f0ff}
+.cmp-panel-go:disabled{opacity:.4;cursor:default}
+.cmp-panel-clear{background:transparent;border:1px solid var(--b2);border-radius:10px;padding:.6rem .85rem;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;color:var(--muted2);cursor:pointer;transition:all .2s;flex-shrink:0}
+.cmp-panel-clear:hover{border-color:var(--pink);color:var(--pink)}
+/* COMPARE MODAL */
+.cmp-ov{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(16px);z-index:600;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .3s}
+.cmp-ov.on{opacity:1;pointer-events:all}
+.cmp-modal{background:var(--s1);border:1px solid var(--b2);border-radius:22px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto}
+.cmp-modal-hdr{padding:1.5rem;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between}
+.cmp-modal-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:2px}
+.cmp-close{width:28px;height:28px;background:var(--s3);border:1px solid var(--b2);border-radius:7px;color:var(--muted2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:all .18s}
+.cmp-close:hover{color:var(--text)}
+.cmp-body{padding:1.5rem}
+.cmp-heads{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.cmp-head-app{display:flex;align-items:center;gap:.75rem;background:var(--s2);border:1px solid var(--b2);border-radius:14px;padding:1rem}
+.cmp-app-name{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:1.5px}
+.cmp-app-dev{font-size:.72rem;color:var(--muted);margin-top:2px}
+.cmp-row{display:grid;grid-template-columns:1fr 90px 1fr;gap:.5rem;align-items:center;padding:.65rem 0;border-bottom:1px solid var(--b1)}
+.cmp-row:last-child{border-bottom:none}
+.cmp-row-val{font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:700}
+.cmp-row-val.win{color:var(--lime)}
+.cmp-row-key{font-size:.63rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:700;text-align:center}
+.cmp-row-right{text-align:right}
+.cmp-bar-wrap{margin-top:.3rem;background:var(--s3);border-radius:3px;height:4px;overflow:hidden}
+.cmp-bar{height:100%;border-radius:3px;background:var(--lime);transition:width .7s cubic-bezier(.34,1.56,.64,1)}
+.cmp-bar.b2{background:var(--cyan)}
+/* APK LIBRARY MODAL */
+.apk-ov{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(16px);z-index:700;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .3s}
+.apk-ov.on{opacity:1;pointer-events:all}
+.apk-modal{background:var(--s1);border:1px solid var(--b2);border-radius:22px;width:100%;max-width:700px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;transform:translateY(24px) scale(.97);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.apk-ov.on .apk-modal{transform:translateY(0) scale(1)}
+.apk-modal-hdr{padding:1.5rem;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.apk-modal-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:2px;display:flex;align-items:center;gap:.5rem}
+.apk-modal-sub{font-size:.72rem;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:2px}
+.apk-close{width:28px;height:28px;background:var(--s3);border:1px solid var(--b2);border-radius:7px;color:var(--muted2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:all .18s}
+.apk-close:hover{color:var(--text)}
+.apk-search{padding:1rem 1.5rem;border-bottom:1px solid var(--b1);flex-shrink:0;position:relative}
+.apk-search input{width:100%;background:var(--s2);border:1px solid var(--b2);border-radius:8px;padding:.5rem 1rem .5rem 2.4rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.875rem;outline:none;transition:border-color .2s}
+.apk-search input:focus{border-color:var(--lime)}
+.apk-search input::placeholder{color:var(--muted)}
+.apk-search::before{content:'';position:absolute;left:2.3rem;top:50%;transform:translateY(-50%);width:14px;height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%235a6080' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat center/14px;pointer-events:none}
+.apk-cats{display:flex;gap:.4rem;padding:.75rem 1.5rem;border-bottom:1px solid var(--b1);overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.apk-cats::-webkit-scrollbar{display:none}
+.apk-cat{flex-shrink:0;padding:.28rem .7rem;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;border:1px solid var(--b2);background:transparent;color:var(--muted2);transition:all .18s;white-space:nowrap}
+.apk-cat:hover{color:var(--text);background:var(--s2)}
+.apk-cat.on{background:var(--lime);color:#000;border-color:var(--lime)}
+.apk-list{flex:1;overflow-y:auto;padding:1rem 1.5rem;display:flex;flex-direction:column;gap:.6rem}
+.apk-item{display:flex;align-items:center;gap:.85rem;background:var(--s2);border:1px solid var(--b1);border-radius:12px;padding:.85rem;transition:border-color .2s;cursor:default}
+.apk-item:hover{border-color:var(--b2)}
+.apk-item-icon{width:44px;height:44px;border-radius:10px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.apk-item-icon img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+.apk-item-body{flex:1;min-width:0}
+.apk-item-name{font-size:.88rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.apk-item-dev{font-size:.68rem;color:var(--muted);margin-bottom:.3rem}
+.apk-item-meta{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.apk-badge{font-size:.6rem;font-weight:700;padding:.1rem .4rem;border-radius:4px;letter-spacing:.3px;text-transform:uppercase}
+.apk-badge.safe{background:rgba(52,211,153,.12);color:#34d399;border:1px solid rgba(52,211,153,.2)}
+.apk-badge.official{background:rgba(200,255,0,.1);color:var(--lime);border:1px solid rgba(200,255,0,.2)}
+.apk-badge.mirror{background:rgba(0,229,255,.1);color:var(--cyan);border:1px solid rgba(0,229,255,.2)}
+.apk-item-links{display:flex;gap:.4rem;flex-shrink:0;flex-direction:column;align-items:flex-end}
+.apk-dl-btn{display:flex;align-items:center;gap:.35rem;padding:.4rem .8rem;background:var(--lime);color:#000;border:none;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:800;cursor:pointer;text-decoration:none;transition:all .2s;white-space:nowrap}
+.apk-dl-btn:hover{background:#d8ff20;transform:translateY(-1px)}
+.apk-dl-btn.secondary{background:var(--s3);color:var(--text);border:1px solid var(--b2)}
+.apk-dl-btn.secondary:hover{border-color:var(--lime);color:var(--lime);background:rgba(200,255,0,.06)}
+.apk-notice{background:rgba(255,45,120,.05);border:1px solid rgba(255,45,120,.2);border-radius:10px;padding:.75rem 1rem;font-size:.72rem;color:var(--muted2);line-height:1.6;margin:.5rem 1.5rem;flex-shrink:0}
+.apk-notice strong{color:var(--pink)}
+.apk-empty{text-align:center;padding:3rem 2rem;color:var(--muted);font-size:.88rem}
+.apk-version{font-size:.62rem;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.m-btn-ios{flex:1;display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem;background:var(--s3);color:var(--text);border:1px solid var(--b2);border-radius:11px;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;text-decoration:none;transition:all .2s;min-width:0}
+.m-btn-ios:hover{border-color:rgba(255,255,255,.3);transform:translateY(-1px)}
+.m-apk{margin-top:.75rem;background:rgba(255,45,120,.05);border:1px solid rgba(255,45,120,.2);border-radius:12px;padding:1rem;display:none}
+.m-apk.show{display:block}
+.m-apk-head{display:flex;align-items:center;gap:.5rem;font-size:.75rem;font-weight:700;color:var(--pink);margin-bottom:.5rem}
+.m-apk-desc{font-size:.75rem;color:var(--muted2);line-height:1.6;margin-bottom:.7rem}
+.m-apk-links{display:flex;gap:.5rem;flex-wrap:wrap}
+.m-apk-link{display:flex;align-items:center;gap:.35rem;padding:.45rem .75rem;background:var(--s3);border:1px solid rgba(255,45,120,.25);border-radius:8px;font-size:.73rem;font-weight:600;color:var(--text);text-decoration:none;transition:all .18s}
+.m-apk-link:hover{border-color:var(--pink);color:var(--pink)}
+.m-cmp-add{width:100%;margin-top:.6rem;padding:.7rem;border-radius:11px;border:1px dashed var(--b2);background:transparent;color:var(--muted2);font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.4rem}
+.m-cmp-add:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,.05)}
+.m-cmp-add.in-cmp{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,.05)}
+/* toast adjust for compare panel */
+.toast{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--s2);border:1px solid var(--b2);border-radius:10px;padding:.65rem 1.2rem;font-size:.85rem;font-weight:600;z-index:9998;transition:transform .4s cubic-bezier(.175,.885,.32,1.275);backdrop-filter:blur(12px);box-shadow:0 8px 24px rgba(0,0,0,.4);white-space:nowrap;pointer-events:none}
+.toast.on{transform:translateX(-50%) translateY(0)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:700px){header{padding:0 1.2rem;flex-wrap:wrap;height:auto;padding-top:.7rem;padding-bottom:.7rem;gap:.75rem}.hdr-search{order:3;max-width:100%;width:100%}.hdr-pill{display:none}.hero{padding:3rem 1.2rem 2.5rem}.hero-stats{flex-wrap:wrap}.featured,.tabs-bar,.apps-sec{padding-left:1.2rem;padding-right:1.2rem}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="#" class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    </div>
+    <span class="logo-name">App<span>Vault</span></span>
+  </a>
+  <div class="hdr-search">
+    <input type="text" id="si" placeholder="Search TikTok, ChatGPT, Spotify…" oninput="filter()">
+  </div>
+  <div class="hdr-right">
+    <div class="hdr-pill">Live 2025 Data</div>
+    <button class="cmp-btn" id="cmpToggleBtn" onclick="toggleCmpMode()">⚖️ Compare <span class="cmp-count" id="cmpCount">0</span></button>
+    <button class="apk-lib-btn" onclick="openApkLibrary()" title="APK Library">📦 APK Direct</button>
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle Theme">🌙</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hglow1"></div>
+  <div class="hglow2"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Appfigures · AppMagic · Business of Apps</div>
+    <h1>THE WORLD'S<br><em>TOP APPS</em><span class="hollow">ALL HERE</span></h1>
+    <p class="hero-sub">50+ of the most downloaded applications on Earth — verified statistics, real numbers, direct links to Google Play.</p>
+  </div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-n">773M</div><div class="hstat-l">TikTok 2024</div></div>
+    <div class="hstat"><div class="hstat-n">770M</div><div class="hstat-l">ChatGPT 2025</div></div>
+    <div class="hstat"><div class="hstat-n">50+</div><div class="hstat-l">Apps Listed</div></div>
+    <div class="hstat"><div class="hstat-n">2025</div><div class="hstat-l">Updated</div></div>
+  </div>
+</section>
+
+<div class="featured">
+  <div class="sec-label">🔥 Most Downloaded 2024–2025</div>
+  <div class="feat-scroll">
+    <div class="feat-card" onclick="openByName('TikTok')">
+      <div class="feat-bg" style="background:linear-gradient(135deg,#000 0%,#ff0050 100%)"></div>
+      <div class="feat-ov"></div>
+      <div class="feat-body">
+        <div class="feat-left">
+          <div class="feat-ico"><img src="https://logo.clearbit.com/tiktok.com" alt="TikTok" onerror="this.outerHTML='🎵'"></div>
+          <div><div class="feat-tag">Entertainment · #1</div><div class="feat-title">TikTok</div><div class="feat-sub">773M downloads · 2024</div></div>
+        </div>
+        <button class="feat-get" onclick="event.stopPropagation();openGP('https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically','TikTok')">GET</button>
+      </div>
+    </div>
+    <div class="feat-card" onclick="openByName('ChatGPT')">
+      <div class="feat-bg" style="background:linear-gradient(135deg,#065f46 0%,#10a37f 100%)"></div>
+      <div class="feat-ov"></div>
+      <div class="feat-body">
+        <div class="feat-left">
+          <div class="feat-ico"><img src="https://logo.clearbit.com/openai.com" alt="ChatGPT" onerror="this.outerHTML='🤖'"></div>
+          <div><div class="feat-tag">AI · #1 in 2025</div><div class="feat-title">ChatGPT</div><div class="feat-sub">770M downloads · 2025</div></div>
+        </div>
+        <button class="feat-get" onclick="event.stopPropagation();openGP('https://play.google.com/store/apps/details?id=com.openai.chatgpt','ChatGPT')">GET</button>
+      </div>
+    </div>
+    <div class="feat-card" onclick="openByName('Instagram')">
+      <div class="feat-bg" style="background:linear-gradient(135deg,#405de6 0%,#c13584 50%,#fd1d1d 100%)"></div>
+      <div class="feat-ov"></div>
+      <div class="feat-body">
+        <div class="feat-left">
+          <div class="feat-ico"><img src="https://logo.clearbit.com/instagram.com" alt="Instagram" onerror="this.outerHTML='📸'"></div>
+          <div><div class="feat-tag">Social · #2</div><div class="feat-title">Instagram</div><div class="feat-sub">759M downloads · 2024</div></div>
+        </div>
+        <button class="feat-get" onclick="event.stopPropagation();openGP('https://play.google.com/store/apps/details?id=com.instagram.android','Instagram')">GET</button>
+      </div>
+    </div>
+    <div class="feat-card" onclick="openByName('CapCut')">
+      <div class="feat-bg" style="background:linear-gradient(135deg,#000 0%,#ff6b35 100%)"></div>
+      <div class="feat-ov"></div>
+      <div class="feat-body">
+        <div class="feat-left">
+          <div class="feat-ico"><img src="https://logo.clearbit.com/capcut.com" alt="CapCut" onerror="this.outerHTML='✂️'"></div>
+          <div><div class="feat-tag">Video · AI Creator</div><div class="feat-title">CapCut</div><div class="feat-sub">400M downloads · 2024</div></div>
+        </div>
+        <button class="feat-get" onclick="event.stopPropagation();openGP('https://play.google.com/store/apps/details?id=com.lemon.lvoverseas','CapCut')">GET</button>
+      </div>
+    </div>
+    <div class="feat-card" onclick="openByName('Temu')">
+      <div class="feat-bg" style="background:linear-gradient(135deg,#ff5722 0%,#e64a19 100%)"></div>
+      <div class="feat-ov"></div>
+      <div class="feat-body">
+        <div class="feat-left">
+          <div class="feat-ico"><img src="https://logo.clearbit.com/temu.com" alt="Temu" onerror="this.outerHTML='🛍️'"></div>
+          <div><div class="feat-tag">Shopping · Fastest</div><div class="feat-title">Temu</div><div class="feat-sub">500M downloads · 2024</div></div>
+        </div>
+        <button class="feat-get" onclick="event.stopPropagation();openGP('https://play.google.com/store/apps/details?id=com.einnovation.temu','Temu')">GET</button>
+      </div>
+    </div>
+    <div class="feat-card" onclick="openByName('WhatsApp')">
+      <div class="feat-bg" style="background:linear-gradient(135deg,#075e54 0%,#25d366 100%)"></div>
+      <div class="feat-ov"></div>
+      <div class="feat-body">
+        <div class="feat-left">
+          <div class="feat-ico"><img src="https://logo.clearbit.com/whatsapp.com" alt="WhatsApp" onerror="this.outerHTML='💬'"></div>
+          <div><div class="feat-tag">Messaging · #4</div><div class="feat-title">WhatsApp</div><div class="feat-sub">527M downloads · 2024</div></div>
+        </div>
+        <button class="feat-get" onclick="event.stopPropagation();openGP('https://play.google.com/store/apps/details?id=com.whatsapp','WhatsApp')">GET</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="controls-bar">
+  <div class="sort-group">
+    <span class="sort-label">Sort:</span>
+    <button class="sort-btn on" id="sb-dl" onclick="setSort('dl')">⬇️ Downloads <span id="sd-dl">↓</span></button>
+    <button class="sort-btn" id="sb-mau" onclick="setSort('mau')">👥 MAU <span id="sd-mau"></span></button>
+    <button class="sort-btn" id="sb-r" onclick="setSort('r')">⭐ Rating <span id="sd-r"></span></button>
+    <button class="sort-btn" id="sb-sz" onclick="setSort('sz')">📦 Size <span id="sd-sz"></span></button>
+    <button class="sort-btn" id="sb-rank" onclick="setSort('rank')">🏆 Rank <span id="sd-rank"></span></button>
+  </div>
+</div>
+
+<div class="tabs-bar">
+  <div class="tabs-inner">
+    <button class="tab on" onclick="settab(this,'all')">All Apps</button>
+    <button class="tab" onclick="settab(this,'social')">💬 Social</button>
+    <button class="tab" onclick="settab(this,'entertainment')">🎬 Entertainment</button>
+    <button class="tab" onclick="settab(this,'games')">🎮 Games</button>
+    <button class="tab" onclick="settab(this,'shopping')">🛒 Shopping</button>
+    <button class="tab" onclick="settab(this,'productivity')">⚡ Productivity</button>
+    <button class="tab" onclick="settab(this,'finance')">💰 Finance</button>
+    <button class="tab" onclick="settab(this,'ai')">🤖 AI</button>
+    <button class="tab" onclick="settab(this,'transport')">🚗 Travel</button>
+    <button class="tab" onclick="settab(this,'tools')">🔧 Tools</button>
+    <button class="tab" onclick="settab(this,'health')">💪 Health</button>
+    <button class="tab" onclick="settab(this,'education')">📚 Education</button>
+  </div>
+</div>
+
+<div class="apps-sec">
+  <div class="grid-hdr">
+    <div class="grid-title">All Applications</div>
+    <div class="grid-cnt" id="cnt"></div>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty"><h3>No Results</h3><p>Try a different search or category</p></div>
+  <p style="font-size:.62rem;color:var(--muted);text-align:center;margin-top:2rem;font-family:'JetBrains Mono',monospace;letter-spacing:1px">DATA: APPFIGURES · APPMAGIC · BUSINESS OF APPS · STATISTA — 2024/2025</p>
+</div>
+
+<div class="ov" id="ov" onclick="closeOuter(event)">
+  <div class="modal">
+    <div class="m-top">
+      <button class="m-close" onclick="closeModal()">✕</button>
+      <div class="m-head">
+        <div class="m-icon" id="mIcon"></div>
+        <div>
+          <div class="m-name" id="mT"></div>
+          <div class="m-dev" id="mD"></div>
+          <div class="m-tags" id="mTg"></div>
+          <div class="m-stars" id="mStars"></div>
+        </div>
+      </div>
+    </div>
+    <div class="m-body">
+      <p class="m-desc" id="mDesc"></p>
+      <div class="m-kpis">
+        <div class="m-kpi"><div class="m-kpi-v" id="mDl"></div><div class="m-kpi-k">Downloads/yr</div></div>
+        <div class="m-kpi"><div class="m-kpi-v" id="mMAU"></div><div class="m-kpi-k">Monthly Users</div></div>
+        <div class="m-kpi"><div class="m-kpi-v" id="mSz"></div><div class="m-kpi-k">App Size</div></div>
+      </div>
+      <p class="m-src" id="mSrc"></p>
+      <div class="m-btns">
+        <a class="m-btn-gp" id="mBtnGP" href="#" target="_blank" rel="noopener">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M3.18 23.76c.37.21.8.22 1.2.03l12.15-6.93-2.93-2.93-10.42 9.83zm-1.14-19.6C1.73 4.6 1.5 5.1 1.5 5.73v12.54c0 .63.23 1.13.54 1.57l.08.08 7.03-7.03v-.17L2.04 4.16zm16.7 7.03L15.9 8.35l-3.14 3.14 3.14 3.14 2.86-2.86c.82-.82.82-2.14-.02-2.98zM4.38.24C3.98.05 3.55.06 3.18.27L13.62 10.7 10.7 13.6 4.38.24z"/></svg>
+          Google Play
+        </a>
+        <a class="m-btn-ios" id="mBtnIOS" href="#" target="_blank" rel="noopener">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          App Store
+        </a>
+        <a class="m-btn-web" id="mBtnWeb" href="#" target="_blank" rel="noopener">🌐</a>
+      </div>
+      <div class="m-apk" id="mApk">
+        <div class="m-apk-head">⚠️ APK / Sideload Available</div>
+        <div class="m-apk-desc" id="mApkDesc"></div>
+        <div class="m-apk-links" id="mApkLinks"></div>
+      </div>
+      <button class="m-cmp-add" id="mCmpBtn" onclick="toggleCompareFromModal()">⚖️ Add to Compare</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- COMPARE PANEL -->
+<div class="cmp-panel" id="cmpPanel">
+  <div class="cmp-slots" id="cmpSlots"></div>
+  <button class="cmp-panel-go" id="cmpGoBtn" onclick="openCompareModal()" disabled>Compare Now →</button>
+  <button class="cmp-panel-clear" onclick="clearCompare()">✕ Clear</button>
+</div>
+
+<!-- COMPARE RESULT MODAL -->
+<div class="cmp-ov" id="cmpOv" onclick="closeCmpOuter(event)">
+  <div class="cmp-modal">
+    <div class="cmp-modal-hdr">
+      <div class="cmp-modal-title">⚖️ HEAD TO HEAD</div>
+      <button class="cmp-close" onclick="closeCmpModal()">✕</button>
+    </div>
+    <div class="cmp-body" id="cmpBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- APK LIBRARY MODAL -->
+<div class="apk-ov" id="apkOv" onclick="closeApkOuter(event)">
+  <div class="apk-modal">
+    <div class="apk-modal-hdr">
+      <div>
+        <div class="apk-modal-title">📦 APK Direct Library</div>
+        <div class="apk-modal-sub">تحميل مباشر — بدون Google Play Store</div>
+      </div>
+      <button class="apk-close" onclick="closeApkLibrary()">✕</button>
+    </div>
+    <div class="apk-search">
+      <input type="text" id="apkSearch" placeholder="ابحث عن تطبيق..." oninput="renderApkList()">
+    </div>
+    <div class="apk-cats">
+      <button class="apk-cat on" onclick="setApkCat(this,'all')">الكل</button>
+      <button class="apk-cat" onclick="setApkCat(this,'social')">💬 تواصل</button>
+      <button class="apk-cat" onclick="setApkCat(this,'entertainment')">🎬 ترفيه</button>
+      <button class="apk-cat" onclick="setApkCat(this,'ai')">🤖 ذكاء اصطناعي</button>
+      <button class="apk-cat" onclick="setApkCat(this,'productivity')">⚡ إنتاجية</button>
+      <button class="apk-cat" onclick="setApkCat(this,'tools')">🔧 أدوات</button>
+      <button class="apk-cat" onclick="setApkCat(this,'games')">🎮 ألعاب</button>
+      <button class="apk-cat" onclick="setApkCat(this,'finance')">💰 مالية</button>
+    </div>
+    <div class="apk-notice"><strong>⚠️ ملاحظة:</strong> هذه روابط APK رسمية من المطورين أو مصادر موثوقة. يُنصح بتفعيل "مصادر غير معروفة" في إعدادات هاتفك قبل التثبيت. التطبيقات من مصادرها الرسمية آمنة تماماً.</div>
+    <div class="apk-list" id="apkList"></div>
+  </div>
+</div>
+
+<script>
+/* ===== STATE ===== */
+let cat='all';
+let sortKey='dl';
+let sortDir=-1;
+let compareList=[];
+let cmpMode=false;
+let currentModalId=null;
+
+/* ===== HELPERS ===== */
+function iconHTML(a,sz='52px',r='12px'){
+  return `<div style="width:${sz};height:${sz};border-radius:${r};overflow:hidden;background:${a.color};flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+    <img src="https://logo.clearbit.com/${a.logo}" style="width:100%;height:100%;object-fit:cover;border-radius:${r}" loading="lazy"
+    onerror="this.outerHTML='<span style=font-size:1.35rem;line-height:1>${a.fb}</span>'">
+  </div>`;
+}
+function starsHTML(r){return'★'.repeat(Math.floor(r))+'☆'.repeat(5-Math.floor(r))}
+
+function parseMag(s){
+  if(s===undefined||s===null)return 0;
+  s=String(s).replace(' MB','').replace(' GB','').trim();
+  const m=s.match(/^([\d.]+)([KMBT]?)$/i);
+  if(!m)return parseFloat(s)||0;
+  const n=parseFloat(m[1]),u=(m[2]||'').toUpperCase();
+  return n*({'K':1e3,'M':1e6,'B':1e9,'T':1e12,'':1}[u]||1);
+}
+
+/* ===== SORT ===== */
+function setSort(key){
+  if(sortKey===key){sortDir*=-1;}
+  else{sortKey=key;sortDir=(key==='rank'||key==='sz')?1:-1;}
+  updateSortUI();filter();
+}
+function updateSortUI(){
+  ['dl','mau','r','sz','rank'].forEach(k=>{
+    const b=document.getElementById('sb-'+k);
+    if(b){b.classList.toggle('on',sortKey===k);}
+    const s=document.getElementById('sd-'+k);
+    if(s)s.textContent=sortKey===k?(sortDir>0?'↑':'↓'):'';
+  });
+}
+function sortApps(list){
+  return[...list].sort((a,b)=>{
+    if(sortKey==='r')return(sortDir>0?a.r-b.r:b.r-a.r);
+    if(sortKey==='rank')return(a.rank-b.rank)*sortDir;
+    return(parseMag(b[sortKey])-parseMag(a[sortKey]))*sortDir;
+  });
+}
+
+/* ===== RENDER ===== */
+function render(list){
+  const g=document.getElementById('grid');
+  const e=document.getElementById('empty');
+  document.getElementById('cnt').textContent=list.length+' apps';
+  if(!list.length){g.innerHTML='';e.style.display='block';return;}
+  e.style.display='none';
+  if(cmpMode)g.classList.add('cmp-mode'); else g.classList.remove('cmp-mode');
+  g.innerHTML=list.map((a,i)=>`
+    <div class="card${compareList.some(c=>c.id===a.id)?' cmp-selected':''}" onclick="cardClick(${a.id},event)" id="card-${a.id}" style="animation:fadeUp .3s ${Math.min(i*.02,.5)}s ease both;opacity:0">
+      <div class="cmp-check">✓</div>
+      ${iconHTML(a,'52px','12px')}
+      <div class="c-body">
+        <div class="c-name">${a.name}</div>
+        <div class="c-dev">${a.dev}</div>
+        <div class="c-meta">
+          <span class="c-stars">${starsHTML(a.r)}</span>
+          <span class="c-rating">${a.r}</span>
+          <span class="c-dl">↓ ${a.dl}</span>
+        </div>
+      </div>
+      <div class="c-right">
+        <span class="c-rank ${a.rank<=5?'top':''}">${a.rank<=5?'🏆 #'+a.rank:'#'+a.rank}</span>
+        <button class="c-btn" onclick="event.stopPropagation();openGP('${a.gp||a.web}','${a.name}')">GET</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function settab(el,c){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on'); cat=c; filter();
+}
+
+function filter(){
+  const q=document.getElementById('si').value.toLowerCase().trim();
+  let l=APPS;
+  if(cat!=='all')l=l.filter(a=>a.cat===cat);
+  if(q)l=l.filter(a=>a.name.toLowerCase().includes(q)||a.dev.toLowerCase().includes(q)||a.tags.some(t=>t.toLowerCase().includes(q)));
+  l=sortApps(l);
+  render(l);
+}
+
+/* ===== MODAL ===== */
+function openModal(id){
+  const a=APPS.find(x=>x.id===id); if(!a)return;
+  currentModalId=id;
+  document.getElementById('mIcon').innerHTML=iconHTML(a,'72px','16px');
+  document.getElementById('mT').textContent=a.name;
+  document.getElementById('mD').textContent='by '+a.dev;
+  document.getElementById('mTg').innerHTML=a.tags.map(t=>`<span class="m-tag">${t}</span>`).join('');
+  document.getElementById('mStars').innerHTML=`<span>${starsHTML(a.r)}</span><span>${a.r} / 5</span>`;
+  document.getElementById('mDesc').textContent=a.desc;
+  document.getElementById('mDl').textContent=a.dl;
+  document.getElementById('mMAU').textContent=a.mau;
+  document.getElementById('mSz').textContent=a.sz;
+  document.getElementById('mSrc').textContent='📊 '+a.src;
+  const gp=document.getElementById('mBtnGP');
+  const iosBtn=document.getElementById('mBtnIOS');
+  const wb=document.getElementById('mBtnWeb');
+  gp.href=a.gp||'#'; gp.style.display=a.gp?'flex':'none';
+  if(iosBtn){iosBtn.href=a.ios||'#'; iosBtn.style.display=a.ios?'flex':'none';}
+  wb.href=a.web||'#'; wb.style.display=a.web?'flex':'none';
+  // APK
+  const apkEl=document.getElementById('mApk');
+  if(apkEl){
+    if(a.apk){
+      document.getElementById('mApkDesc').textContent=a.apkDesc||'';
+      document.getElementById('mApkLinks').innerHTML=(a.apkLinks||[]).map(l=>`<a class="m-apk-link" href="${l.u}" target="_blank" rel="noopener">📥 ${l.n}</a>`).join('');
+      apkEl.classList.add('show');
+    }else{apkEl.classList.remove('show');}
+  }
+  // Compare btn
+  const inCmp=compareList.some(c=>c.id===id);
+  const cmpBtn=document.getElementById('mCmpBtn');
+  if(cmpBtn){cmpBtn.textContent=inCmp?'✓ Remove from Compare':'⚖️ Add to Compare';cmpBtn.className='m-cmp-add'+(inCmp?' in-cmp':'');}
+  document.getElementById('ov').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function openByName(n){const a=APPS.find(x=>x.name===n);if(a)openModal(a.id);}
+function closeModal(){document.getElementById('ov').classList.remove('on');document.body.style.overflow='';}
+function closeOuter(e){if(e.target===document.getElementById('ov'))closeModal();}
+
+/* ===== CARD CLICK ===== */
+function cardClick(id,e){
+  if(cmpMode){toggleCompare(id);}
+  else{openModal(id);}
+}
+
+/* ===== COMPARE ===== */
+function toggleCmpMode(){
+  cmpMode=!cmpMode;
+  const btn=document.getElementById('cmpToggleBtn');
+  btn.classList.toggle('on',cmpMode);
+  document.getElementById('grid').classList.toggle('cmp-mode',cmpMode);
+  toast(cmpMode?'⚖️ Compare mode ON — tap cards to select':'Compare mode OFF');
+}
+
+function toggleCompare(id){
+  const a=APPS.find(x=>x.id===id); if(!a)return;
+  const idx=compareList.findIndex(c=>c.id===id);
+  if(idx>-1){compareList.splice(idx,1);toast('Removed '+a.name);}
+  else{if(compareList.length>=2){toast('⚠️ Max 2 apps — remove one first');return;}compareList.push(a);toast('✓ Added '+a.name+' to compare');}
+  updateComparePanel();
+  document.querySelectorAll('.card').forEach(card=>{
+    const cid=parseInt(card.id.replace('card-',''));
+    card.classList.toggle('cmp-selected',compareList.some(c=>c.id===cid));
+  });
+}
+
+function toggleCompareFromModal(){
+  if(currentModalId===null)return;
+  toggleCompare(currentModalId);
+  const inCmp=compareList.some(c=>c.id===currentModalId);
+  const btn=document.getElementById('mCmpBtn');
+  if(btn){btn.textContent=inCmp?'✓ Remove from Compare':'⚖️ Add to Compare';btn.className='m-cmp-add'+(inCmp?' in-cmp':'');}
+}
+
+function updateComparePanel(){
+  const panel=document.getElementById('cmpPanel');
+  const slots=document.getElementById('cmpSlots');
+  const goBtn=document.getElementById('cmpGoBtn');
+  const cnt=document.getElementById('cmpCount');
+  const tb=document.getElementById('cmpToggleBtn');
+  cnt.textContent=compareList.length;
+  tb.classList.toggle('has-items',compareList.length>0);
+  if(compareList.length>0){
+    panel.classList.add('on');
+    goBtn.disabled=compareList.length<2;
+    slots.innerHTML=compareList.map(a=>`
+      <div class="cmp-slot">
+        ${iconHTML(a,'26px','6px')}
+        <span class="cmp-slot-name">${a.name}</span>
+        <button class="cmp-slot-rm" onclick="toggleCompare(${a.id})">✕</button>
+      </div>
+    `).join('');
+  }else{panel.classList.remove('on');}
+}
+
+function clearCompare(){compareList=[];updateComparePanel();document.querySelectorAll('.card.cmp-selected').forEach(c=>c.classList.remove('cmp-selected'));}
+
+/* ===== COMPARE MODAL ===== */
+function openCompareModal(){
+  if(compareList.length<2)return;
+  const [a,b]=compareList;
+  function fmtVal(k,x){if(k==='r')return x.r+' ★';if(k==='rank')return '#'+x.rank;return x[k]||'-';}
+  function numV(k,x){if(k==='r')return x.r;if(k==='rank')return x.rank;return parseMag(x[k]);}
+  function win(k){const av=numV(k,a),bv=numV(k,b);if(k==='rank'||k==='sz')return av<bv?'a':av>bv?'b':'tie';return av>bv?'a':av<bv?'b':'tie';}
+  function pct(k,w){const av=numV(k,a),bv=numV(k,b),tot=av+bv;if(!tot)return 50;return Math.round((w==='a'?av:bv)/tot*100);}
+  const rows=[{k:'dl',l:'Downloads/yr'},{k:'mau',l:'Monthly Users'},{k:'r',l:'Rating'},{k:'sz',l:'App Size (smaller=better)'},{k:'rank',l:'Global Rank (lower=better)'}];
+  document.getElementById('cmpBody').innerHTML=`
+    <div class="cmp-heads">
+      <div class="cmp-head-app">${iconHTML(a,'44px','11px')}<div><div class="cmp-app-name">${a.name}</div><div class="cmp-app-dev">${a.dev}</div></div></div>
+      <div class="cmp-head-app">${iconHTML(b,'44px','11px')}<div><div class="cmp-app-name">${b.name}</div><div class="cmp-app-dev">${b.dev}</div></div></div>
+    </div>
+    <div>${rows.map(row=>{const w=win(row.k);return`<div class="cmp-row">
+      <div><div class="cmp-row-val${w==='a'?' win':''}">${fmtVal(row.k,a)}</div><div class="cmp-bar-wrap"><div class="cmp-bar" style="width:${pct(row.k,'a')}%"></div></div></div>
+      <div class="cmp-row-key">${row.l}</div>
+      <div class="cmp-row-right"><div class="cmp-row-val${w==='b'?' win':''}">${fmtVal(row.k,b)}</div><div class="cmp-bar-wrap"><div class="cmp-bar b2" style="width:${pct(row.k,'b')}%"></div></div></div>
+    </div>`;}).join('')}</div>
+    <div style="display:flex;gap:.6rem;margin-top:1.2rem">
+      ${a.gp?`<a class="m-btn-gp" href="${a.gp}" target="_blank" rel="noopener" style="font-size:.78rem;flex:1">▶ Get ${a.name}</a>`:''}
+      ${b.gp?`<a class="m-btn-gp" href="${b.gp}" target="_blank" rel="noopener" style="font-size:.78rem;flex:1;background:var(--cyan)">▶ Get ${b.name}</a>`:''}
+    </div>
+  `;
+  document.getElementById('cmpOv').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function closeCmpModal(){document.getElementById('cmpOv').classList.remove('on');document.body.style.overflow='';}
+function closeCmpOuter(e){if(e.target===document.getElementById('cmpOv'))closeCmpModal();}
+
+/* ===== THEME ===== */
+function toggleTheme(){
+  document.body.classList.toggle('light');
+  const isLight=document.body.classList.contains('light');
+  document.getElementById('themeBtn').textContent=isLight?'🌙':'☀️';
+  localStorage.setItem('av-theme',isLight?'light':'dark');
+}
+if(localStorage.getItem('av-theme')==='light'){document.body.classList.add('light');document.getElementById('themeBtn').textContent='🌙';}
+
+/* ===== UTILS ===== */
+function openGP(url,name){if(url&&url!=='#'){window.open(url,'_blank','noopener');toast('🟢 Opening '+name+' on Google Play…');}}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('on'),2800);}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(document.getElementById('cmpOv').classList.contains('on'))closeCmpModal();else closeModal();}});
+
+const APPS=[
+  {id:0,name:'TikTok',dev:'ByteDance',cat:'entertainment',logo:'tiktok.com',fb:'🎵',color:'linear-gradient(135deg,#010101,#ff0050)',r:4.7,dl:'773M',mau:'1.5B',sz:'120 MB',rank:1,free:true,gp:'https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically',ios:'https://apps.apple.com/app/tiktok/id835599320',web:'https://www.tiktok.com/download',apk:true,apkDesc:'TikTok is restricted in some regions (USA ban, India). Sideload via APK: enable Unknown Sources in Android Settings first.',apkLinks:[{n:'TikTok.com',u:'https://www.tiktok.com/download'},{n:'APKMirror',u:'https://www.apkmirror.com/?s=tiktok'}],tags:['Entertainment','Short Video','Social'],desc:'TikTok topped the most-downloaded app charts in 2024 with 773 million installs worldwide, narrowly beating Instagram. Over 1.5 billion monthly active users across 150+ countries.',src:'Appfigures / AppMagic 2024'},
+  {id:1,name:'Instagram',dev:'Meta',cat:'social',logo:'instagram.com',fb:'📸',color:'linear-gradient(135deg,#405de6,#c13584,#fd1d1d)',r:4.6,dl:'759M',mau:'2B',sz:'85 MB',rank:2,free:true,gp:'https://play.google.com/store/apps/details?id=com.instagram.android',ios:'https://apps.apple.com/app/instagram/id389801252',web:'https://www.instagram.com',tags:['Photos','Reels','Social'],desc:'Instagram ranked #2 globally in 2024 with 759 million downloads. India alone accounted for ~40% of all installs. Over 2 billion monthly active users worldwide.',src:'Appfigures / AppMagic 2024'},
+  {id:2,name:'Facebook',dev:'Meta',cat:'social',logo:'facebook.com',fb:'👥',color:'linear-gradient(135deg,#1877f2,#0a5dc9)',r:4.3,dl:'571M',mau:'3.27B',sz:'72 MB',rank:3,free:true,gp:'https://play.google.com/store/apps/details?id=com.facebook.katana',ios:'https://apps.apple.com/app/facebook/id284882215',web:'https://www.facebook.com',tags:['Social','News','Family'],desc:'Facebook placed third in 2024 with 571 million downloads. Still the world\'s largest social network with 3.27 billion monthly active users.',src:'Appfigures / AppMagic 2024'},
+  {id:3,name:'WhatsApp',dev:'Meta',cat:'social',logo:'whatsapp.com',fb:'💬',color:'linear-gradient(135deg,#075e54,#25d366)',r:4.8,dl:'527M',mau:'2.78B',sz:'45 MB',rank:4,free:true,gp:'https://play.google.com/store/apps/details?id=com.whatsapp',ios:'https://apps.apple.com/app/whatsapp-messenger/id310633997',web:'https://www.whatsapp.com/download',tags:['Messaging','Calls','Encrypted'],desc:'WhatsApp ranked #4 with 527 million downloads. The world\'s top free communication app with 2.78 billion monthly users and full end-to-end encryption.',src:'Appfigures / AppMagic 2024'},
+  {id:4,name:'Threads',dev:'Meta',cat:'social',logo:'threads.net',fb:'🧵',color:'linear-gradient(135deg,#000,#333)',r:4.1,dl:'322M',mau:'275M',sz:'50 MB',rank:5,free:true,gp:'https://play.google.com/store/apps/details?id=com.instagram.barcelona',ios:'https://apps.apple.com/app/threads-an-instagram-app/id6446901002',web:'https://www.threads.net',tags:['Text','Social','Discussions'],desc:'Threads entered the global top 10 in 2024 with 322 million downloads, just a year after launch.',src:'Appfigures / AppMagic 2024'},
+  {id:5,name:'Snapchat',dev:'Snap Inc.',cat:'social',logo:'snapchat.com',fb:'👻',color:'linear-gradient(135deg,#fffc00,#c8b800)',r:4.3,dl:'290M',mau:'850M',sz:'160 MB',rank:6,free:true,gp:'https://play.google.com/store/apps/details?id=com.snapchat.android',ios:'https://apps.apple.com/app/snapchat/id447188370',web:'https://www.snapchat.com/download',tags:['Photos','Stories','AR'],desc:'Snapchat recorded 290 million downloads in 2024 with 850 million monthly active users. Pioneer of augmented reality filters.',src:'Business of Apps 2024'},
+  {id:6,name:'Telegram',dev:'Telegram FZ-LLC',cat:'social',logo:'telegram.org',fb:'✈️',color:'linear-gradient(135deg,#2ca5e0,#1e88c9)',r:4.8,dl:'220M',mau:'900M',sz:'55 MB',rank:7,free:true,gp:'https://play.google.com/store/apps/details?id=org.telegram.messenger',ios:'https://apps.apple.com/app/telegram-messenger/id686449807',web:'https://telegram.org',tags:['Messaging','Channels','Secure'],desc:'Telegram achieved 220 million annual downloads and 900 million monthly active users.',src:'Business of Apps 2024'},
+  {id:7,name:'LinkedIn',dev:'Microsoft',cat:'social',logo:'linkedin.com',fb:'💼',color:'linear-gradient(135deg,#0077b5,#004d77)',r:4.4,dl:'130M',mau:'1B',sz:'95 MB',rank:8,free:true,gp:'https://play.google.com/store/apps/details?id=com.linkedin.android',ios:'https://apps.apple.com/app/linkedin/id288429040',web:'https://www.linkedin.com',tags:['Work','Jobs','Professional'],desc:'LinkedIn recorded 130 million annual downloads with 1 billion registered users across 200+ countries.',src:'Business of Apps 2024'},
+  {id:8,name:'X (Twitter)',dev:'X Corp.',cat:'social',logo:'x.com',fb:'𝕏',color:'linear-gradient(135deg,#000,#1a1a1a)',r:4.0,dl:'120M',mau:'619M',sz:'82 MB',rank:9,free:true,gp:'https://play.google.com/store/apps/details?id=com.twitter.android',ios:'https://apps.apple.com/app/x/id333903271',web:'https://x.com',tags:['News','Discussions','Real-time'],desc:'X (formerly Twitter) recorded 120 million downloads and 619 million monthly active users.',src:'Business of Apps 2024'},
+  {id:9,name:'WhatsApp Business',dev:'Meta',cat:'social',logo:'whatsapp.com',fb:'🏪',color:'linear-gradient(135deg,#075e54,#128c7e)',r:4.6,dl:'200M',mau:'500M',sz:'48 MB',rank:10,free:true,gp:'https://play.google.com/store/apps/details?id=com.whatsapp.w4b',ios:'https://apps.apple.com/app/whatsapp-business/id1386412985',web:'https://business.whatsapp.com',tags:['Business','Customers','Commerce'],desc:'WhatsApp Business reached 200 million downloads — the most-downloaded business app globally in 2025.',src:'Business of Apps 2025'},
+  {id:10,name:'YouTube',dev:'Google',cat:'entertainment',logo:'youtube.com',fb:'▶️',color:'linear-gradient(135deg,#ff0000,#cc0000)',r:4.7,dl:'300M',mau:'2.7B',sz:'65 MB',rank:11,free:true,gp:'https://play.google.com/store/apps/details?id=com.google.android.youtube',ios:'https://apps.apple.com/app/youtube-watch-listen-stream/id544007664',web:'https://www.youtube.com',tags:['Video','Streaming','YouTube'],desc:'YouTube recorded 300 million annual downloads. The largest video platform with 2.7 billion monthly active users.',src:'AppMagic / Google 2024'},
+  {id:11,name:'Spotify',dev:'Spotify AB',cat:'entertainment',logo:'spotify.com',fb:'🎵',color:'linear-gradient(135deg,#191414,#1db954)',r:4.7,dl:'150M',mau:'678M',sz:'45 MB',rank:12,free:true,gp:'https://play.google.com/store/apps/details?id=com.spotify.music',ios:'https://apps.apple.com/app/spotify-music-and-podcasts/id324684580',web:'https://www.spotify.com/download',tags:['Music','Podcast','Streaming'],desc:'Spotify recorded 150 million downloads and 678 million monthly active users including 268M paid subscribers.',src:'Spotify Q4 2024'},
+  {id:12,name:'Netflix',dev:'Netflix Inc.',cat:'entertainment',logo:'netflix.com',fb:'🎬',color:'linear-gradient(135deg,#141414,#e50914)',r:4.6,dl:'70M',mau:'301M',sz:'58 MB',rank:13,free:false,gp:'https://play.google.com/store/apps/details?id=com.netflix.mediaclient',ios:'https://apps.apple.com/app/netflix/id363590051',web:'https://www.netflix.com',tags:['Movies','Series','4K'],desc:'Netflix recorded 70 million downloads with 301 million paid subscribers across 190+ countries.',src:'Netflix Q4 2024'},
+  {id:13,name:'CapCut',dev:'ByteDance',cat:'tools',logo:'capcut.com',fb:'✂️',color:'linear-gradient(135deg,#000,#ff6b35)',r:4.8,dl:'400M',mau:'300M',sz:'175 MB',rank:14,free:true,gp:'https://play.google.com/store/apps/details?id=com.lemon.lvoverseas',ios:'https://apps.apple.com/app/capcut-video-editor/id1500855883',web:'https://www.capcut.com',apk:true,apkDesc:'CapCut was banned in the USA. Sideload via APK: enable Unknown Sources in Android Settings → Apps → Special App Access.',apkLinks:[{n:'APKMirror',u:'https://www.apkmirror.com/?s=capcut'},{n:'APKPure',u:'https://apkpure.com/search?q=capcut'}],tags:['Video Editing','AI','Effects'],desc:'CapCut surpassed 400 million annual downloads, ranking #1 on the App Store globally in 2023 and 2024.',src:'Appfigures 2024'},
+  {id:14,name:'Disney+',dev:'Disney',cat:'entertainment',logo:'disneyplus.com',fb:'⭐',color:'linear-gradient(135deg,#001f5c,#113ccf)',r:4.5,dl:'60M',mau:'157M',sz:'52 MB',rank:15,free:false,gp:'https://play.google.com/store/apps/details?id=com.disney.disneyplus',ios:'https://apps.apple.com/app/disney/id1446075923',web:'https://www.disneyplus.com',tags:['Movies','Marvel','Star Wars'],desc:'Disney+ has 157 million subscribers. Home to Marvel, Star Wars, Pixar, and National Geographic.',src:'Disney Q4 2024'},
+  {id:15,name:'Twitch',dev:'Amazon',cat:'entertainment',logo:'twitch.tv',fb:'💜',color:'linear-gradient(135deg,#6441a5,#2a0e61)',r:4.4,dl:'40M',mau:'140M',sz:'82 MB',rank:16,free:true,gp:'https://play.google.com/store/apps/details?id=tv.twitch.android.app',ios:'https://apps.apple.com/app/twitch-live-game-streaming/id460177396',web:'https://www.twitch.tv',tags:['Live Streaming','Gaming','Community'],desc:'Twitch has 140 million monthly active users. The world\'s #1 live streaming platform for gaming.',src:'Business of Apps 2024'},
+  {id:16,name:'Roblox',dev:'Roblox Corp.',cat:'games',logo:'roblox.com',fb:'🎲',color:'linear-gradient(135deg,#e31c1c,#c41111)',r:4.5,dl:'180M',mau:'88M',sz:'195 MB',rank:17,free:true,gp:'https://play.google.com/store/apps/details?id=com.roblox.client',ios:'https://apps.apple.com/app/roblox/id431946152',web:'https://www.roblox.com',tags:['Games','Virtual Worlds','Social'],desc:'Roblox topped the mobile gaming charts in 2024 with 180M downloads, overtaking Subway Surfers after 4 years.',src:'Appfigures 2024'},
+  {id:17,name:'Subway Surfers',dev:'SYBO Games',cat:'games',logo:'subwaysurfers.com',fb:'🏄',color:'linear-gradient(135deg,#ff9f43,#ee5a24)',r:4.4,dl:'150M',mau:'50M',sz:'120 MB',rank:18,free:true,gp:'https://play.google.com/store/apps/details?id=com.kiloo.subwaysurf',ios:'https://apps.apple.com/app/subway-surfers/id512939461',web:'https://subwaysurfers.com',tags:['Runner','Casual','Free'],desc:'Subway Surfers recorded 150M downloads. Held the #1 most-downloaded mobile game spot for 4+ years.',src:'Appfigures 2024'},
+  {id:18,name:'PUBG Mobile',dev:'Krafton',cat:'games',logo:'pubg.com',fb:'🔫',color:'linear-gradient(135deg,#1a1a2e,#e94560)',r:4.4,dl:'75M',mau:'100M',sz:'680 MB',rank:19,free:true,gp:'https://play.google.com/store/apps/details?id=com.tencent.ig',ios:'https://apps.apple.com/app/pubg-mobile-arcane/id1330123889',web:'https://www.pubgmobile.com',tags:['Battle Royale','Shooter','Multiplayer'],desc:'PUBG Mobile recorded 75M annual downloads and 100M monthly active users.',src:'Business of Apps 2024'},
+  {id:19,name:'Free Fire',dev:'Garena',cat:'games',logo:'garena.com',fb:'🔥',color:'linear-gradient(135deg,#ff4800,#ff9500)',r:4.3,dl:'60M',mau:'80M',sz:'350 MB',rank:20,free:true,gp:'https://play.google.com/store/apps/details?id=com.dts.freefireth',ios:'https://apps.apple.com/app/garena-free-fire-anniversary/id1300146617',web:'https://ff.garena.com',tags:['Battle Royale','Mobile','Casual'],desc:'Free Fire recorded 60M annual downloads. Most popular in the Arab world, South Asia, and Latin America.',src:'Garena 2024'},
+  {id:20,name:'Candy Crush',dev:'King',cat:'games',logo:'king.com',fb:'🍬',color:'linear-gradient(135deg,#ff6b9d,#c44569)',r:4.5,dl:'70M',mau:'200M',sz:'88 MB',rank:21,free:true,gp:'https://play.google.com/store/apps/details?id=com.king.candycrushsaga',ios:'https://apps.apple.com/app/candy-crush-saga/id553834731',web:'https://www.king.com/game/candycrush',tags:['Puzzle','Casual','Addictive'],desc:'Candy Crush recorded 70M annual downloads and 200M monthly active users. The highest-grossing casual game in history.',src:'King / Business of Apps 2024'},
+  {id:21,name:'Minecraft',dev:'Mojang',cat:'games',logo:'minecraft.net',fb:'⛏️',color:'linear-gradient(135deg,#4c9900,#2d5900)',r:4.7,dl:'40M',mau:'170M',sz:'420 MB',rank:22,free:false,gp:'https://play.google.com/store/apps/details?id=com.mojang.minecraftpe',ios:'https://apps.apple.com/app/minecraft/id479516143',web:'https://www.minecraft.net',tags:['Building','Adventure','Creative'],desc:'Minecraft recorded 40M annual downloads and 170M monthly active users. Best-selling game in history with 300M+ copies.',src:'Microsoft 2024'},
+  {id:22,name:'Temu',dev:'PDD Holdings',cat:'shopping',logo:'temu.com',fb:'🛍️',color:'linear-gradient(135deg,#ff5722,#e64a19)',r:4.2,dl:'500M',mau:'167M',sz:'78 MB',rank:23,free:true,gp:'https://play.google.com/store/apps/details?id=com.einnovation.temu',ios:'https://apps.apple.com/app/temu-shop-like-a-billionaire/id1641486558',web:'https://www.temu.com',tags:['Shopping','Deals','Free Shipping'],desc:'Temu grew to 500M annual installs in 2024, surpassing Amazon as the most downloaded shopping app.',src:'Appfigures / AppMagic 2024'},
+  {id:23,name:'Amazon',dev:'Amazon Inc.',cat:'shopping',logo:'amazon.com',fb:'📦',color:'linear-gradient(135deg,#232f3e,#ff9900)',r:4.7,dl:'150M',mau:'300M',sz:'65 MB',rank:24,free:true,gp:'https://play.google.com/store/apps/details?id=com.amazon.mShoppingApp',ios:'https://apps.apple.com/app/amazon-shopping/id297606951',web:'https://www.amazon.com',tags:['Shopping','Delivery','Prime'],desc:'Amazon recorded 150M annual downloads. Prime membership exceeds 200 million subscribers globally.',src:'Business of Apps 2024'},
+  {id:24,name:'Shein',dev:'Shein Group',cat:'shopping',logo:'shein.com',fb:'👗',color:'linear-gradient(135deg,#000,#ff4081)',r:4.0,dl:'130M',mau:'100M',sz:'55 MB',rank:25,free:true,gp:'https://play.google.com/store/apps/details?id=com.zzkko',ios:'https://apps.apple.com/app/shein-online-fashion/id878577184',web:'https://www.shein.com',tags:['Fashion','Clothing','Trends'],desc:'Shein recorded 130M annual downloads with revenue exceeding $45 billion in 2023.',src:'Business of Apps 2024'},
+  {id:25,name:'eBay',dev:'eBay Inc.',cat:'shopping',logo:'ebay.com',fb:'🏷️',color:'linear-gradient(135deg,#e53238,#0064d2)',r:4.3,dl:'60M',mau:'132M',sz:'48 MB',rank:26,free:true,gp:'https://play.google.com/store/apps/details?id=com.ebay.mobile',ios:'https://apps.apple.com/app/ebay-marketplace-buy-sell/id282614216',web:'https://www.ebay.com',tags:['Auctions','Buy','Sell'],desc:'eBay recorded 60M annual downloads and 132M monthly active users with 1.7 billion live listings.',src:'eBay 2024'},
+  {id:26,name:'Google Drive',dev:'Google',cat:'productivity',logo:'google.com',fb:'💾',color:'linear-gradient(135deg,#4285f4,#0f9d58)',r:4.6,dl:'150M',mau:'1B',sz:'30 MB',rank:27,free:true,gp:'https://play.google.com/store/apps/details?id=com.google.android.apps.docs',ios:'https://apps.apple.com/app/google-drive/id507874739',web:'https://drive.google.com',tags:['Storage','Files','Cloud'],desc:'Google Drive recorded 150M annual downloads with 1 billion users. 15 GB free cloud storage.',src:'Google 2024'},
+  {id:27,name:'Microsoft Teams',dev:'Microsoft',cat:'productivity',logo:'microsoft.com',fb:'🏢',color:'linear-gradient(135deg,#464775,#6264a7)',r:4.4,dl:'100M',mau:'320M',sz:'105 MB',rank:28,free:true,gp:'https://play.google.com/store/apps/details?id=com.microsoft.teams',ios:'https://apps.apple.com/app/microsoft-teams/id1113153706',web:'https://www.microsoft.com/en/microsoft-teams/download-app',tags:['Work','Meetings','Team'],desc:'Teams recorded 100M annual downloads and 320M daily active users integrated with Microsoft 365.',src:'Microsoft 2024'},
+  {id:28,name:'Zoom',dev:'Zoom Video Comm.',cat:'productivity',logo:'zoom.us',fb:'📹',color:'linear-gradient(135deg,#2d8cff,#0e6ad4)',r:4.4,dl:'80M',mau:'300M',sz:'88 MB',rank:29,free:true,gp:'https://play.google.com/store/apps/details?id=us.zoom.videomeetings',ios:'https://apps.apple.com/app/zoom-one-platform-to-connect/id546505307',web:'https://zoom.us/download',tags:['Meetings','Video','Work'],desc:'Zoom recorded 80M annual downloads and 300M daily meeting participants worldwide.',src:'Business of Apps 2024'},
+  {id:29,name:'Notion',dev:'Notion Labs',cat:'productivity',logo:'notion.so',fb:'📝',color:'linear-gradient(135deg,#000,#444)',r:4.6,dl:'30M',mau:'100M',sz:'45 MB',rank:30,free:true,gp:'https://play.google.com/store/apps/details?id=notion.id',ios:'https://apps.apple.com/app/notion-notes-docs-tasks/id1232780281',web:'https://www.notion.so/desktop',tags:['Notes','Organization','Team'],desc:'Notion recorded 30M annual downloads and 100M users. All-in-one workspace for notes, databases, and project management.',src:'Notion 2024'},
+  {id:30,name:'PayPal',dev:'PayPal Inc.',cat:'finance',logo:'paypal.com',fb:'💳',color:'linear-gradient(135deg,#003087,#009cde)',r:4.5,dl:'80M',mau:'220M',sz:'35 MB',rank:31,free:true,gp:'https://play.google.com/store/apps/details?id=com.paypal.android.p2pmobile',ios:'https://apps.apple.com/app/paypal-send-shop-manage/id283646709',web:'https://www.paypal.com/app',tags:['Payments','Transfers','Secure'],desc:'PayPal recorded 80M annual downloads and 220M active accounts in 200+ countries.',src:'PayPal Q4 2024'},
+  {id:31,name:'Cash App',dev:'Block Inc.',cat:'finance',logo:'cash.app',fb:'💵',color:'linear-gradient(135deg,#00d64f,#00a53d)',r:4.6,dl:'50M',mau:'57M',sz:'28 MB',rank:32,free:true,gp:'https://play.google.com/store/apps/details?id=com.squareup.cash',ios:'https://apps.apple.com/app/cash-app/id711923939',web:'https://cash.app',tags:['Wallet','Bitcoin','Transfers'],desc:'Cash App recorded 50M annual downloads and 57M monthly active users. Instant money transfers and Bitcoin investing.',src:'Block Inc. 2024'},
+  {id:32,name:'Binance',dev:'Binance Holdings',cat:'finance',logo:'binance.com',fb:'₿',color:'linear-gradient(135deg,#1e2026,#f0b90b)',r:4.5,dl:'40M',mau:'150M',sz:'55 MB',rank:33,free:true,gp:'https://play.google.com/store/apps/details?id=com.binance.dev',ios:'https://apps.apple.com/app/binance-buy-bitcoin-crypto/id1436799971',web:'https://www.binance.com/en/download',tags:['Crypto','Trading','Bitcoin'],desc:'Binance recorded 40M annual downloads and 150M registered users. The world\'s largest crypto exchange.',src:'Binance 2024'},
+  {id:33,name:'ChatGPT',dev:'OpenAI',cat:'ai',logo:'openai.com',fb:'🤖',color:'linear-gradient(135deg,#10a37f,#065f46)',r:4.8,dl:'770M',mau:'300M',sz:'42 MB',rank:1,free:true,gp:'https://play.google.com/store/apps/details?id=com.openai.chatgpt',ios:'https://apps.apple.com/app/chatgpt/id6448311069',web:'https://chatgpt.com',tags:['AI','Chat','Creative'],desc:'ChatGPT ranked #1 globally in 2025 with 770M downloads, surpassing TikTok and Instagram simultaneously.',src:'Business of Apps 2025'},
+  {id:34,name:'Google Gemini',dev:'Google DeepMind',cat:'ai',logo:'google.com',fb:'✨',color:'linear-gradient(135deg,#4285f4,#9c27b0)',r:4.5,dl:'180M',mau:'35M',sz:'38 MB',rank:2,free:true,gp:'https://play.google.com/store/apps/details?id=com.google.android.apps.bard',ios:'https://apps.apple.com/app/google-gemini/id1573783038',web:'https://gemini.google.com',tags:['AI','Google','Assistant'],desc:'Google Gemini ranked #2 among AI apps globally in 2025. Powered by Google\'s most advanced AI models.',src:'Business of Apps 2025'},
+  {id:35,name:'Microsoft Copilot',dev:'Microsoft',cat:'ai',logo:'microsoft.com',fb:'🪄',color:'linear-gradient(135deg,#0078d4,#00b4d8)',r:4.4,dl:'50M',mau:'20M',sz:'35 MB',rank:3,free:true,gp:'https://play.google.com/store/apps/details?id=com.microsoft.copilot',ios:'https://apps.apple.com/app/microsoft-copilot/id6472538445',web:'https://copilot.microsoft.com',tags:['AI','Office','Microsoft'],desc:'Microsoft Copilot helps write documents, analyze data, and create presentations using AI.',src:'Microsoft 2024'},
+  {id:36,name:'Claude',dev:'Anthropic',cat:'ai',logo:'anthropic.com',fb:'🧠',color:'linear-gradient(135deg,#d97706,#b45309)',r:4.9,dl:'20M',mau:'10M',sz:'30 MB',rank:4,free:true,gp:'https://play.google.com/store/apps/details?id=com.anthropic.claude',ios:'https://apps.apple.com/app/claude-by-anthropic/id6473753684',web:'https://claude.ai',tags:['AI','Safe','Analysis'],desc:'Claude by Anthropic — AI assistant for advanced analysis and writing. Considered the safest AI model available.',src:'Anthropic 2024'},
+  {id:37,name:'Google Maps',dev:'Google',cat:'transport',logo:'google.com',fb:'🗺️',color:'linear-gradient(135deg,#4285f4,#34a853)',r:4.8,dl:'140M',mau:'2B',sz:'95 MB',rank:38,free:true,gp:'https://play.google.com/store/apps/details?id=com.google.android.apps.maps',ios:'https://apps.apple.com/app/google-maps-transit-food/id585027354',web:'https://maps.google.com',tags:['Maps','Navigation','GPS'],desc:'Google Maps recorded 140M annual downloads and 2 billion monthly active users.',src:'AppMagic / Google 2024'},
+  {id:38,name:'Uber',dev:'Uber Technologies',cat:'transport',logo:'uber.com',fb:'🚗',color:'linear-gradient(135deg,#000,#1c1c1c)',r:4.5,dl:'137M',mau:'150M',sz:'52 MB',rank:39,free:true,gp:'https://play.google.com/store/apps/details?id=com.ubercab',ios:'https://apps.apple.com/app/uber-request-a-ride/id368677368',web:'https://www.uber.com',tags:['Rides','Transport','Fast'],desc:'Uber is the most-downloaded travel app in 2025 with 137M downloads. Operating in 70+ countries.',src:'Business of Apps 2025'},
+  {id:39,name:'Airbnb',dev:'Airbnb Inc.',cat:'transport',logo:'airbnb.com',fb:'🏠',color:'linear-gradient(135deg,#ff5a5f,#ff385c)',r:4.7,dl:'45M',mau:'150M',sz:'48 MB',rank:40,free:true,gp:'https://play.google.com/store/apps/details?id=com.airbnb.android',ios:'https://apps.apple.com/app/airbnb/id401626263',web:'https://www.airbnb.com',tags:['Travel','Stays','Tourism'],desc:'Airbnb is the most-downloaded accommodation app in 2025. Over 7 million listings in 220 countries.',src:'Business of Apps 2025'},
+  {id:40,name:'Booking.com',dev:'Booking Holdings',cat:'transport',logo:'booking.com',fb:'🏨',color:'linear-gradient(135deg,#003580,#0052a5)',r:4.7,dl:'60M',mau:'100M',sz:'42 MB',rank:41,free:true,gp:'https://play.google.com/store/apps/details?id=com.booking',ios:'https://apps.apple.com/app/booking-com-hotels-travel/id367003839',web:'https://www.booking.com',tags:['Hotels','Travel','Booking'],desc:'Booking.com recorded 60M annual downloads. 28+ million accommodation options in 220 countries.',src:'Booking Holdings 2024'},
+  {id:41,name:'Google Chrome',dev:'Google',cat:'tools',logo:'google.com',fb:'🌐',color:'linear-gradient(135deg,#4285f4,#34a853)',r:4.5,dl:'120M',mau:'3.45B',sz:'195 MB',rank:42,free:true,gp:'https://play.google.com/store/apps/details?id=com.android.chrome',ios:'https://apps.apple.com/app/google-chrome/id535886823',web:'https://www.google.com/chrome/',tags:['Browser','Internet','Google'],desc:'Chrome recorded 120M annual downloads. The most used browser with 3.45 billion users — 65% global market share.',src:'StatCounter 2024'},
+  {id:42,name:'Canva',dev:'Canva Pty Ltd',cat:'tools',logo:'canva.com',fb:'🎨',color:'linear-gradient(135deg,#7209b7,#3a0ca3)',r:4.8,dl:'100M',mau:'185M',sz:'68 MB',rank:43,free:true,gp:'https://play.google.com/store/apps/details?id=com.canva.editor',ios:'https://apps.apple.com/app/canva-design-photo-video/id897446215',web:'https://www.canva.com',tags:['Design','Graphics','Templates'],desc:'Canva recorded 100M annual downloads and 185M monthly active users in 190+ countries. Valued at $49 billion.',src:'Canva 2024'},
+  {id:43,name:'Adobe Photoshop',dev:'Adobe Inc.',cat:'tools',logo:'adobe.com',fb:'🖼️',color:'linear-gradient(135deg,#001e36,#31a8ff)',r:4.6,dl:'25M',mau:'33M',sz:'250 MB',rank:44,free:false,gp:'https://play.google.com/store/apps/details?id=com.adobe.psmobile',ios:'https://apps.apple.com/app/photoshop-express-photo-editor/id331975235',web:'https://www.adobe.com/products/photoshop.html',tags:['Photography','Editing','Pro'],desc:'Photoshop recorded 25M annual downloads. The industry standard for photo editing since 1988.',src:'Adobe 2024'},
+  {id:44,name:'Calm',dev:'Calm.com Inc.',cat:'health',logo:'calm.com',fb:'🧘',color:'linear-gradient(135deg,#1c4e6b,#2980b9)',r:4.8,dl:'50M',mau:'100M',sz:'42 MB',rank:45,free:true,gp:'https://play.google.com/store/apps/details?id=com.calm.android',ios:'https://apps.apple.com/app/calm-sleep-meditation/id571800810',web:'https://www.calm.com',tags:['Meditation','Sleep','Wellness'],desc:'Calm recorded 50M annual downloads. The world\'s #1 mental health app with 4 million paid subscribers.',src:'Business of Apps 2024'},
+  {id:45,name:'Strava',dev:'Strava Inc.',cat:'health',logo:'strava.com',fb:'🏃',color:'linear-gradient(135deg,#fc4c02,#cc3a00)',r:4.6,dl:'52M',mau:'135M',sz:'82 MB',rank:46,free:true,gp:'https://play.google.com/store/apps/details?id=com.strava',ios:'https://apps.apple.com/app/strava-run-bike-hike/id426826309',web:'https://www.strava.com',tags:['Running','Sports','GPS'],desc:'Strava recorded 52M downloads and 135M users from the global athlete community.',src:'Business of Apps 2025'},
+  {id:46,name:'MyFitnessPal',dev:'Under Armour',cat:'health',logo:'myfitnesspal.com',fb:'🏋️',color:'linear-gradient(135deg,#0f9b58,#087840)',r:4.5,dl:'30M',mau:'200M',sz:'35 MB',rank:47,free:true,gp:'https://play.google.com/store/apps/details?id=com.myfitnesspal.android',ios:'https://apps.apple.com/app/myfitnesspal/id341232718',web:'https://www.myfitnesspal.com',tags:['Nutrition','Calories','Fitness'],desc:'MyFitnessPal recorded 30M annual downloads and 200M registered users. Database of 14 million foods.',src:'Business of Apps 2024'},
+  {id:47,name:'Duolingo',dev:'Duolingo Inc.',cat:'education',logo:'duolingo.com',fb:'🦉',color:'linear-gradient(135deg,#58cc02,#1cb0f6)',r:4.7,dl:'130M',mau:'113M',sz:'45 MB',rank:48,free:true,gp:'https://play.google.com/store/apps/details?id=com.duolingo',ios:'https://apps.apple.com/app/duolingo-language-lessons/id570060128',web:'https://www.duolingo.com',tags:['Languages','Learning','Fun'],desc:'Duolingo has been the #1 education app globally for several years. 130M annual downloads and 40 languages.',src:'Business of Apps 2025'},
+  {id:48,name:'Khan Academy',dev:'Khan Academy',cat:'education',logo:'khanacademy.org',fb:'🎓',color:'linear-gradient(135deg,#14bf96,#0a8c6c)',r:4.7,dl:'30M',mau:'18M',sz:'38 MB',rank:49,free:true,gp:'https://play.google.com/store/apps/details?id=org.khanacademy.android',ios:'https://apps.apple.com/app/khan-academy/id469863705',web:'https://www.khanacademy.org',tags:['Education','Free','Math'],desc:'Khan Academy recorded 30M annual downloads. Free education for everyone — math, science, and coding.',src:'Khan Academy 2024'},
+  {id:49,name:'Coursera',dev:'Coursera Inc.',cat:'education',logo:'coursera.org',fb:'📖',color:'linear-gradient(135deg,#0056d2,#0039a6)',r:4.5,dl:'25M',mau:'148M',sz:'42 MB',rank:50,free:true,gp:'https://play.google.com/store/apps/details?id=org.coursera.android',ios:'https://apps.apple.com/app/coursera-learn-career-skills/id736535961',web:'https://www.coursera.org',tags:['Courses','Certificates','Universities'],desc:'Coursera recorded 25M annual downloads and 148M registered learners. Partnerships with 325+ universities.',src:'Coursera 2024'},
+];
+
+/* ===== INIT ===== */
+updateSortUI();
+filter();
+
+/* ===== APK LIBRARY ===== */
+const APK_APPS = [
+  // Social
+  {name:'WhatsApp',dev:'Meta',cat:'social',fb:'💬',logo:'whatsapp.com',color:'linear-gradient(135deg,#075e54,#25d366)',version:'2.24.x',badge:'official',
+   sources:[{n:'APKPure (رسمي)',u:'https://apkpure.com/whatsapp-messenger/com.whatsapp'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/whatsapp-inc/whatsapp/'},{n:'الموقع الرسمي',u:'https://www.whatsapp.com/android/'}]},
+  {name:'Telegram',dev:'Telegram FZ LLC',cat:'social',fb:'✈️',logo:'telegram.org',color:'linear-gradient(135deg,#0088cc,#229ED9)',version:'10.x',badge:'official',
+   sources:[{n:'الموقع الرسمي',u:'https://telegram.org/dl/android'},{n:'APKPure',u:'https://apkpure.com/telegram/org.telegram.messenger'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/telegram-fz-llc/telegram/'}]},
+  {name:'Signal',dev:'Signal Foundation',cat:'social',fb:'🔒',logo:'signal.org',color:'linear-gradient(135deg,#2C6BED,#1a4fc4)',version:'7.x',badge:'official',
+   sources:[{n:'الموقع الرسمي',u:'https://signal.org/android/apk/'},{n:'APKPure',u:'https://apkpure.com/signal-private-messenger/org.thoughtcrime.securesms'}]},
+  {name:'TikTok',dev:'ByteDance',cat:'entertainment',fb:'🎵',logo:'tiktok.com',color:'linear-gradient(135deg,#000,#ff0050)',version:'35.x',badge:'mirror',
+   sources:[{n:'APKPure',u:'https://apkpure.com/tiktok/com.zhiliaoapp.musically'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/'},{n:'Uptodown',u:'https://tiktok.en.uptodown.com/android'}]},
+  {name:'Instagram',dev:'Meta',cat:'social',fb:'📸',logo:'instagram.com',color:'linear-gradient(135deg,#405de6,#c13584,#fd1d1d)',version:'335.x',badge:'mirror',
+   sources:[{n:'APKMirror',u:'https://www.apkmirror.com/apk/instagram/instagram-instagram/'},{n:'APKPure',u:'https://apkpure.com/instagram/com.instagram.android'},{n:'Uptodown',u:'https://instagram.en.uptodown.com/android'}]},
+  {name:'Snapchat',dev:'Snap Inc.',cat:'social',fb:'👻',logo:'snapchat.com',color:'linear-gradient(135deg,#FFFC00,#f0e800)',version:'12.x',badge:'mirror',
+   sources:[{n:'APKPure',u:'https://apkpure.com/snapchat/com.snapchat.android'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/snap-inc/snapchat/'}]},
+  {name:'X (Twitter)',dev:'X Corp.',cat:'social',fb:'🐦',logo:'x.com',color:'linear-gradient(135deg,#000,#333)',version:'10.x',badge:'mirror',
+   sources:[{n:'APKPure',u:'https://apkpure.com/twitter/com.twitter.android'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/x-corp/twitter/'}]},
+  // Entertainment
+  {name:'YouTube',dev:'Google',cat:'entertainment',fb:'▶️',logo:'youtube.com',color:'linear-gradient(135deg,#ff0000,#cc0000)',version:'19.x',badge:'mirror',
+   sources:[{n:'APKMirror',u:'https://www.apkmirror.com/apk/google-inc/youtube/'},{n:'APKPure',u:'https://apkpure.com/youtube/com.google.android.youtube'},{n:'Uptodown',u:'https://youtube.en.uptodown.com/android'}]},
+  {name:'Spotify',dev:'Spotify AB',cat:'entertainment',fb:'🎵',logo:'spotify.com',color:'linear-gradient(135deg,#191414,#1DB954)',version:'8.9.x',badge:'mirror',
+   sources:[{n:'APKPure',u:'https://apkpure.com/spotify-music-and-podcasts/com.spotify.music'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/spotify-ab/spotify/'},{n:'Uptodown',u:'https://spotify.en.uptodown.com/android'}]},
+  {name:'Netflix',dev:'Netflix Inc.',cat:'entertainment',fb:'🎬',logo:'netflix.com',color:'linear-gradient(135deg,#141414,#E50914)',version:'8.x',badge:'mirror',
+   sources:[{n:'APKPure',u:'https://apkpure.com/netflix/com.netflix.mediaclient'},{n:'Uptodown',u:'https://netflix.en.uptodown.com/android'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/netflix-inc/netflix/'}]},
+  {name:'CapCut',dev:'ByteDance',cat:'entertainment',fb:'✂️',logo:'capcut.com',color:'linear-gradient(135deg,#000,#ff6b35)',version:'11.x',badge:'mirror',
+   sources:[{n:'APKPure',u:'https://apkpure.com/capcut-video-editor/com.lemon.lvoverseas'},{n:'Uptodown',u:'https://capcut.en.uptodown.com/android'}]},
+  // AI
+  {name:'ChatGPT',dev:'OpenAI',cat:'ai',fb:'🤖',logo:'openai.com',color:'linear-gradient(135deg,#10a37f,#065f46)',version:'1.2025.x',badge:'official',
+   sources:[{n:'الموقع الرسمي (APK)',u:'https://openai.com/chatgpt/download/'},{n:'APKPure',u:'https://apkpure.com/chatgpt/com.openai.chatgpt'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/openai/chatgpt/'}]},
+  {name:'Claude',dev:'Anthropic',cat:'ai',fb:'🧠',logo:'anthropic.com',color:'linear-gradient(135deg,#d97706,#b45309)',version:'1.x',badge:'official',
+   sources:[{n:'APKPure',u:'https://apkpure.com/claude-ai/com.anthropic.claude'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/anthropic/claude/'},{n:'الموقع الرسمي',u:'https://claude.ai/download'}]},
+  {name:'Microsoft Copilot',dev:'Microsoft',cat:'ai',fb:'🪄',logo:'microsoft.com',color:'linear-gradient(135deg,#0078d4,#00b4d8)',version:'1.x',badge:'official',
+   sources:[{n:'APKPure',u:'https://apkpure.com/microsoft-copilot/com.microsoft.copilot'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/microsoft-corporation/microsoft-copilot/'}]},
+  {name:'Google Gemini',dev:'Google',cat:'ai',fb:'✨',logo:'google.com',color:'linear-gradient(135deg,#4285f4,#9c27b0)',version:'1.x',badge:'official',
+   sources:[{n:'APKMirror',u:'https://www.apkmirror.com/apk/google-inc/gemini/'},{n:'APKPure',u:'https://apkpure.com/google-gemini/com.google.android.apps.bard'}]},
+  // Productivity
+  {name:'Microsoft Teams',dev:'Microsoft',cat:'productivity',fb:'🏢',logo:'microsoft.com',color:'linear-gradient(135deg,#464775,#6264a7)',version:'latest',badge:'official',
+   sources:[{n:'الموقع الرسمي',u:'https://www.microsoft.com/en/microsoft-teams/download-app'},{n:'APKPure',u:'https://apkpure.com/microsoft-teams/com.microsoft.teams'}]},
+  {name:'Zoom',dev:'Zoom',cat:'productivity',fb:'📹',logo:'zoom.us',color:'linear-gradient(135deg,#2d8cff,#0e6ad4)',version:'latest',badge:'official',
+   sources:[{n:'الموقع الرسمي',u:'https://zoom.us/download#mobile_app'},{n:'APKPure',u:'https://apkpure.com/zoom-cloud-meetings/us.zoom.videomeetings'}]},
+  {name:'Notion',dev:'Notion Labs',cat:'productivity',fb:'📝',logo:'notion.so',color:'linear-gradient(135deg,#000,#444)',version:'latest',badge:'official',
+   sources:[{n:'الموقع الرسمي',u:'https://www.notion.so/desktop'},{n:'APKPure',u:'https://apkpure.com/notion-notes-docs-tasks/notion.id'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/notion-labs-inc/notion-notes-tasks-wikis/'}]},
+  // Tools
+  {name:'Google Chrome',dev:'Google',cat:'tools',fb:'🌐',logo:'google.com',color:'linear-gradient(135deg,#4285f4,#34a853)',version:'latest',badge:'official',
+   sources:[{n:'الموقع الرسمي',u:'https://www.google.com/chrome/browser/mobile/android/'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/google-inc/chrome/'},{n:'APKPure',u:'https://apkpure.com/google-chrome-fast-secure/com.android.chrome'}]},
+  {name:'Canva',dev:'Canva',cat:'tools',fb:'🎨',logo:'canva.com',color:'linear-gradient(135deg,#7209b7,#3a0ca3)',version:'latest',badge:'mirror',
+   sources:[{n:'APKPure',u:'https://apkpure.com/canva-design-photo-video/com.canva.editor'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/canva/canva-design-photo-video/'}]},
+  {name:'VLC Media Player',dev:'VideoLAN',cat:'tools',fb:'🎭',logo:'videolan.org',color:'linear-gradient(135deg,#f37a1f,#e06c00)',version:'3.6.x',badge:'official',
+   sources:[{n:'الموقع الرسمي',u:'https://www.videolan.org/vlc/download-android.html'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/videolan/vlc-for-android/'}]},
+  {name:'1Password',dev:'AgileBits',cat:'tools',fb:'🔑',logo:'1password.com',color:'linear-gradient(135deg,#1a8cff,#0070e0)',version:'8.x',badge:'official',
+   sources:[{n:'الموقع الرسمي',u:'https://1password.com/downloads/android/'},{n:'APKPure',u:'https://apkpure.com/1password-password-manager/com.agilebits.onepassword'}]},
+  // Finance
+  {name:'PayPal',dev:'PayPal Inc.',cat:'finance',fb:'💳',logo:'paypal.com',color:'linear-gradient(135deg,#003087,#009cde)',version:'latest',badge:'mirror',
+   sources:[{n:'APKPure',u:'https://apkpure.com/paypal-send-shop-manage/com.paypal.android.p2pmobile'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/paypal-inc/paypal/'}]},
+  {name:'Binance',dev:'Binance Holdings',cat:'finance',fb:'₿',logo:'binance.com',color:'linear-gradient(135deg,#1e2026,#f0b90b)',version:'latest',badge:'official',
+   sources:[{n:'الموقع الرسمي',u:'https://www.binance.com/en/download'},{n:'APKPure',u:'https://apkpure.com/binance-buy-bitcoin-crypto/com.binance.dev'}]},
+  // Games
+  {name:'Minecraft',dev:'Mojang',cat:'games',fb:'⛏️',logo:'minecraft.net',color:'linear-gradient(135deg,#4a7c3f,#2d5a27)',version:'1.21.x',badge:'official',
+   sources:[{n:'الموقع الرسمي',u:'https://www.minecraft.net/en-us/download'},{n:'APKPure',u:'https://apkpure.com/minecraft/com.mojang.minecraftpe'}]},
+  {name:'PUBG Mobile',dev:'Krafton',cat:'games',fb:'🎮',logo:'pubg.com',color:'linear-gradient(135deg,#f5a623,#d4831d)',version:'3.x',badge:'official',
+   sources:[{n:'الموقع الرسمي',u:'https://www.pubgmobile.com/en-US/home.shtml'},{n:'APKPure',u:'https://apkpure.com/pubg-mobile/com.tencent.ig'},{n:'Uptodown',u:'https://pubg-mobile.en.uptodown.com/android'}]},
+];
+
+let apkCat = 'all';
+
+function openApkLibrary(){
+  document.getElementById('apkOv').classList.add('on');
+  document.body.style.overflow='hidden';
+  renderApkList();
+}
+function closeApkLibrary(){
+  document.getElementById('apkOv').classList.remove('on');
+  document.body.style.overflow='';
+}
+function closeApkOuter(e){if(e.target===document.getElementById('apkOv'))closeApkLibrary();}
+function setApkCat(el,c){
+  document.querySelectorAll('.apk-cat').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on'); apkCat=c; renderApkList();
+}
+function renderApkList(){
+  const q=(document.getElementById('apkSearch').value||'').toLowerCase().trim();
+  let list=APK_APPS;
+  if(apkCat!=='all') list=list.filter(a=>a.cat===apkCat);
+  if(q) list=list.filter(a=>a.name.toLowerCase().includes(q)||a.dev.toLowerCase().includes(q));
+  const el=document.getElementById('apkList');
+  if(!list.length){el.innerHTML='<div class="apk-empty">🔍 لا توجد نتائج</div>';return;}
+  const badgeLabel={official:'رسمي ✓',mirror:'مرآة معروفة',safe:'آمن'};
+  el.innerHTML=list.map(a=>`
+    <div class="apk-item">
+      <div class="apk-item-icon" style="background:${a.color}">
+        <img src="https://logo.clearbit.com/${a.logo}" onerror="this.outerHTML='<span>${a.fb}</span>'" loading="lazy">
+      </div>
+      <div class="apk-item-body">
+        <div class="apk-item-name">${a.name}</div>
+        <div class="apk-item-dev">${a.dev}</div>
+        <div class="apk-item-meta">
+          <span class="apk-badge ${a.badge}">${badgeLabel[a.badge]||a.badge}</span>
+          <span class="apk-version">v${a.version}</span>
+        </div>
+      </div>
+      <div class="apk-item-links">
+        ${a.sources.map((s,i)=>`<a class="apk-dl-btn ${i>0?'secondary':''}" href="${s.u}" target="_blank" rel="noopener">📥 ${s.n}</a>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+</script>
+</body>
+</html>
