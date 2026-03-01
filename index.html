@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AppVault — تحميل التطبيقات</title>
+<meta name="description" content="AppVault — اكتشف وحمّل أفضل التطبيقات والألعاب مع إحصائيات التنزيل والتقييمات ومكتبة APK مباشرة">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23e74c3c'/><text y='.9em' font-size='80' x='10'>📦</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0d0d10;--bg2:#13131a;--bg3:#1a1a24;--bg4:#22222e;--bg5:#2a2a38;
+  --border:#252535;--border2:#32324a;--border3:#404060;
+  --text:#eeeef8;--text2:#9898b8;--text3:#5a5a7a;--text4:#3a3a55;
+  --red:#e74c3c;--red2:#ff6b5b;--red3:rgba(231,76,60,.12);
+  --green:#2ecc71;--orange:#f39c12;--blue:#3498db;--purple:#9b59b6;
+  --glow:rgba(231,76,60,.25);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Cairo',sans-serif;overflow-x:hidden;min-height:100vh}
+a{text-decoration:none;color:inherit}
+button{font-family:'Cairo',sans-serif;cursor:pointer}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bg5);border-radius:2px}
+
+/* ─── HEADER ─── */
+.header{position:sticky;top:0;z-index:200;background:rgba(13,13,16,.92);border-bottom:1px solid var(--border);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;align-items:center;gap:10px;padding:0 16px;height:56px}
+.logo{display:flex;align-items:center;gap:8px;font-size:1.2rem;font-weight:900;color:var(--text);white-space:nowrap;flex-shrink:0;cursor:pointer}
+.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--red),#c0392b);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;box-shadow:0 4px 12px var(--glow)}
+.logo span{background:linear-gradient(90deg,#fff,var(--red2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hdr-search{flex:1;position:relative;max-width:480px}
+.hdr-search input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:8px 12px 8px 36px;color:var(--text);font-family:'Cairo',sans-serif;font-size:.84rem;outline:none;transition:border-color .2s,box-shadow .2s}
+.hdr-search input:focus{border-color:rgba(231,76,60,.4);box-shadow:0 0 0 3px rgba(231,76,60,.08)}
+.hdr-search input::placeholder{color:var(--text4)}
+.hdr-search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);opacity:.35;pointer-events:none}
+.hdr-actions{display:flex;gap:7px;margin-right:auto;flex-shrink:0}
+.hbtn{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:7px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);font-size:.75rem;font-weight:700;transition:all .2s;white-space:nowrap}
+.hbtn.apk{border-color:rgba(231,76,60,.3);color:var(--red2);background:var(--red3)}
+.hbtn:hover,.hbtn.apk:hover{background:rgba(231,76,60,.18);border-color:rgba(231,76,60,.5);color:var(--red2);box-shadow:0 2px 12px var(--glow)}
+
+/* ─── NAV TABS ─── */
+.nav-tabs{background:rgba(13,13,16,.85);border-bottom:1px solid var(--border);padding:0 16px;position:sticky;top:56px;z-index:100;backdrop-filter:blur(10px)}
+.nav-inner{display:flex;gap:3px;overflow-x:auto;scrollbar-width:none;padding:8px 0}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-tab{flex-shrink:0;padding:6px 13px;border-radius:6px;font-size:.77rem;font-weight:700;color:var(--text3);background:transparent;border:1px solid transparent;transition:all .18s;white-space:nowrap}
+.nav-tab:hover{color:var(--text2);background:var(--bg3)}
+.nav-tab.on{background:var(--red);color:#fff;border-color:var(--red);box-shadow:0 2px 10px var(--glow)}
+
+/* ─── SORT BAR ─── */
+.sort-bar{background:var(--bg);border-bottom:1px solid var(--border);padding:7px 16px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.sort-lbl{font-size:.66rem;color:var(--text4);font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.sort-btn{padding:4px 9px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--text3);font-family:'Cairo',sans-serif;font-size:.72rem;font-weight:700;transition:all .15s}
+.sort-btn:hover{color:var(--text2);background:var(--bg3)}
+.sort-btn.on{background:var(--bg3);border-color:rgba(231,76,60,.4);color:var(--red2)}
+
+/* ─── MAIN LAYOUT ─── */
+.main{display:flex;min-height:calc(100vh - 112px)}
+.sidebar{width:215px;flex-shrink:0;background:var(--bg2);border-left:1px solid var(--border);padding:12px 0;position:sticky;top:112px;max-height:calc(100vh - 112px);overflow-y:auto}
+.sidebar-section{padding:8px 14px 4px}
+.sidebar-section-title{font-size:.6rem;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px}
+.sb-link{display:flex;align-items:center;gap:7px;padding:7px 14px;color:var(--text3);font-size:.8rem;font-weight:600;transition:all .15s;border-right:2px solid transparent;cursor:pointer}
+.sb-link:hover{color:var(--text2);background:var(--bg3)}
+.sb-link.on{color:var(--red2);border-right-color:var(--red);background:var(--red3)}
+.sb-ico{font-size:.9rem;width:18px;text-align:center}
+.sb-cnt{margin-right:auto;background:var(--bg5);border-radius:9px;padding:1px 6px;font-size:.6rem;font-family:'JetBrains Mono',monospace;color:var(--text3)}
+
+/* ─── CONTENT ─── */
+.content{flex:1;min-width:0;padding:16px}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sec-title{font-size:1rem;font-weight:800;color:var(--text)}
+.sec-cnt{font-size:.67rem;color:var(--text3);font-family:'JetBrains Mono',monospace;background:var(--bg3);border:1px solid var(--border2);padding:2px 8px;border-radius:18px}
+
+/* ─── FEATURED ROW ─── */
+.feat-row{margin-bottom:24px}
+.feat-row-title{font-size:.72rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.feat-row-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.feat-scroll{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.feat-scroll::-webkit-scrollbar{display:none}
+.feat-card{flex-shrink:0;width:178px;border-radius:12px;overflow:hidden;background:var(--bg2);border:1px solid var(--border);cursor:pointer;transition:all .22s}
+.feat-card:hover{transform:translateY(-4px);border-color:var(--border3);box-shadow:0 16px 40px rgba(0,0,0,.6),0 0 0 1px rgba(231,76,60,.15)}
+.feat-thumb{width:100%;height:100px;display:flex;align-items:center;justify-content:center;font-size:2.6rem;position:relative}
+.feat-rank{position:absolute;top:7px;right:7px;background:var(--red);color:#fff;font-size:.55rem;font-weight:800;padding:2px 6px;border-radius:4px;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.feat-info{padding:10px}
+.feat-name{font-size:.82rem;font-weight:800;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feat-dev{font-size:.65rem;color:var(--text3);margin-bottom:6px}
+.feat-bottom{display:flex;align-items:center;justify-content:space-between}
+.feat-dl{font-size:.63rem;color:var(--green);font-family:'JetBrains Mono',monospace;font-weight:700}
+.feat-tag{font-size:.57rem;font-weight:800;padding:2px 6px;border-radius:4px}
+.feat-tag.free{background:rgba(46,204,113,.12);color:var(--green);border:1px solid rgba(46,204,113,.2)}
+.feat-tag.paid{background:rgba(231,76,60,.12);color:var(--red2);border:1px solid rgba(231,76,60,.2)}
+
+/* ─── APP GRID ─── */
+.app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:24px}
+.app-card{background:var(--bg2);display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;transition:background .14s;position:relative;overflow:hidden}
+.app-card::before{content:'';position:absolute;top:0;right:0;width:3px;height:100%;background:linear-gradient(180deg,var(--red),var(--red2));transform:scaleY(0);transition:transform .18s;transform-origin:top}
+.app-card:hover{background:var(--bg3)}
+.app-card:hover::before{transform:scaleY(1)}
+.app-body{flex:1;min-width:0}
+.app-name{font-size:.87rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:1px}
+.app-dev{font-size:.67rem;color:var(--text3);margin-bottom:4px}
+.app-tags-row{display:flex;gap:3px;flex-wrap:wrap}
+.app-chip{font-size:.55rem;padding:2px 6px;border-radius:4px;background:var(--bg4);color:var(--text3);border:1px solid var(--border2)}
+.app-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.app-stars{color:var(--orange);font-size:.72rem;font-weight:700}
+.app-dl-chip{font-family:'JetBrains Mono',monospace;font-size:.59rem;color:var(--green);background:rgba(46,204,113,.08);border:1px solid rgba(46,204,113,.15);padding:2px 6px;border-radius:4px;font-weight:700}
+.get-btn{padding:5px 12px;background:var(--red);color:#fff;border:none;border-radius:6px;font-family:'Cairo',sans-serif;font-size:.71rem;font-weight:800;transition:all .15s;box-shadow:0 2px 8px var(--glow)}
+.get-btn:hover{background:var(--red2);transform:scale(1.04)}
+
+/* ─── EMPTY STATE ─── */
+.empty{text-align:center;padding:60px 20px;color:var(--text3)}
+.empty-ico{font-size:3rem;margin-bottom:12px;opacity:.4}
+.empty h3{font-size:1.2rem;font-weight:700;margin-bottom:6px}
+.empty p{font-size:.82rem;color:var(--text4)}
+
+/* ─── APP DETAIL PAGE ─── */
+.detail-page{position:fixed;inset:0;background:var(--bg);z-index:600;overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .28s}
+.detail-page.on{opacity:1;pointer-events:all}
+.detail-back{position:sticky;top:0;z-index:10;background:rgba(13,13,16,.92);border-bottom:1px solid var(--border);backdrop-filter:blur(20px);padding:0 20px;height:52px;display:flex;align-items:center;gap:12px}
+.back-btn{display:flex;align-items:center;gap:6px;padding:7px 13px;background:var(--bg3);border:1px solid var(--border2);border-radius:7px;color:var(--text2);font-size:.8rem;font-weight:700;cursor:pointer;transition:all .15s}
+.back-btn:hover{border-color:var(--border3);color:var(--text)}
+.back-breadcrumb{font-size:.75rem;color:var(--text3);display:flex;align-items:center;gap:5px}
+.back-breadcrumb span{color:var(--text4)}
+
+.detail-hero{background:linear-gradient(180deg,var(--bg3) 0%,var(--bg) 100%);border-bottom:1px solid var(--border);padding:32px 24px 28px}
+.detail-hero-inner{max-width:900px;margin:0 auto;display:flex;gap:24px;align-items:flex-start}
+.detail-icon{width:96px;height:96px;border-radius:22px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2.8rem;border:2px solid var(--border2);box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.detail-icon img{width:100%;height:100%;object-fit:cover}
+.detail-meta{flex:1}
+.detail-title{font-size:2rem;font-weight:900;line-height:1.1;margin-bottom:4px}
+.detail-developer{font-size:.85rem;color:var(--text3);margin-bottom:10px}
+.detail-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
+.detail-tag{font-size:.65rem;font-weight:700;padding:3px 9px;border-radius:5px;background:var(--bg4);border:1px solid var(--border2);color:var(--text2)}
+.detail-rating-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.detail-stars{color:var(--orange);font-size:1.1rem;letter-spacing:2px}
+.detail-rating-num{font-size:1.5rem;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--orange)}
+.detail-rating-label{font-size:.72rem;color:var(--text3)}
+.detail-rank-badge{display:flex;align-items:center;gap:5px;background:var(--red3);border:1px solid rgba(231,76,60,.2);border-radius:6px;padding:5px 10px;font-size:.75rem;font-weight:800;color:var(--red2)}
+.detail-free-badge{display:flex;align-items:center;gap:5px;background:rgba(46,204,113,.08);border:1px solid rgba(46,204,113,.15);border-radius:6px;padding:5px 10px;font-size:.75rem;font-weight:800;color:var(--green)}
+.detail-paid-badge{display:flex;align-items:center;gap:5px;background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.15);border-radius:6px;padding:5px 10px;font-size:.75rem;font-weight:800;color:var(--red2)}
+.detail-dl-btns{display:flex;gap:8px;flex-wrap:wrap}
+.detail-dl-btn{display:flex;align-items:center;gap:6px;padding:11px 18px;border-radius:9px;font-family:'Cairo',sans-serif;font-size:.84rem;font-weight:800;text-decoration:none;transition:all .18s;cursor:pointer;border:none}
+.detail-dl-btn.primary{background:var(--green);color:#000;box-shadow:0 4px 16px rgba(46,204,113,.3)}
+.detail-dl-btn.primary:hover{background:#27ae60;transform:translateY(-2px);box-shadow:0 8px 24px rgba(46,204,113,.4)}
+.detail-dl-btn.secondary{background:var(--bg4);color:var(--text);border:1px solid var(--border2)}
+.detail-dl-btn.secondary:hover{border-color:var(--border3);background:var(--bg5)}
+.detail-dl-btn.web-btn{background:var(--bg4);color:var(--text2);border:1px solid var(--border2)}
+.detail-dl-btn.web-btn:hover{border-color:var(--border3);color:var(--text)}
+
+.detail-body{max-width:900px;margin:0 auto;padding:24px}
+.detail-grid{display:grid;grid-template-columns:1fr 340px;gap:20px}
+.detail-main{}
+.detail-side{}
+
+.detail-section{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:16px}
+.detail-section-hdr{padding:13px 16px;border-bottom:1px solid var(--border);background:var(--bg3);display:flex;align-items:center;gap:8px}
+.detail-section-hdr h3{font-size:.82rem;font-weight:800;color:var(--text)}
+.detail-section-ico{font-size:1rem}
+.detail-section-body{padding:16px}
+
+.detail-desc{font-size:.86rem;color:var(--text2);line-height:1.9}
+
+.kpis-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.kpi-cell{background:var(--bg2);padding:16px 10px;text-align:center}
+.kpi-val{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700;color:var(--red2);margin-bottom:3px}
+.kpi-lbl{font-size:.6rem;color:var(--text4);text-transform:uppercase;letter-spacing:.6px;font-weight:700}
+
+.info-table{width:100%}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);font-size:.8rem}
+.info-row:last-child{border-bottom:none}
+.info-row:nth-child(even){background:var(--bg3)}
+.info-key{color:var(--text3);font-weight:600}
+.info-val{font-weight:700;font-family:'JetBrains Mono',monospace;font-size:.75rem}
+.info-val.green{color:var(--green)}
+.info-val.orange{color:var(--orange)}
+.info-val.red{color:var(--red2)}
+
+.apk-box{background:rgba(231,76,60,.05);border:1px solid rgba(231,76,60,.18);border-radius:10px;padding:14px;margin-bottom:16px}
+.apk-box-title{font-size:.75rem;font-weight:800;color:var(--red2);margin-bottom:5px;display:flex;align-items:center;gap:5px}
+.apk-box-desc{font-size:.74rem;color:var(--text2);line-height:1.7;margin-bottom:10px}
+.apk-links{display:flex;gap:5px;flex-wrap:wrap}
+.apk-link{display:flex;align-items:center;gap:4px;padding:5px 11px;background:var(--bg4);border:1px solid rgba(231,76,60,.2);border-radius:6px;font-size:.72rem;font-weight:700;color:var(--text);transition:all .15s}
+.apk-link:hover{border-color:var(--red2);color:var(--red2)}
+
+.similar-grid{display:flex;flex-direction:column;gap:8px}
+.similar-item{display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s}
+.similar-item:hover{border-color:var(--border2);background:var(--bg4)}
+.similar-info{flex:1;min-width:0}
+.similar-name{font-size:.82rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.similar-dev{font-size:.64rem;color:var(--text3)}
+.similar-r{color:var(--orange);font-size:.72rem;font-weight:700;flex-shrink:0}
+
+.src-note{font-size:.63rem;color:var(--text4);text-align:center;font-family:'JetBrains Mono',monospace;padding:12px}
+
+/* ─── APP MODAL (kept for quick access) ─── */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.88);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);z-index:500;display:flex;align-items:flex-start;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .22s;overflow-y:auto}
+.modal-ov.on{opacity:1;pointer-events:all}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;width:100%;max-width:540px;margin:auto;transform:translateY(20px);transition:transform .28s cubic-bezier(.34,1.56,.64,1);overflow:hidden}
+.modal-ov.on .modal{transform:translateY(0)}
+.modal-hdr{background:var(--bg3);padding:16px;display:flex;gap:14px;align-items:flex-start;border-bottom:1px solid var(--border);position:relative}
+.modal-close{position:absolute;top:12px;left:12px;width:28px;height:28px;background:var(--bg4);border:1px solid var(--border2);border-radius:7px;color:var(--text2);display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:all .15s;cursor:pointer}
+.modal-close:hover{color:var(--text);background:var(--bg5)}
+.m-title{font-size:1.35rem;font-weight:900;line-height:1.1;margin-bottom:2px}
+.m-dev{font-size:.74rem;color:var(--text3);margin-bottom:6px}
+.m-tags{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:6px}
+.m-tag{font-size:.6rem;padding:2px 7px;border-radius:4px;background:var(--bg4);border:1px solid var(--border2);color:var(--text2)}
+.m-stars-row{display:flex;align-items:center;gap:6px;font-size:.76rem;color:var(--orange)}
+.modal-body{padding:16px}
+.m-desc{font-size:.83rem;color:var(--text2);line-height:1.85;margin-bottom:14px}
+.m-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:13px}
+.m-kpi{background:var(--bg3);padding:12px 7px;text-align:center}
+.kpi-v{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--red2);margin-bottom:2px}
+.kpi-k{font-size:.57rem;color:var(--text4);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+.m-info{display:grid;grid-template-columns:repeat(2,1fr);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:13px}
+.m-info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);font-size:.78rem}
+.m-info-row:nth-last-child(-n+2){border-bottom:none}
+.m-info-row:nth-child(odd){background:var(--bg3)}
+.m-ik{color:var(--text3);font-weight:600}
+.m-iv{font-weight:700;font-family:'JetBrains Mono',monospace;font-size:.72rem}
+.m-iv.g{color:var(--green)}.m-iv.o{color:var(--orange)}
+.m-btns{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+.m-btn{flex:1;min-width:110px;display:flex;align-items:center;justify-content:center;gap:5px;padding:11px;border-radius:9px;font-family:'Cairo',sans-serif;font-size:.83rem;font-weight:800;text-decoration:none;transition:all .18s;border:none;cursor:pointer}
+.m-btn.gp{background:var(--green);color:#000;box-shadow:0 3px 10px rgba(46,204,113,.25)}
+.m-btn.gp:hover{background:#27ae60}
+.m-btn.ios{background:var(--bg4);color:var(--text);border:1px solid var(--border2)}
+.m-btn.ios:hover{border-color:var(--border3)}
+.m-btn.web{background:var(--bg4);color:var(--text);border:1px solid var(--border2);flex:0 0 auto;padding:11px 14px;min-width:auto}
+.m-btn.detail-btn{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;flex:0 0 auto;padding:11px 14px;min-width:auto;box-shadow:0 3px 10px var(--glow)}
+.m-apk-box{background:rgba(231,76,60,.05);border:1px solid rgba(231,76,60,.18);border-radius:10px;padding:12px;margin-bottom:10px}
+.m-apk-title{font-size:.73rem;font-weight:800;color:var(--red2);margin-bottom:5px}
+.m-apk-desc{font-size:.72rem;color:var(--text2);line-height:1.65;margin-bottom:7px}
+.m-apk-links{display:flex;gap:5px;flex-wrap:wrap}
+.m-apk-link{display:flex;align-items:center;gap:3px;padding:4px 9px;background:var(--bg4);border:1px solid rgba(231,76,60,.2);border-radius:6px;font-size:.7rem;font-weight:700;color:var(--text);transition:all .15s}
+.m-apk-link:hover{border-color:var(--red2);color:var(--red2)}
+.m-src{font-size:.62rem;color:var(--text4);text-align:center;font-family:'JetBrains Mono',monospace}
+
+/* ─── APK LIBRARY ─── */
+.apk-ov{position:fixed;inset:0;background:rgba(0,0,0,.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);z-index:700;display:flex;align-items:flex-start;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .22s;overflow-y:auto}
+.apk-ov.on{opacity:1;pointer-events:all}
+.apk-modal{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;width:100%;max-width:640px;margin:auto;overflow:hidden;transform:translateY(20px);transition:transform .28s cubic-bezier(.34,1.56,.64,1)}
+.apk-ov.on .apk-modal{transform:translateY(0)}
+.apk-hdr{background:var(--bg3);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.apk-hdr-info h3{font-size:1.05rem;font-weight:800;margin-bottom:2px}
+.apk-hdr-info p{font-size:.7rem;color:var(--text3)}
+.apk-x{width:28px;height:28px;background:var(--bg4);border:1px solid var(--border2);border-radius:7px;color:var(--text2);display:flex;align-items:center;justify-content:center;font-size:.8rem;transition:all .15s;cursor:pointer}
+.apk-x:hover{color:var(--text)}
+.apk-sbar{padding:10px 15px;border-bottom:1px solid var(--border);position:relative}
+.apk-sbar input{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:7px 12px 7px 33px;color:var(--text);font-family:'Cairo',sans-serif;font-size:.84rem;outline:none;transition:border-color .2s}
+.apk-sbar input:focus{border-color:rgba(231,76,60,.35)}
+.apk-sbar input::placeholder{color:var(--text4)}
+.apk-si{position:absolute;left:26px;top:50%;transform:translateY(-50%);opacity:.35;pointer-events:none}
+.apk-cats{display:flex;gap:4px;padding:9px 15px;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none}
+.apk-cats::-webkit-scrollbar{display:none}
+.apk-cat{flex-shrink:0;padding:5px 12px;border-radius:6px;font-size:.73rem;font-weight:700;background:var(--bg);border:1px solid var(--border2);color:var(--text3);transition:all .15s;white-space:nowrap;cursor:pointer}
+.apk-cat:hover{color:var(--text2)}
+.apk-cat.on{background:var(--red);border-color:var(--red);color:#fff}
+.apk-note{margin:9px 15px;background:rgba(231,76,60,.05);border:1px solid rgba(231,76,60,.15);border-radius:8px;padding:9px 12px;font-size:.7rem;color:var(--text2);line-height:1.7}
+.apk-note strong{color:var(--red2)}
+.apk-list{padding:8px 15px 15px;display:flex;flex-direction:column;gap:7px;max-height:52vh;overflow-y:auto}
+.apk-item{display:flex;align-items:center;gap:12px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px;transition:border-color .15s}
+.apk-item:hover{border-color:var(--border2)}
+.apk-ico{width:48px;height:48px;border-radius:12px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+.apk-ico img{width:100%;height:100%;object-fit:cover;border-radius:11px}
+.apk-body{flex:1;min-width:0}
+.apk-name{font-size:.86rem;font-weight:800;margin-bottom:1px}
+.apk-dev{font-size:.66rem;color:var(--text3);margin-bottom:4px}
+.apk-badges{display:flex;gap:4px;align-items:center}
+.badge{font-size:.56rem;font-weight:800;padding:2px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:.3px}
+.badge.official{background:rgba(46,204,113,.12);color:var(--green);border:1px solid rgba(46,204,113,.18)}
+.badge.mirror{background:rgba(52,152,219,.12);color:var(--blue);border:1px solid rgba(52,152,219,.18)}
+.apk-ver{font-size:.6rem;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.apk-acts{display:flex;flex-direction:column;gap:4px;flex-shrink:0}
+.apk-dl{display:flex;align-items:center;gap:3px;padding:5px 10px;background:var(--red);color:#fff;border-radius:6px;font-size:.7rem;font-weight:800;text-decoration:none;white-space:nowrap;transition:all .15s}
+.apk-dl:hover{background:var(--red2)}
+.apk-dl.sec{background:var(--bg4);color:var(--text2);border:1px solid var(--border2)}
+.apk-dl.sec:hover{border-color:var(--red2);color:var(--red2)}
+.apk-empty{text-align:center;padding:40px;color:var(--text3);font-size:.88rem}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 18px;font-size:.82rem;font-weight:700;z-index:9999;transition:transform .32s cubic-bezier(.175,.885,.32,1.275);box-shadow:0 8px 32px rgba(0,0,0,.6);white-space:nowrap;pointer-events:none}
+.toast.on{transform:translateX(-50%) translateY(0)}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:800px){
+  .sidebar{display:none}
+  .content{padding:12px}
+  .app-grid{grid-template-columns:1fr}
+  .detail-grid{grid-template-columns:1fr}
+  .detail-side{order:-1}
+  .detail-hero-inner{flex-direction:column;gap:16px}
+  .detail-icon{width:80px;height:80px;font-size:2.2rem}
+  .detail-title{font-size:1.5rem}
+  .m-info{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="header" role="banner">
+  <div class="logo" onclick="goHome()" role="heading" aria-level="1">
+    <div class="logo-icon" aria-hidden="true">📦</div>
+    <span>AppVault</span>
+  </div>
+  <div class="hdr-search" role="search">
+    <svg class="hdr-search-icon" aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="si" placeholder="ابحث عن تطبيق أو لعبة..." oninput="doFilter()" aria-label="البحث عن تطبيقات">
+  </div>
+  <div class="hdr-actions">
+    <button class="hbtn apk" onclick="openApkLib()" aria-label="فتح مكتبة APK">⬇️ APK مباشر</button>
+  </div>
+</header>
+
+<!-- ─── MAIN APP PAGE ─── -->
+<div id="mainPage">
+  <nav class="nav-tabs" aria-label="تصفية حسب الفئة">
+    <div class="nav-inner" role="tablist">
+      <button class="nav-tab on" role="tab" onclick="setTab(this,'all')">🏠 الكل</button>
+      <button class="nav-tab" role="tab" onclick="setTab(this,'social')">💬 تواصل</button>
+      <button class="nav-tab" role="tab" onclick="setTab(this,'entertainment')">🎬 ترفيه</button>
+      <button class="nav-tab" role="tab" onclick="setTab(this,'games')">🎮 ألعاب</button>
+      <button class="nav-tab" role="tab" onclick="setTab(this,'shopping')">🛍️ تسوق</button>
+      <button class="nav-tab" role="tab" onclick="setTab(this,'productivity')">⚡ إنتاجية</button>
+      <button class="nav-tab" role="tab" onclick="setTab(this,'finance')">💰 مالية</button>
+      <button class="nav-tab" role="tab" onclick="setTab(this,'ai')">🤖 ذكاء اصطناعي</button>
+      <button class="nav-tab" role="tab" onclick="setTab(this,'transport')">✈️ سفر</button>
+      <button class="nav-tab" role="tab" onclick="setTab(this,'tools')">🔧 أدوات</button>
+      <button class="nav-tab" role="tab" onclick="setTab(this,'health')">🏃 صحة</button>
+      <button class="nav-tab" role="tab" onclick="setTab(this,'education')">📚 تعليم</button>
+      <button class="nav-tab" role="tab" onclick="setTab(this,'food')">🍔 طعام</button>
+      <button class="nav-tab" role="tab" onclick="setTab(this,'news')">📰 أخبار</button>
+    </div>
+  </nav>
+  <div class="sort-bar" role="toolbar">
+    <span class="sort-lbl">ترتيب:</span>
+    <button class="sort-btn on" id="sb-dl" onclick="setSort('dl')">📥 التنزيلات</button>
+    <button class="sort-btn" id="sb-r" onclick="setSort('r')">⭐ التقييم</button>
+    <button class="sort-btn" id="sb-rank" onclick="setSort('rank')">🏆 الترتيب</button>
+    <button class="sort-btn" id="sb-mau" onclick="setSort('mau')">👥 المستخدمون</button>
+  </div>
+  <div class="main">
+    <aside class="sidebar" aria-label="تصفح التطبيقات">
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">التصنيفات</div>
+        <div class="sb-link on" onclick="setSbCat(this,'all')"><span class="sb-ico">🏠</span>الكل<span class="sb-cnt" id="cn-all">0</span></div>
+        <div class="sb-link" onclick="setSbCat(this,'social')"><span class="sb-ico">💬</span>تواصل اجتماعي<span class="sb-cnt" id="cn-social">0</span></div>
+        <div class="sb-link" onclick="setSbCat(this,'entertainment')"><span class="sb-ico">🎬</span>الترفيه<span class="sb-cnt" id="cn-entertainment">0</span></div>
+        <div class="sb-link" onclick="setSbCat(this,'games')"><span class="sb-ico">🎮</span>الألعاب<span class="sb-cnt" id="cn-games">0</span></div>
+        <div class="sb-link" onclick="setSbCat(this,'shopping')"><span class="sb-ico">🛍️</span>التسوق<span class="sb-cnt" id="cn-shopping">0</span></div>
+        <div class="sb-link" onclick="setSbCat(this,'productivity')"><span class="sb-ico">⚡</span>الإنتاجية<span class="sb-cnt" id="cn-productivity">0</span></div>
+        <div class="sb-link" onclick="setSbCat(this,'finance')"><span class="sb-ico">💰</span>المالية<span class="sb-cnt" id="cn-finance">0</span></div>
+        <div class="sb-link" onclick="setSbCat(this,'ai')"><span class="sb-ico">🤖</span>الذكاء الاصطناعي<span class="sb-cnt" id="cn-ai">0</span></div>
+        <div class="sb-link" onclick="setSbCat(this,'transport')"><span class="sb-ico">✈️</span>السفر والتنقل<span class="sb-cnt" id="cn-transport">0</span></div>
+        <div class="sb-link" onclick="setSbCat(this,'tools')"><span class="sb-ico">🔧</span>الأدوات<span class="sb-cnt" id="cn-tools">0</span></div>
+        <div class="sb-link" onclick="setSbCat(this,'health')"><span class="sb-ico">🏃</span>الصحة واللياقة<span class="sb-cnt" id="cn-health">0</span></div>
+        <div class="sb-link" onclick="setSbCat(this,'education')"><span class="sb-ico">📚</span>التعليم<span class="sb-cnt" id="cn-education">0</span></div>
+        <div class="sb-link" onclick="setSbCat(this,'food')"><span class="sb-ico">🍔</span>الطعام والمطاعم<span class="sb-cnt" id="cn-food">0</span></div>
+        <div class="sb-link" onclick="setSbCat(this,'news')"><span class="sb-ico">📰</span>الأخبار<span class="sb-cnt" id="cn-news">0</span></div>
+      </div>
+      <div class="sidebar-section" style="margin-top:8px">
+        <div class="sidebar-section-title">الأكثر تحميلاً</div>
+        <div id="sbTop"></div>
+      </div>
+    </aside>
+    <main class="content" role="main">
+      <div class="feat-row">
+        <div class="feat-row-title">🔥 الأكثر تنزيلاً <span id="featCnt" style="color:var(--text4);font-weight:600;font-size:.65rem;text-transform:none;letter-spacing:0"></span></div>
+        <div class="feat-scroll" id="featScroll" role="list" aria-label="أبرز التطبيقات"></div>
+      </div>
+      <div class="sec-hdr">
+        <h2 class="sec-title" id="secTitle">جميع التطبيقات</h2>
+        <span class="sec-cnt" id="appCnt"></span>
+      </div>
+      <div class="app-grid" id="grid" role="list" aria-label="قائمة التطبيقات"></div>
+      <div class="empty" id="empty" style="display:none">
+        <div class="empty-ico">🔍</div>
+        <h3>لا توجد نتائج</h3>
+        <p>جرّب كلمة بحث مختلفة أو تصنيفاً آخر</p>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ─── DETAIL PAGE ─── -->
+<div class="detail-page" id="detailPage" role="main" aria-label="تفاصيل التطبيق">
+  <div class="detail-back">
+    <button class="back-btn" onclick="closeDetail()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      رجوع
+    </button>
+    <div class="back-breadcrumb">
+      <span>AppVault</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+      <span id="detailBreadcrumb" style="color:var(--text2)"></span>
+    </div>
+  </div>
+  <div id="detailContent"></div>
+</div>
+
+<!-- ─── APK LIBRARY ─── -->
+<div class="apk-ov" id="apkOv" role="dialog" aria-label="مكتبة APK" onclick="closeApkOuter(event)">
+  <div class="apk-modal">
+    <div class="apk-hdr">
+      <div class="apk-hdr-info"><h3>⬇️ مكتبة APK المباشرة</h3><p>تحميل مباشر بدون Google Play Store</p></div>
+      <button class="apk-x" onclick="closeApkLib()" aria-label="إغلاق">✕</button>
+    </div>
+    <div class="apk-sbar">
+      <svg class="apk-si" aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="apkQ" placeholder="ابحث في المكتبة..." oninput="renderApk()" aria-label="بحث APK">
+    </div>
+    <div class="apk-cats" role="toolbar">
+      <button class="apk-cat on" onclick="setApkCat(this,'all')">الكل</button>
+      <button class="apk-cat" onclick="setApkCat(this,'social')">💬 تواصل</button>
+      <button class="apk-cat" onclick="setApkCat(this,'entertainment')">🎬 ترفيه</button>
+      <button class="apk-cat" onclick="setApkCat(this,'ai')">🤖 ذكاء اصطناعي</button>
+      <button class="apk-cat" onclick="setApkCat(this,'productivity')">⚡ إنتاجية</button>
+      <button class="apk-cat" onclick="setApkCat(this,'tools')">🔧 أدوات</button>
+      <button class="apk-cat" onclick="setApkCat(this,'games')">🎮 ألعاب</button>
+      <button class="apk-cat" onclick="setApkCat(this,'finance')">💰 مالية</button>
+    </div>
+    <div class="apk-note" role="note"><strong>⚠️ تنبيه:</strong> فعّل "مصادر غير معروفة" في إعدادات أندرويد قبل التثبيت. الروابط من مصادر موثوقة ومعروفة.</div>
+    <div class="apk-list" id="apkList" role="list"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const APPS=[
+  {id:0,name:'TikTok',dev:'ByteDance',cat:'entertainment',logo:'tiktok.com',fb:'🎵',color:'linear-gradient(135deg,#010101,#ff0050)',r:4.7,dl:'773M',mau:'1.5B',sz:'120 MB',rank:1,free:true,gp:'https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically',ios:'https://apps.apple.com/app/tiktok/id835599320',web:'https://www.tiktok.com/download',apk:true,apkDesc:'TikTok محظور في بعض المناطق. للتثبيت اليدوي: فعّل "مصادر غير معروفة" في الإعدادات.',apkLinks:[{n:'TikTok.com',u:'https://www.tiktok.com/download'},{n:'APKMirror',u:'https://www.apkmirror.com/?s=tiktok'}],tags:['ترفيه','فيديو','اجتماعي'],desc:'TikTok تصدّر قائمة أكثر التطبيقات تحميلاً في 2024 بـ773 مليون تنزيل. أكثر من 1.5 مليار مستخدم شهري في 150+ دولة. المنصة الأولى عالمياً لمقاطع الفيديو القصيرة والترندات.',src:'Appfigures / AppMagic 2024'},
+  {id:1,name:'Instagram',dev:'Meta',cat:'social',logo:'instagram.com',fb:'📸',color:'linear-gradient(135deg,#405de6,#c13584,#fd1d1d)',r:4.6,dl:'759M',mau:'2B',sz:'85 MB',rank:2,free:true,gp:'https://play.google.com/store/apps/details?id=com.instagram.android',ios:'https://apps.apple.com/app/instagram/id389801252',web:'https://www.instagram.com',tags:['صور','ريلز','اجتماعي'],desc:'Instagram جاء ثانياً في 2024 بـ759 مليون تنزيل. الهند وحدها شكّلت ~40% من التنزيلات. أكثر من 2 مليار مستخدم شهري. الريلز هو المحرك الأساسي للنمو.',src:'Appfigures / AppMagic 2024'},
+  {id:2,name:'Facebook',dev:'Meta',cat:'social',logo:'facebook.com',fb:'👥',color:'linear-gradient(135deg,#1877f2,#0a5dc9)',r:4.3,dl:'571M',mau:'3.27B',sz:'72 MB',rank:3,free:true,gp:'https://play.google.com/store/apps/details?id=com.facebook.katana',ios:'https://apps.apple.com/app/facebook/id284882215',web:'https://www.facebook.com',tags:['تواصل','أخبار','عائلة'],desc:'فيسبوك ثالث الأكثر تحميلاً في 2024 بـ571 مليون تنزيل. أكبر شبكة اجتماعية بـ3.27 مليار مستخدم شهري، مما يجعله أكثر منصات التواصل الاجتماعي شعبية في التاريخ.',src:'Appfigures / AppMagic 2024'},
+  {id:3,name:'WhatsApp',dev:'Meta',cat:'social',logo:'whatsapp.com',fb:'💬',color:'linear-gradient(135deg,#075e54,#25d366)',r:4.8,dl:'527M',mau:'2.78B',sz:'45 MB',rank:4,free:true,gp:'https://play.google.com/store/apps/details?id=com.whatsapp',ios:'https://apps.apple.com/app/whatsapp-messenger/id310633997',web:'https://www.whatsapp.com/android/',tags:['رسائل','مكالمات','مشفر'],desc:'واتساب الرابع بـ527 مليون تنزيل. أشهر تطبيق مراسلة بـ2.78 مليار مستخدم شهري. تشفير كامل من طرف إلى طرف، مكالمات مجانية، ومشاركة ملفات بلا حدود.',src:'Appfigures / AppMagic 2024'},
+  {id:4,name:'Threads',dev:'Meta',cat:'social',logo:'threads.net',fb:'🧵',color:'linear-gradient(135deg,#000,#333)',r:4.1,dl:'322M',mau:'275M',sz:'50 MB',rank:5,free:true,gp:'https://play.google.com/store/apps/details?id=com.instagram.barcelona',ios:'https://apps.apple.com/app/threads/id6446901002',web:'https://www.threads.net',tags:['نصوص','تواصل','نقاشات'],desc:'Threads دخل أعلى 10 تطبيقات في 2024 بـ322 مليون تنزيل رغم إطلاقه حديثاً. منافس مباشر لـX (تويتر) في مجال النشر النصي.',src:'Appfigures / AppMagic 2024'},
+  {id:5,name:'Snapchat',dev:'Snap Inc.',cat:'social',logo:'snapchat.com',fb:'👻',color:'linear-gradient(135deg,#fffc00,#c8b800)',r:4.3,dl:'290M',mau:'850M',sz:'160 MB',rank:6,free:true,gp:'https://play.google.com/store/apps/details?id=com.snapchat.android',ios:'https://apps.apple.com/app/snapchat/id447188370',web:'https://www.snapchat.com/download',tags:['صور','ستوريز','AR'],desc:'سناب شات 290 مليون تنزيل في 2024 مع 850 مليون مستخدم شهري. رائد في تجارب AR وفلاتر الكاميرا. الستوريز ميزة أطلقتها سناب وأصبحت معياراً في الصناعة.',src:'Business of Apps 2024'},
+  {id:6,name:'Telegram',dev:'Telegram FZ-LLC',cat:'social',logo:'telegram.org',fb:'✈️',color:'linear-gradient(135deg,#2ca5e0,#1e88c9)',r:4.8,dl:'220M',mau:'900M',sz:'55 MB',rank:7,free:true,gp:'https://play.google.com/store/apps/details?id=org.telegram.messenger',ios:'https://apps.apple.com/app/telegram-messenger/id686449807',web:'https://telegram.org',tags:['رسائل','قنوات','آمن'],desc:'تيليغرام 220 مليون تنزيل و900 مليون مستخدم شهري. الأفضل في القنوات الإخبارية والمجموعات الكبيرة والبوتات البرمجية. يتيح ملفات حتى 4 جيجا.',src:'Business of Apps 2024'},
+  {id:7,name:'LinkedIn',dev:'Microsoft',cat:'social',logo:'linkedin.com',fb:'💼',color:'linear-gradient(135deg,#0077b5,#004d77)',r:4.4,dl:'130M',mau:'1B',sz:'95 MB',rank:8,free:true,gp:'https://play.google.com/store/apps/details?id=com.linkedin.android',ios:'https://apps.apple.com/app/linkedin/id288429040',web:'https://www.linkedin.com',tags:['عمل','وظائف','مهني'],desc:'لينكدإن 130 مليون تنزيل مع مليار مستخدم مسجل في 200+ دولة. المنصة الأولى للتواصل المهني والبحث عن الوظائف والتوظيف.',src:'Business of Apps 2024'},
+  {id:8,name:'X (Twitter)',dev:'X Corp.',cat:'social',logo:'x.com',fb:'𝕏',color:'linear-gradient(135deg,#000,#1a1a1a)',r:4.0,dl:'120M',mau:'619M',sz:'82 MB',rank:9,free:true,gp:'https://play.google.com/store/apps/details?id=com.twitter.android',ios:'https://apps.apple.com/app/x/id333903271',web:'https://x.com',tags:['أخبار','نقاشات','مباشر'],desc:'تويتر/X سجّل 120 مليون تنزيل و619 مليون مستخدم شهري. المنصة الأولى للنقاشات الفورية والأخبار العاجلة والحوارات المفتوحة.',src:'Business of Apps 2024'},
+  {id:9,name:'WhatsApp Business',dev:'Meta',cat:'social',logo:'whatsapp.com',fb:'🏪',color:'linear-gradient(135deg,#075e54,#128c7e)',r:4.6,dl:'200M',mau:'500M',sz:'48 MB',rank:10,free:true,gp:'https://play.google.com/store/apps/details?id=com.whatsapp.w4b',ios:'https://apps.apple.com/app/whatsapp-business/id1386412985',web:'https://business.whatsapp.com',tags:['أعمال','عملاء','تجارة'],desc:'واتساب للأعمال 200 مليون تنزيل — الأكثر تحميلاً في تطبيقات الأعمال عالمياً 2025. أداة مثالية للتواصل مع العملاء وإدارة الطلبات.',src:'Business of Apps 2025'},
+  {id:10,name:'YouTube',dev:'Google',cat:'entertainment',logo:'youtube.com',fb:'▶️',color:'linear-gradient(135deg,#ff0000,#cc0000)',r:4.7,dl:'300M',mau:'2.7B',sz:'65 MB',rank:11,free:true,gp:'https://play.google.com/store/apps/details?id=com.google.android.youtube',ios:'https://apps.apple.com/app/youtube/id544007664',web:'https://www.youtube.com',tags:['فيديو','بث','يوتيوب'],desc:'يوتيوب 300 مليون تنزيل. أكبر منصة فيديو بـ2.7 مليار مستخدم شهري. يضم أكثر من 800 مليون فيديو ويتلقى 500 ساعة فيديو جديدة كل دقيقة.',src:'AppMagic / Google 2024'},
+  {id:11,name:'Spotify',dev:'Spotify AB',cat:'entertainment',logo:'spotify.com',fb:'🎵',color:'linear-gradient(135deg,#191414,#1db954)',r:4.7,dl:'150M',mau:'678M',sz:'45 MB',rank:12,free:true,gp:'https://play.google.com/store/apps/details?id=com.spotify.music',ios:'https://apps.apple.com/app/spotify/id324684580',web:'https://www.spotify.com/download',tags:['موسيقى','بودكاست','بث'],desc:'سبوتيفاي 150 مليون تنزيل و678 مليون مستخدم شهري منهم 268 مليون مشترك مدفوع. يوفر 100+ مليون مقطع موسيقي وبودكاست.',src:'Spotify Q4 2024'},
+  {id:12,name:'Netflix',dev:'Netflix Inc.',cat:'entertainment',logo:'netflix.com',fb:'🎬',color:'linear-gradient(135deg,#141414,#e50914)',r:4.6,dl:'70M',mau:'301M',sz:'58 MB',rank:13,free:false,gp:'https://play.google.com/store/apps/details?id=com.netflix.mediaclient',ios:'https://apps.apple.com/app/netflix/id363590051',web:'https://www.netflix.com',tags:['أفلام','مسلسلات','4K'],desc:'نتفليكس 70 مليون تنزيل مع 301 مليون مشترك مدفوع في 190+ دولة. ينفق 17+ مليار دولار سنوياً على المحتوى الأصلي.',src:'Netflix Q4 2024'},
+  {id:13,name:'CapCut',dev:'ByteDance',cat:'tools',logo:'capcut.com',fb:'✂️',color:'linear-gradient(135deg,#000,#ff6b35)',r:4.8,dl:'400M',mau:'300M',sz:'175 MB',rank:14,free:true,gp:'https://play.google.com/store/apps/details?id=com.lemon.lvoverseas',ios:'https://apps.apple.com/app/capcut/id1500855883',web:'https://www.capcut.com',apk:true,apkDesc:'CapCut محظور في الولايات المتحدة. للتثبيت اليدوي فعّل "مصادر غير معروفة".',apkLinks:[{n:'APKMirror',u:'https://www.apkmirror.com/?s=capcut'},{n:'APKPure',u:'https://apkpure.com/search?q=capcut'}],tags:['تحرير فيديو','ذكاء اصطناعي','مؤثرات'],desc:'كاب كات تخطّى 400 مليون تنزيل سنوي، حاصل على المركز الأول في App Store عالمياً في 2023 و2024. يوفر أدوات تحرير احترافية مجاناً.',src:'Appfigures 2024'},
+  {id:14,name:'Disney+',dev:'Disney',cat:'entertainment',logo:'disneyplus.com',fb:'⭐',color:'linear-gradient(135deg,#001f5c,#113ccf)',r:4.5,dl:'60M',mau:'157M',sz:'52 MB',rank:15,free:false,gp:'https://play.google.com/store/apps/details?id=com.disney.disneyplus',ios:'https://apps.apple.com/app/disney/id1446075923',web:'https://www.disneyplus.com',tags:['أفلام','مارفل','حرب النجوم'],desc:'ديزني+ 157 مليون مشترك. منزل مارفل وحرب النجوم وبيكسار وناشيونال جيوغرافيك. يوفر أحدث الأفلام والمسلسلات العائلية.',src:'Disney Q4 2024'},
+  {id:15,name:'Twitch',dev:'Amazon',cat:'entertainment',logo:'twitch.tv',fb:'💜',color:'linear-gradient(135deg,#6441a5,#2a0e61)',r:4.4,dl:'40M',mau:'140M',sz:'82 MB',rank:16,free:true,gp:'https://play.google.com/store/apps/details?id=tv.twitch.android.app',ios:'https://apps.apple.com/app/twitch/id460177396',web:'https://www.twitch.tv',tags:['بث مباشر','ألعاب','مجتمع'],desc:'تويتش 140 مليون مستخدم شهري. المنصة الأولى عالمياً للبث المباشر للألعاب والمحتوى الترفيهي. يستضيف أكثر من 7 مليون بث مباشر شهرياً.',src:'Business of Apps 2024'},
+  {id:16,name:'Roblox',dev:'Roblox Corp.',cat:'games',logo:'roblox.com',fb:'🎲',color:'linear-gradient(135deg,#e31c1c,#c41111)',r:4.5,dl:'180M',mau:'88M',sz:'195 MB',rank:17,free:true,gp:'https://play.google.com/store/apps/details?id=com.roblox.client',ios:'https://apps.apple.com/app/roblox/id431946152',web:'https://www.roblox.com',tags:['ألعاب','عوالم','اجتماعي'],desc:'روبلوكس تصدّر قائمة ألعاب الموبايل في 2024 بـ180 مليون تنزيل. منصة ضخمة تحتضن أكثر من 40 مليون لعبة مصممة من قبل المستخدمين.',src:'Appfigures 2024'},
+  {id:17,name:'Subway Surfers',dev:'SYBO Games',cat:'games',logo:'subwaysurfers.com',fb:'🏄',color:'linear-gradient(135deg,#ff9f43,#ee5a24)',r:4.4,dl:'150M',mau:'50M',sz:'120 MB',rank:18,free:true,gp:'https://play.google.com/store/apps/details?id=com.kiloo.subwaysurf',ios:'https://apps.apple.com/app/subway-surfers/id512939461',web:'https://subwaysurfers.com',tags:['ركض','كاجوال','مجاني'],desc:'ساب واي سيرفرز 150 مليون تنزيل. احتل المركز الأول كأكثر ألعاب الموبايل تحميلاً لـ4+ سنوات. اللعبة الأولى التي تجاوزت 4 مليار تنزيل إجمالياً.',src:'Appfigures 2024'},
+  {id:18,name:'PUBG Mobile',dev:'Krafton',cat:'games',logo:'pubg.com',fb:'🔫',color:'linear-gradient(135deg,#1a1a2e,#e94560)',r:4.4,dl:'75M',mau:'100M',sz:'680 MB',rank:19,free:true,gp:'https://play.google.com/store/apps/details?id=com.tencent.ig',ios:'https://apps.apple.com/app/pubg-mobile/id1330123889',web:'https://www.pubgmobile.com',tags:['باتل رويال','شوتر','متعدد'],desc:'ببجي موبايل 75 مليون تنزيل و100 مليون مستخدم شهري. أحد أكثر ألعاب الباتل رويال شعبية بجودة رسومات استثنائية على الهاتف.',src:'Business of Apps 2024'},
+  {id:19,name:'Free Fire',dev:'Garena',cat:'games',logo:'garena.com',fb:'🔥',color:'linear-gradient(135deg,#ff4800,#ff9500)',r:4.3,dl:'60M',mau:'80M',sz:'350 MB',rank:20,free:true,gp:'https://play.google.com/store/apps/details?id=com.dts.freefireth',ios:'https://apps.apple.com/app/garena-free-fire/id1300146617',web:'https://ff.garena.com',tags:['باتل رويال','موبايل','كاجوال'],desc:'فري فاير 60 مليون تنزيل. الأكثر شعبية في العالم العربي وجنوب آسيا وأمريكا اللاتينية. مصمم خصيصاً للهواتف المتوسطة.',src:'Garena 2024'},
+  {id:20,name:'Candy Crush',dev:'King',cat:'games',logo:'king.com',fb:'🍬',color:'linear-gradient(135deg,#ff6b9d,#c44569)',r:4.5,dl:'70M',mau:'200M',sz:'88 MB',rank:21,free:true,gp:'https://play.google.com/store/apps/details?id=com.king.candycrushsaga',ios:'https://apps.apple.com/app/candy-crush-saga/id553834731',web:'https://www.king.com/game/candycrush',tags:['بازل','كاجوال','إدمان'],desc:'كاندي كراش 70 مليون تنزيل و200 مليون مستخدم شهري. أعلى لعبة كاجوال مبيعاً في التاريخ. حققت إيرادات تتجاوز 20 مليار دولار منذ إطلاقها.',src:'King / Business of Apps 2024'},
+  {id:21,name:'Minecraft',dev:'Mojang',cat:'games',logo:'minecraft.net',fb:'⛏️',color:'linear-gradient(135deg,#4c9900,#2d5900)',r:4.7,dl:'40M',mau:'170M',sz:'420 MB',rank:22,free:false,gp:'https://play.google.com/store/apps/details?id=com.mojang.minecraftpe',ios:'https://apps.apple.com/app/minecraft/id479516143',web:'https://www.minecraft.net',tags:['بناء','مغامرة','إبداع'],desc:'ماينكرافت 40 مليون تنزيل و170 مليون مستخدم شهري. أكثر لعبة مبيعاً في التاريخ بأكثر من 238 مليون نسخة عبر كل المنصات.',src:'Microsoft 2024'},
+  {id:22,name:'Temu',dev:'PDD Holdings',cat:'shopping',logo:'temu.com',fb:'🛍️',color:'linear-gradient(135deg,#ff5722,#e64a19)',r:4.2,dl:'500M',mau:'167M',sz:'78 MB',rank:23,free:true,gp:'https://play.google.com/store/apps/details?id=com.einnovation.temu',ios:'https://apps.apple.com/app/temu/id1641486558',web:'https://www.temu.com',tags:['تسوق','عروض','شحن مجاني'],desc:'تيمو 500 مليون تنزيل في 2024، متجاوزاً أمازون كأكثر تطبيقات التسوق تحميلاً. أسعار منخفضة للغاية مع شحن مجاني لمعظم الدول.',src:'Appfigures / AppMagic 2024'},
+  {id:23,name:'Amazon',dev:'Amazon Inc.',cat:'shopping',logo:'amazon.com',fb:'📦',color:'linear-gradient(135deg,#232f3e,#ff9900)',r:4.7,dl:'150M',mau:'300M',sz:'65 MB',rank:24,free:true,gp:'https://play.google.com/store/apps/details?id=com.amazon.mShoppingApp',ios:'https://apps.apple.com/app/amazon-shopping/id297606951',web:'https://www.amazon.com',tags:['تسوق','توصيل','برايم'],desc:'أمازون 150 مليون تنزيل. عضوية Prime تتجاوز 200 مليون مشترك عالمياً. التوصيل في نفس اليوم والشحن المجاني من أبرز ميزاته.',src:'Business of Apps 2024'},
+  {id:24,name:'Shein',dev:'Shein Group',cat:'shopping',logo:'shein.com',fb:'👗',color:'linear-gradient(135deg,#000,#ff4081)',r:4.0,dl:'130M',mau:'100M',sz:'55 MB',rank:25,free:true,gp:'https://play.google.com/store/apps/details?id=com.zzkko',ios:'https://apps.apple.com/app/shein/id878577184',web:'https://www.shein.com',tags:['موضة','ملابس','تريند'],desc:'شيين 130 مليون تنزيل بإيرادات تجاوزت 45 مليار دولار في 2023. أسرع شركة أزياء نمواً في التاريخ بتحديثات يومية لآلاف المنتجات.',src:'Business of Apps 2024'},
+  {id:25,name:'Noon',dev:'Noon.com',cat:'shopping',logo:'noon.com',fb:'🟡',color:'linear-gradient(135deg,#f7cf00,#e6be00)',r:4.3,dl:'25M',mau:'20M',sz:'48 MB',rank:42,free:true,gp:'https://play.google.com/store/apps/details?id=com.noon.buyerapp',ios:'https://apps.apple.com/app/noon-online-shopping/id1121600504',web:'https://www.noon.com',tags:['تسوق','خليج','توصيل'],desc:'نون المنصة الإلكترونية الرائدة في المملكة العربية السعودية والإمارات ومصر. أكثر من 20 مليون مستخدم نشط في منطقة الخليج والشرق الأوسط.',src:'Noon 2024'},
+  {id:26,name:'Google Drive',dev:'Google',cat:'productivity',logo:'google.com',fb:'💾',color:'linear-gradient(135deg,#4285f4,#0f9d58)',r:4.6,dl:'150M',mau:'1B',sz:'30 MB',rank:27,free:true,gp:'https://play.google.com/store/apps/details?id=com.google.android.apps.docs',ios:'https://apps.apple.com/app/google-drive/id507874739',web:'https://drive.google.com',tags:['تخزين','ملفات','سحابة'],desc:'جوجل درايف 150 مليون تنزيل مع مليار مستخدم. 15 جيجابايت تخزين مجاني. تعاون في الوقت الفعلي على المستندات والجداول والعروض.',src:'Google 2024'},
+  {id:27,name:'Microsoft Teams',dev:'Microsoft',cat:'productivity',logo:'microsoft.com',fb:'🏢',color:'linear-gradient(135deg,#464775,#6264a7)',r:4.4,dl:'100M',mau:'320M',sz:'105 MB',rank:28,free:true,gp:'https://play.google.com/store/apps/details?id=com.microsoft.teams',ios:'https://apps.apple.com/app/microsoft-teams/id1113153706',web:'https://www.microsoft.com/en/microsoft-teams/download-app',tags:['عمل','اجتماعات','فريق'],desc:'تيمز 100 مليون تنزيل و320 مليون مستخدم يومي متكامل مع Microsoft 365. المنصة المفضلة لاجتماعات العمل والتعاون المؤسسي.',src:'Microsoft 2024'},
+  {id:28,name:'Zoom',dev:'Zoom Video',cat:'productivity',logo:'zoom.us',fb:'📹',color:'linear-gradient(135deg,#2d8cff,#0e6ad4)',r:4.4,dl:'80M',mau:'300M',sz:'88 MB',rank:29,free:true,gp:'https://play.google.com/store/apps/details?id=us.zoom.videomeetings',ios:'https://apps.apple.com/app/zoom/id546505307',web:'https://zoom.us/download',tags:['اجتماعات','فيديو','عمل'],desc:'زووم 80 مليون تنزيل و300 مليون مشارك يومي في الاجتماعات. غيّر طريقة العمل عن بُعد عالمياً بعد جائحة كورونا.',src:'Business of Apps 2024'},
+  {id:29,name:'Notion',dev:'Notion Labs',cat:'productivity',logo:'notion.so',fb:'📝',color:'linear-gradient(135deg,#000,#444)',r:4.6,dl:'30M',mau:'100M',sz:'45 MB',rank:30,free:true,gp:'https://play.google.com/store/apps/details?id=notion.id',ios:'https://apps.apple.com/app/notion/id1232780281',web:'https://www.notion.so/desktop',tags:['ملاحظات','تنظيم','فريق'],desc:'نوشن 30 مليون تنزيل و100 مليون مستخدم. مساحة عمل متكاملة تجمع بين الملاحظات وقواعد البيانات وإدارة المشاريع.',src:'Notion 2024'},
+  {id:30,name:'Trello',dev:'Atlassian',cat:'productivity',logo:'trello.com',fb:'📋',color:'linear-gradient(135deg,#0052cc,#0747a6)',r:4.5,dl:'20M',mau:'50M',sz:'32 MB',rank:43,free:true,gp:'https://play.google.com/store/apps/details?id=com.trello',ios:'https://apps.apple.com/app/trello/id461504587',web:'https://trello.com',tags:['مشاريع','كانبان','فريق'],desc:'تريلو 20 مليون تنزيل و50 مليون مستخدم. أداة إدارة المشاريع بنظام البطاقات (Kanban) الأبسط والأكثر شيوعاً في العالم.',src:'Atlassian 2024'},
+  {id:31,name:'PayPal',dev:'PayPal Inc.',cat:'finance',logo:'paypal.com',fb:'💳',color:'linear-gradient(135deg,#003087,#009cde)',r:4.5,dl:'80M',mau:'220M',sz:'35 MB',rank:31,free:true,gp:'https://play.google.com/store/apps/details?id=com.paypal.android.p2pmobile',ios:'https://apps.apple.com/app/paypal/id283646709',web:'https://www.paypal.com/app',tags:['مدفوعات','تحويل','آمن'],desc:'باي بال 80 مليون تنزيل و220 مليون حساب نشط في 200+ دولة. الأكثر ثقة لمعاملات الدفع الإلكتروني والمشتريات الآمنة عبر الإنترنت.',src:'PayPal Q4 2024'},
+  {id:32,name:'Cash App',dev:'Block Inc.',cat:'finance',logo:'cash.app',fb:'💵',color:'linear-gradient(135deg,#00d64f,#00a53d)',r:4.6,dl:'50M',mau:'57M',sz:'28 MB',rank:32,free:true,gp:'https://play.google.com/store/apps/details?id=com.squareup.cash',ios:'https://apps.apple.com/app/cash-app/id711923939',web:'https://cash.app',tags:['محفظة','بيتكوين','تحويل'],desc:'كاش آب 50 مليون تنزيل و57 مليون مستخدم شهري. يتيح تحويل الأموال الفورية وشراء البيتكوين والاستثمار في الأسهم.',src:'Block Inc. 2024'},
+  {id:33,name:'Binance',dev:'Binance Holdings',cat:'finance',logo:'binance.com',fb:'₿',color:'linear-gradient(135deg,#1e2026,#f0b90b)',r:4.5,dl:'40M',mau:'150M',sz:'55 MB',rank:33,free:true,gp:'https://play.google.com/store/apps/details?id=com.binance.dev',ios:'https://apps.apple.com/app/binance/id1436799971',web:'https://www.binance.com/en/download',tags:['عملات مشفرة','تداول','بيتكوين'],desc:'بينانس 40 مليون تنزيل و150 مليون مستخدم. أكبر بورصة عملات مشفرة في العالم بحجم تداول يومي يتجاوز 76 مليار دولار.',src:'Binance 2024'},
+  {id:34,name:'ChatGPT',dev:'OpenAI',cat:'ai',logo:'openai.com',fb:'🤖',color:'linear-gradient(135deg,#10a37f,#065f46)',r:4.8,dl:'770M',mau:'300M',sz:'42 MB',rank:34,free:true,gp:'https://play.google.com/store/apps/details?id=com.openai.chatgpt',ios:'https://apps.apple.com/app/chatgpt/id6448311069',web:'https://chatgpt.com',tags:['ذكاء اصطناعي','محادثة','إبداع'],desc:'ChatGPT الأول عالمياً في 2025 بـ770 مليون تنزيل، متجاوزاً تيك توك وإنستغرام. قادر على الكتابة والبرمجة والتحليل ومعالجة الصور.',src:'Business of Apps 2025'},
+  {id:35,name:'Google Gemini',dev:'Google DeepMind',cat:'ai',logo:'google.com',fb:'✨',color:'linear-gradient(135deg,#4285f4,#9c27b0)',r:4.5,dl:'180M',mau:'35M',sz:'38 MB',rank:35,free:true,gp:'https://play.google.com/store/apps/details?id=com.google.android.apps.bard',ios:'https://apps.apple.com/app/google-gemini/id1573783038',web:'https://gemini.google.com',tags:['ذكاء اصطناعي','جوجل','مساعد'],desc:'جوجل جيميناي الثاني عالمياً في تطبيقات AI في 2025. متكامل مع خدمات جوجل كاملاً ويتميز بفهم الصور والمستندات.',src:'Business of Apps 2025'},
+  {id:36,name:'Microsoft Copilot',dev:'Microsoft',cat:'ai',logo:'microsoft.com',fb:'🪄',color:'linear-gradient(135deg,#0078d4,#00b4d8)',r:4.4,dl:'50M',mau:'20M',sz:'35 MB',rank:36,free:true,gp:'https://play.google.com/store/apps/details?id=com.microsoft.copilot',ios:'https://apps.apple.com/app/microsoft-copilot/id6472538445',web:'https://copilot.microsoft.com',tags:['ذكاء اصطناعي','أوفيس','مايكروسوفت'],desc:'مايكروسوفت كوبايلت يساعد في كتابة المستندات وتحليل البيانات وإنشاء المحتوى. متكامل مع Office 365 وWindows.',src:'Microsoft 2024'},
+  {id:37,name:'Claude',dev:'Anthropic',cat:'ai',logo:'anthropic.com',fb:'🧠',color:'linear-gradient(135deg,#d97706,#b45309)',r:4.9,dl:'20M',mau:'10M',sz:'30 MB',rank:37,free:true,gp:'https://play.google.com/store/apps/details?id=com.anthropic.claude',ios:'https://apps.apple.com/app/claude-by-anthropic/id6473753684',web:'https://claude.ai',tags:['ذكاء اصطناعي','آمن','تحليل'],desc:'كلود من أنثروبيك — مساعد ذكاء اصطناعي متخصص في التحليل المتقدم والكتابة الإبداعية والبرمجة. يتميز بالدقة العالية في الإجابات الطويلة والمعقدة.',src:'Anthropic 2024'},
+  {id:38,name:'Perplexity AI',dev:'Perplexity AI Inc.',cat:'ai',logo:'perplexity.ai',fb:'🔮',color:'linear-gradient(135deg,#20b2aa,#0d7377)',r:4.7,dl:'30M',mau:'15M',sz:'25 MB',rank:44,free:true,gp:'https://play.google.com/store/apps/details?id=ai.perplexity.app.android',ios:'https://apps.apple.com/app/perplexity/id1668000334',web:'https://www.perplexity.ai',tags:['بحث ذكي','ذكاء اصطناعي','أخبار'],desc:'بيربليكسيتي محرك بحث ذكي يستخدم الذكاء الاصطناعي لتقديم إجابات دقيقة مع مصادر موثقة. بديل مبتكر لمحركات البحث التقليدية.',src:'Perplexity AI 2024'},
+  {id:39,name:'Google Maps',dev:'Google',cat:'transport',logo:'google.com',fb:'🗺️',color:'linear-gradient(135deg,#4285f4,#34a853)',r:4.8,dl:'140M',mau:'2B',sz:'95 MB',rank:38,free:true,gp:'https://play.google.com/store/apps/details?id=com.google.android.apps.maps',ios:'https://apps.apple.com/app/google-maps/id585027354',web:'https://maps.google.com',tags:['خرائط','ملاحة','GPS'],desc:'خرائط جوجل 140 مليون تنزيل و2 مليار مستخدم شهري. الأدق في خرائط التنقل وحركة المرور الحية والاكتشاف المحلي.',src:'AppMagic / Google 2024'},
+  {id:40,name:'Uber',dev:'Uber Technologies',cat:'transport',logo:'uber.com',fb:'🚗',color:'linear-gradient(135deg,#000,#1c1c1c)',r:4.5,dl:'137M',mau:'150M',sz:'52 MB',rank:39,free:true,gp:'https://play.google.com/store/apps/details?id=com.ubercab',ios:'https://apps.apple.com/app/uber/id368677368',web:'https://www.uber.com',tags:['نقل','مواصلات','سريع'],desc:'أوبر أكثر تطبيقات السفر تحميلاً في 2025 بـ137 مليون تنزيل. يعمل في 70+ دولة مع خدمات التوصيل والشحن.',src:'Business of Apps 2025'},
+  {id:41,name:'Airbnb',dev:'Airbnb Inc.',cat:'transport',logo:'airbnb.com',fb:'🏠',color:'linear-gradient(135deg,#ff5a5f,#ff385c)',r:4.7,dl:'45M',mau:'150M',sz:'48 MB',rank:40,free:true,gp:'https://play.google.com/store/apps/details?id=com.airbnb.android',ios:'https://apps.apple.com/app/airbnb/id401626263',web:'https://www.airbnb.com',tags:['سفر','إقامة','سياحة'],desc:'Airbnb أكثر تطبيقات الإقامة تحميلاً في 2025. أكثر من 7 مليون إعلان في 220 دولة. تجارب سياحية فريدة مع المضيفين المحليين.',src:'Business of Apps 2025'},
+  {id:42,name:'Booking.com',dev:'Booking Holdings',cat:'transport',logo:'booking.com',fb:'🏨',color:'linear-gradient(135deg,#003580,#0052a5)',r:4.7,dl:'60M',mau:'100M',sz:'42 MB',rank:41,free:true,gp:'https://play.google.com/store/apps/details?id=com.booking',ios:'https://apps.apple.com/app/booking-com/id367003839',web:'https://www.booking.com',tags:['فنادق','سفر','حجز'],desc:'بوكينج 60 مليون تنزيل. 28+ مليون خيار إقامة في 220 دولة. أسعار تنافسية وإلغاء مجاني في معظم الحجوزات.',src:'Booking Holdings 2024'},
+  {id:43,name:'Google Chrome',dev:'Google',cat:'tools',logo:'google.com',fb:'🌐',color:'linear-gradient(135deg,#4285f4,#34a853)',r:4.5,dl:'120M',mau:'3.45B',sz:'195 MB',rank:42,free:true,gp:'https://play.google.com/store/apps/details?id=com.android.chrome',ios:'https://apps.apple.com/app/google-chrome/id535886823',web:'https://www.google.com/chrome/',tags:['متصفح','إنترنت','جوجل'],desc:'كروم 120 مليون تنزيل. أكثر المتصفحات استخداماً بـ3.45 مليار مستخدم. سريع وآمن مع مزامنة كاملة عبر الأجهزة.',src:'StatCounter 2024'},
+  {id:44,name:'Canva',dev:'Canva Pty Ltd',cat:'tools',logo:'canva.com',fb:'🎨',color:'linear-gradient(135deg,#7209b7,#3a0ca3)',r:4.8,dl:'100M',mau:'185M',sz:'68 MB',rank:43,free:true,gp:'https://play.google.com/store/apps/details?id=com.canva.editor',ios:'https://apps.apple.com/app/canva/id897446215',web:'https://www.canva.com',tags:['تصميم','رسومات','قوالب'],desc:'كانفا 100 مليون تنزيل و185 مليون مستخدم شهري. قيمتها 49 مليار دولار. يجعل التصميم الاحترافي متاحاً للجميع.',src:'Canva 2024'},
+  {id:45,name:'Adobe Photoshop',dev:'Adobe Inc.',cat:'tools',logo:'adobe.com',fb:'🖼️',color:'linear-gradient(135deg,#001e36,#31a8ff)',r:4.6,dl:'25M',mau:'33M',sz:'250 MB',rank:44,free:false,gp:'https://play.google.com/store/apps/details?id=com.adobe.psmobile',ios:'https://apps.apple.com/app/photoshop/id331975235',web:'https://www.adobe.com/products/photoshop.html',tags:['تصوير','تحرير','احترافي'],desc:'فوتوشوب 25 مليون تنزيل. المعيار الصناعي لتحرير الصور منذ 1988. يوفر إمكانات احترافية كاملة على الموبايل.',src:'Adobe 2024'},
+  {id:46,name:'1Password',dev:'1Password',cat:'tools',logo:'1password.com',fb:'🔑',color:'linear-gradient(135deg,#0094f5,#1976d2)',r:4.8,dl:'15M',mau:'10M',sz:'38 MB',rank:45,free:false,gp:'https://play.google.com/store/apps/details?id=com.agilebits.onepassword',ios:'https://apps.apple.com/app/1password/id568903335',web:'https://1password.com',tags:['كلمات مرور','أمان','خزنة'],desc:'1Password أفضل مدير كلمات مرور في العالم. يخزن كلمات المرور والبطاقات البنكية والمعلومات الحساسة بتشفير AES-256.',src:'1Password 2024'},
+  {id:47,name:'Calm',dev:'Calm.com Inc.',cat:'health',logo:'calm.com',fb:'🧘',color:'linear-gradient(135deg,#1c4e6b,#2980b9)',r:4.8,dl:'50M',mau:'100M',sz:'42 MB',rank:45,free:true,gp:'https://play.google.com/store/apps/details?id=com.calm.android',ios:'https://apps.apple.com/app/calm/id571800810',web:'https://www.calm.com',tags:['تأمل','نوم','عافية'],desc:'كالم 50 مليون تنزيل. أفضل تطبيق للصحة النفسية عالمياً. يحتوي على جلسات تأمل موجه ومساعدة على النوم وتخفيف التوتر.',src:'Business of Apps 2024'},
+  {id:48,name:'Strava',dev:'Strava Inc.',cat:'health',logo:'strava.com',fb:'🏃',color:'linear-gradient(135deg,#fc4c02,#cc3a00)',r:4.6,dl:'52M',mau:'135M',sz:'82 MB',rank:46,free:true,gp:'https://play.google.com/store/apps/details?id=com.strava',ios:'https://apps.apple.com/app/strava/id426826309',web:'https://www.strava.com',tags:['جري','رياضة','GPS'],desc:'سترافا 52 مليون تنزيل و135 مليون مستخدم. المجتمع الرياضي الأكبر للجري وركوب الدراجات والرياضات الخارجية.',src:'Business of Apps 2025'},
+  {id:49,name:'MyFitnessPal',dev:'Under Armour',cat:'health',logo:'myfitnesspal.com',fb:'🏋️',color:'linear-gradient(135deg,#0f9b58,#087840)',r:4.5,dl:'30M',mau:'200M',sz:'35 MB',rank:47,free:true,gp:'https://play.google.com/store/apps/details?id=com.myfitnesspal.android',ios:'https://apps.apple.com/app/myfitnesspal/id341232718',web:'https://www.myfitnesspal.com',tags:['تغذية','سعرات','لياقة'],desc:'ماي فيتنس بال 30 مليون تنزيل و200 مليون مستخدم مسجل. يحتوي على قاعدة بيانات ضخمة بـ14 مليون طعام لتتبع السعرات.',src:'Business of Apps 2024'},
+  {id:50,name:'Duolingo',dev:'Duolingo Inc.',cat:'education',logo:'duolingo.com',fb:'🦉',color:'linear-gradient(135deg,#58cc02,#1cb0f6)',r:4.7,dl:'130M',mau:'113M',sz:'45 MB',rank:48,free:true,gp:'https://play.google.com/store/apps/details?id=com.duolingo',ios:'https://apps.apple.com/app/duolingo/id570060128',web:'https://www.duolingo.com',tags:['لغات','تعلم','ممتع'],desc:'دوولينغو الأول عالمياً في تطبيقات التعليم لعدة سنوات. 130 مليون تنزيل و40 لغة. يجعل تعلم اللغات ممتعاً وإدمانياً.',src:'Business of Apps 2025'},
+  {id:51,name:'Khan Academy',dev:'Khan Academy',cat:'education',logo:'khanacademy.org',fb:'🎓',color:'linear-gradient(135deg,#14bf96,#0a8c6c)',r:4.7,dl:'30M',mau:'18M',sz:'38 MB',rank:49,free:true,gp:'https://play.google.com/store/apps/details?id=org.khanacademy.android',ios:'https://apps.apple.com/app/khan-academy/id469863705',web:'https://www.khanacademy.org',tags:['تعليم','مجاني','رياضيات'],desc:'خان أكاديمي 30 مليون تنزيل. تعليم مجاني للجميع. يغطي الرياضيات والعلوم والبرمجة بأسلوب تفاعلي وبدون إعلانات.',src:'Khan Academy 2024'},
+  {id:52,name:'Coursera',dev:'Coursera Inc.',cat:'education',logo:'coursera.org',fb:'📖',color:'linear-gradient(135deg,#0056d2,#0039a6)',r:4.5,dl:'25M',mau:'148M',sz:'42 MB',rank:50,free:true,gp:'https://play.google.com/store/apps/details?id=org.coursera.android',ios:'https://apps.apple.com/app/coursera/id736535961',web:'https://www.coursera.org',tags:['دورات','شهادات','جامعات'],desc:'كورسيرا 25 مليون تنزيل و148 مليون متعلم مسجل. شراكات مع 325+ جامعة عالمية وشهادات معتمدة.',src:'Coursera 2024'},
+  {id:53,name:'Udemy',dev:'Udemy Inc.',cat:'education',logo:'udemy.com',fb:'🎯',color:'linear-gradient(135deg,#a435f0,#7620c9)',r:4.5,dl:'20M',mau:'62M',sz:'45 MB',rank:51,free:true,gp:'https://play.google.com/store/apps/details?id=com.udemy.android',ios:'https://apps.apple.com/app/udemy/id562413829',web:'https://www.udemy.com',tags:['دورات','برمجة','أعمال'],desc:'يوديمي 20 مليون تنزيل و62 مليون طالب. 210,000+ دورة في البرمجة والتصميم والأعمال. عروض تنزيلات متكررة بأسعار منخفضة جداً.',src:'Udemy 2024'},
+  {id:54,name:'Talabat',dev:'Delivery Hero',cat:'food',logo:'talabat.com',fb:'🍕',color:'linear-gradient(135deg,#ff5722,#f4511e)',r:4.3,dl:'20M',mau:'8M',sz:'52 MB',rank:52,free:true,gp:'https://play.google.com/store/apps/details?id=com.talabat',ios:'https://apps.apple.com/app/talabat/id469567779',web:'https://www.talabat.com',tags:['طعام','توصيل','خليج'],desc:'طلبات التطبيق الرائد لتوصيل الطعام في الكويت والإمارات والسعودية والأردن ومصر وغيرها. أكثر من 8 ملايين مستخدم نشط في المنطقة.',src:'Delivery Hero 2024'},
+  {id:55,name:'Uber Eats',dev:'Uber Technologies',cat:'food',logo:'ubereats.com',fb:'🥡',color:'linear-gradient(135deg,#06c167,#037a42)',r:4.4,dl:'80M',mau:'88M',sz:'60 MB',rank:53,free:true,gp:'https://play.google.com/store/apps/details?id=com.ubercab.eats',ios:'https://apps.apple.com/app/uber-eats/id1058959277',web:'https://www.ubereats.com',tags:['طعام','توصيل','سريع'],desc:'أوبر إيتس 80 مليون تنزيل و88 مليون مستخدم نشط. يعمل في 6000+ مدينة حول العالم مع توصيل في أقل من 30 دقيقة.',src:'Business of Apps 2024'},
+  {id:56,name:'DoorDash',dev:'DoorDash Inc.',cat:'food',logo:'doordash.com',fb:'🚪',color:'linear-gradient(135deg,#ff3008,#d5200a)',r:4.5,dl:'60M',mau:'37M',sz:'55 MB',rank:54,free:true,gp:'https://play.google.com/store/apps/details?id=com.dd.doordash',ios:'https://apps.apple.com/app/doordash/id719972451',web:'https://www.doordash.com',tags:['طعام','توصيل','أمريكا'],desc:'دور داش 60 مليون تنزيل. الأول في توصيل الطعام في الولايات المتحدة بـ67% من حصة السوق. أكثر من 37 مليون مستخدم نشط.',src:'Business of Apps 2024'},
+  {id:57,name:'BBC News',dev:'BBC',cat:'news',logo:'bbc.com',fb:'📺',color:'linear-gradient(135deg,#bb1919,#8b0000)',r:4.5,dl:'30M',mau:'25M',sz:'28 MB',rank:55,free:true,gp:'https://play.google.com/store/apps/details?id=bbc.mobile.news.uk',ios:'https://apps.apple.com/app/bbc-news/id364147881',web:'https://www.bbc.com/news',tags:['أخبار','عالمية','موثوقة'],desc:'BBC News 30 مليون تنزيل. أحد أكثر مصادر الأخبار مصداقية في العالم. تغطية إخبارية شاملة باللغة العربية والإنجليزية.',src:'BBC 2024'},
+  {id:58,name:'Google News',dev:'Google',cat:'news',logo:'google.com',fb:'📰',color:'linear-gradient(135deg,#4285f4,#1a73e8)',r:4.4,dl:'50M',mau:'280M',sz:'22 MB',rank:56,free:true,gp:'https://play.google.com/store/apps/details?id=com.google.android.apps.magazines',ios:'https://apps.apple.com/app/google-news/id459182288',web:'https://news.google.com',tags:['أخبار','شخصية','متنوعة'],desc:'جوجل نيوز 50 مليون تنزيل و280 مليون مستخدم. يجمع الأخبار من آلاف المصادر الموثوقة ويخصصها حسب اهتماماتك.',src:'Google 2024'},
+  {id:59,name:'Flipboard',dev:'Flipboard Inc.',cat:'news',logo:'flipboard.com',fb:'📱',color:'linear-gradient(135deg,#e12828,#c01111)',r:4.3,dl:'15M',mau:'145M',sz:'30 MB',rank:57,free:true,gp:'https://play.google.com/store/apps/details?id=flipboard.app',ios:'https://apps.apple.com/app/flipboard/id358801284',web:'https://flipboard.com',tags:['مجلة','أخبار','اهتمامات'],desc:'فليب بورد 15 مليون تنزيل و145 مليون مستخدم. يحول الأخبار إلى مجلة رقمية جميلة مخصصة لاهتماماتك.',src:'Flipboard 2024'},
+];
+
+const APK_DATA=[
+  {name:'WhatsApp',dev:'Meta',cat:'social',fb:'💬',logo:'whatsapp.com',color:'linear-gradient(135deg,#075e54,#25d366)',version:'2.24.x',badge:'official',sources:[{n:'الموقع الرسمي',u:'https://www.whatsapp.com/android/'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/whatsapp-inc/whatsapp/'}]},
+  {name:'Telegram',dev:'Telegram FZ LLC',cat:'social',fb:'✈️',logo:'telegram.org',color:'linear-gradient(135deg,#0088cc,#229ED9)',version:'10.x',badge:'official',sources:[{n:'الموقع الرسمي',u:'https://telegram.org/dl/android'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/telegram-fz-llc/telegram/'}]},
+  {name:'Signal',dev:'Signal Foundation',cat:'social',fb:'🔒',logo:'signal.org',color:'linear-gradient(135deg,#2C6BED,#1a4fc4)',version:'7.x',badge:'official',sources:[{n:'الموقع الرسمي',u:'https://signal.org/android/apk/'},{n:'APKPure',u:'https://apkpure.com/signal-private-messenger/org.thoughtcrime.securesms'}]},
+  {name:'TikTok',dev:'ByteDance',cat:'entertainment',fb:'🎵',logo:'tiktok.com',color:'linear-gradient(135deg,#000,#ff0050)',version:'35.x',badge:'mirror',sources:[{n:'APKMirror',u:'https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/'},{n:'Uptodown',u:'https://tiktok.en.uptodown.com/android'}]},
+  {name:'Instagram',dev:'Meta',cat:'social',fb:'📸',logo:'instagram.com',color:'linear-gradient(135deg,#405de6,#c13584,#fd1d1d)',version:'335.x',badge:'mirror',sources:[{n:'APKMirror',u:'https://www.apkmirror.com/apk/instagram/instagram-instagram/'},{n:'APKPure',u:'https://apkpure.com/instagram/com.instagram.android'}]},
+  {name:'Snapchat',dev:'Snap Inc.',cat:'social',fb:'👻',logo:'snapchat.com',color:'linear-gradient(135deg,#FFFC00,#f0e800)',version:'12.x',badge:'mirror',sources:[{n:'APKMirror',u:'https://www.apkmirror.com/apk/snap-inc/snapchat/'},{n:'APKPure',u:'https://apkpure.com/snapchat/com.snapchat.android'}]},
+  {name:'YouTube',dev:'Google',cat:'entertainment',fb:'▶️',logo:'youtube.com',color:'linear-gradient(135deg,#ff0000,#cc0000)',version:'19.x',badge:'mirror',sources:[{n:'APKMirror',u:'https://www.apkmirror.com/apk/google-inc/youtube/'},{n:'APKPure',u:'https://apkpure.com/youtube/com.google.android.youtube'}]},
+  {name:'Spotify',dev:'Spotify AB',cat:'entertainment',fb:'🎵',logo:'spotify.com',color:'linear-gradient(135deg,#191414,#1DB954)',version:'8.9.x',badge:'mirror',sources:[{n:'APKMirror',u:'https://www.apkmirror.com/apk/spotify-ab/spotify/'},{n:'Uptodown',u:'https://spotify.en.uptodown.com/android'}]},
+  {name:'Netflix',dev:'Netflix Inc.',cat:'entertainment',fb:'🎬',logo:'netflix.com',color:'linear-gradient(135deg,#141414,#E50914)',version:'8.x',badge:'mirror',sources:[{n:'APKMirror',u:'https://www.apkmirror.com/apk/netflix-inc/netflix/'},{n:'Uptodown',u:'https://netflix.en.uptodown.com/android'}]},
+  {name:'CapCut',dev:'ByteDance',cat:'entertainment',fb:'✂️',logo:'capcut.com',color:'linear-gradient(135deg,#000,#ff6b35)',version:'11.x',badge:'mirror',sources:[{n:'APKPure',u:'https://apkpure.com/capcut-video-editor/com.lemon.lvoverseas'},{n:'Uptodown',u:'https://capcut.en.uptodown.com/android'}]},
+  {name:'ChatGPT',dev:'OpenAI',cat:'ai',fb:'🤖',logo:'openai.com',color:'linear-gradient(135deg,#10a37f,#065f46)',version:'2025.x',badge:'official',sources:[{n:'الموقع الرسمي',u:'https://openai.com/chatgpt/download/'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/openai/chatgpt/'}]},
+  {name:'Claude',dev:'Anthropic',cat:'ai',fb:'🧠',logo:'anthropic.com',color:'linear-gradient(135deg,#d97706,#b45309)',version:'1.x',badge:'official',sources:[{n:'APKPure',u:'https://apkpure.com/claude-ai/com.anthropic.claude'},{n:'الموقع الرسمي',u:'https://claude.ai/download'}]},
+  {name:'Microsoft Copilot',dev:'Microsoft',cat:'ai',fb:'🪄',logo:'microsoft.com',color:'linear-gradient(135deg,#0078d4,#00b4d8)',version:'1.x',badge:'official',sources:[{n:'APKMirror',u:'https://www.apkmirror.com/apk/microsoft-corporation/microsoft-copilot/'},{n:'APKPure',u:'https://apkpure.com/microsoft-copilot/com.microsoft.copilot'}]},
+  {name:'Google Gemini',dev:'Google',cat:'ai',fb:'✨',logo:'google.com',color:'linear-gradient(135deg,#4285f4,#9c27b0)',version:'1.x',badge:'official',sources:[{n:'APKMirror',u:'https://www.apkmirror.com/apk/google-inc/gemini/'},{n:'APKPure',u:'https://apkpure.com/google-gemini/com.google.android.apps.bard'}]},
+  {name:'Zoom',dev:'Zoom',cat:'productivity',fb:'📹',logo:'zoom.us',color:'linear-gradient(135deg,#2d8cff,#0e6ad4)',version:'latest',badge:'official',sources:[{n:'الموقع الرسمي',u:'https://zoom.us/download#mobile_app'},{n:'APKPure',u:'https://apkpure.com/zoom-cloud-meetings/us.zoom.videomeetings'}]},
+  {name:'Notion',dev:'Notion Labs',cat:'productivity',fb:'📝',logo:'notion.so',color:'linear-gradient(135deg,#000,#444)',version:'latest',badge:'official',sources:[{n:'الموقع الرسمي',u:'https://www.notion.so/desktop'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/notion-labs-inc/notion-notes-tasks-wikis/'}]},
+  {name:'Google Chrome',dev:'Google',cat:'tools',fb:'🌐',logo:'google.com',color:'linear-gradient(135deg,#4285f4,#34a853)',version:'latest',badge:'official',sources:[{n:'الموقع الرسمي',u:'https://www.google.com/chrome/browser/mobile/android/'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/google-inc/chrome/'}]},
+  {name:'VLC',dev:'VideoLAN',cat:'tools',fb:'🎭',logo:'videolan.org',color:'linear-gradient(135deg,#f37a1f,#e06c00)',version:'3.6.x',badge:'official',sources:[{n:'الموقع الرسمي',u:'https://www.videolan.org/vlc/download-android.html'},{n:'APKMirror',u:'https://www.apkmirror.com/apk/videolan/vlc-for-android/'}]},
+  {name:'Binance',dev:'Binance Holdings',cat:'finance',fb:'₿',logo:'binance.com',color:'linear-gradient(135deg,#1e2026,#f0b90b)',version:'latest',badge:'official',sources:[{n:'الموقع الرسمي',u:'https://www.binance.com/en/download'},{n:'APKPure',u:'https://apkpure.com/binance-buy-bitcoin-crypto/com.binance.dev'}]},
+  {name:'Minecraft',dev:'Mojang',cat:'games',fb:'⛏️',logo:'minecraft.net',color:'linear-gradient(135deg,#4a7c3f,#2d5a27)',version:'1.21.x',badge:'official',sources:[{n:'الموقع الرسمي',u:'https://www.minecraft.net/en-us/download'},{n:'APKPure',u:'https://apkpure.com/minecraft/com.mojang.minecraftpe'}]},
+  {name:'PUBG Mobile',dev:'Krafton',cat:'games',fb:'🎮',logo:'pubg.com',color:'linear-gradient(135deg,#f5a623,#d4831d)',version:'3.x',badge:'official',sources:[{n:'الموقع الرسمي',u:'https://www.pubgmobile.com/en-US/home.shtml'},{n:'APKPure',u:'https://apkpure.com/pubg-mobile/com.tencent.ig'}]},
+];
+
+let curCat='all',sortKey='dl',sortDir=-1,apkCat='all';
+
+function parseMag(s){if(!s)return 0;s=String(s).replace(' MB','').replace(' GB','').trim();const m=s.match(/^([\d.]+)([KMBT]?)$/i);if(!m)return parseFloat(s)||0;return parseFloat(m[1])*({'K':1e3,'M':1e6,'B':1e9,'T':1e12,'':1}[(m[2]||'').toUpperCase()]||1);}
+function starsHTML(r){let s='';for(let i=0;i<5;i++)s+=i<Math.floor(r)?'★':'☆';return s;}
+function icoHTML(a,sz='52px',r='12px'){
+  const fz=sz==='22px'?'0.8rem':sz==='30px'?'1rem':sz==='56px'?'1.6rem':sz==='76px'?'2rem':sz==='96px'?'2.8rem':'1.4rem';
+  return`<div style="width:${sz};height:${sz};border-radius:${r};background:${a.color};overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:${fz}" role="img" aria-label="${a.name}">${a.fb}</div>`;
+}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('on'),2500);}
+
+function setSort(k){
+  if(sortKey===k)sortDir*=-1;else{sortKey=k;sortDir=(k==='rank'||k==='sz')?1:-1;}
+  document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('on'));
+  const sb=document.getElementById('sb-'+k);if(sb)sb.classList.add('on');
+  renderGrid(filtered());
+}
+function sortList(l){return[...l].sort((a,b)=>{if(sortKey==='r')return(b.r-a.r)*sortDir;if(sortKey==='rank')return(a.rank-b.rank)*sortDir;return(parseMag(b[sortKey])-parseMag(a[sortKey]))*sortDir;});}
+function filtered(){
+  const q=(document.getElementById('si').value||'').toLowerCase().trim();
+  let l=APPS;
+  if(curCat!=='all')l=l.filter(a=>a.cat===curCat);
+  if(q)l=l.filter(a=>a.name.toLowerCase().includes(q)||a.dev.toLowerCase().includes(q)||(a.tags&&a.tags.some(t=>t.toLowerCase().includes(q))));
+  return sortList(l);
+}
+function doFilter(){renderGrid(filtered());}
+function setTab(el,c){document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('on'));el.classList.add('on');curCat=c;syncSb(c);renderGrid(filtered());}
+function setSbCat(el,c){document.querySelectorAll('.sb-link').forEach(l=>l.classList.remove('on'));el.classList.add('on');curCat=c;syncNav(c);renderGrid(filtered());}
+function syncSb(c){document.querySelectorAll('.sb-link').forEach(l=>l.classList.toggle('on',(l.getAttribute('onclick')||'').includes("'"+c+"'")));}
+function syncNav(c){document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('on',(t.getAttribute('onclick')||'').includes("'"+c+"'")));}
+
+function initCounts(){
+  const cats=['all','social','entertainment','games','shopping','productivity','finance','ai','transport','tools','health','education','food','news'];
+  cats.forEach(c=>{const el=document.getElementById('cn-'+c);if(el)el.textContent=c==='all'?APPS.length:APPS.filter(a=>a.cat===c).length;});
+}
+function initSbTop(){
+  const top=APPS.slice().sort((a,b)=>parseMag(b.dl)-parseMag(a.dl)).slice(0,5);
+  document.getElementById('sbTop').innerHTML=top.map((a,i)=>`
+    <div class="sb-link" onclick="openDetail(${a.id})" style="cursor:pointer;gap:6px">
+      <span style="font-size:.6rem;font-weight:800;color:var(--red2);width:14px">#${i+1}</span>
+      ${icoHTML(a,'22px','5px')}
+      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.76rem">${a.name}</span>
+    </div>`).join('');
+}
+function initFeatured(){
+  const top=APPS.slice().sort((a,b)=>parseMag(b.dl)-parseMag(a.dl)).slice(0,10);
+  document.getElementById('featCnt').textContent=top.length+' تطبيقات';
+  document.getElementById('featScroll').innerHTML=top.map(a=>`
+    <div class="feat-card" onclick="openDetail(${a.id})" role="button" tabindex="0" aria-label="عرض تفاصيل ${a.name}">
+      <div class="feat-thumb" style="background:${a.color}" aria-hidden="true">
+        <span style="font-size:2.4rem">${a.fb}</span>
+        <span class="feat-rank">#${a.rank}</span>
+      </div>
+      <div class="feat-info">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px">
+          ${icoHTML(a,'28px','6px')}
+          <div><div class="feat-name">${a.name}</div><div class="feat-dev">${a.dev}</div></div>
+        </div>
+        <div class="feat-bottom">
+          <span class="feat-dl">↓ ${a.dl}</span>
+          <span class="feat-tag ${a.free?'free':'paid'}">${a.free?'مجاني':'مدفوع'}</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function renderGrid(list){
+  const secTitles={all:'جميع التطبيقات',social:'تواصل اجتماعي',entertainment:'الترفيه',games:'الألعاب',shopping:'التسوق',productivity:'الإنتاجية',finance:'المالية',ai:'الذكاء الاصطناعي',transport:'السفر والتنقل',tools:'الأدوات',health:'الصحة واللياقة',education:'التعليم',food:'الطعام والمطاعم',news:'الأخبار'};
+  document.getElementById('secTitle').textContent=secTitles[curCat]||'التطبيقات';
+  document.getElementById('appCnt').textContent=list.length+' تطبيق';
+  const grid=document.getElementById('grid');
+  const emp=document.getElementById('empty');
+  if(!list.length){grid.innerHTML='';emp.style.display='block';return;}
+  emp.style.display='none';
+  grid.innerHTML=list.map((a,i)=>`
+    <article class="app-card" onclick="openDetail(${a.id})" role="button" tabindex="0" aria-label="${a.name}" style="animation:fadeUp .22s ${Math.min(i*.012,.28)}s ease both;opacity:0">
+      ${icoHTML(a,'56px','13px')}
+      <div class="app-body">
+        <div class="app-name">${a.name}</div>
+        <div class="app-dev">${a.dev}</div>
+        <div class="app-tags-row">${(a.tags||[]).slice(0,2).map(t=>`<span class="app-chip">${t}</span>`).join('')}<span class="app-chip">${a.sz}</span></div>
+      </div>
+      <div class="app-right">
+        <div class="app-stars">★ ${a.r}</div>
+        <div class="app-dl-chip">↓ ${a.dl}</div>
+        <button class="get-btn" onclick="event.stopPropagation();window.open('${a.gp||a.web}','_blank','noopener');toast('فتح ${a.name}...')" aria-label="تحميل ${a.name}">تحميل</button>
+      </div>
+    </article>`).join('');
+}
+
+// ─── DETAIL PAGE ───
+function openDetail(id){
+  const a=APPS.find(x=>x.id===id);if(!a)return;
+  document.getElementById('detailBreadcrumb').textContent=a.name;
+
+  // Similar apps
+  const similar=APPS.filter(x=>x.cat===a.cat&&x.id!==a.id).sort((x,y)=>parseMag(y.dl)-parseMag(x.dl)).slice(0,4);
+
+  // Download buttons
+  const dlBtns=[];
+  if(a.gp)dlBtns.push(`<a class="detail-dl-btn primary" href="${a.gp}" target="_blank" rel="noopener">▶ Google Play</a>`);
+  if(a.ios)dlBtns.push(`<a class="detail-dl-btn secondary" href="${a.ios}" target="_blank" rel="noopener">🍎 App Store</a>`);
+  if(a.web)dlBtns.push(`<a class="detail-dl-btn web-btn" href="${a.web}" target="_blank" rel="noopener">🌐 الموقع</a>`);
+
+  document.getElementById('detailContent').innerHTML=`
+    <div class="detail-hero">
+      <div class="detail-hero-inner">
+        <div class="detail-icon" style="background:${a.color};">${a.fb}</div>
+        <div class="detail-meta">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px">
+            <h1 class="detail-title">${a.name}</h1>
+            <span class="${a.free?'detail-free-badge':'detail-paid-badge'}">${a.free?'✓ مجاني':'💎 مدفوع'}</span>
+            <span class="detail-rank-badge">🏆 #${a.rank} عالمياً</span>
+          </div>
+          <div class="detail-developer">بواسطة <strong>${a.dev}</strong></div>
+          <div class="detail-tags">${(a.tags||[]).map(t=>`<span class="detail-tag">${t}</span>`).join('')}</div>
+          <div class="detail-rating-row">
+            <span class="detail-stars">${starsHTML(a.r)}</span>
+            <span class="detail-rating-num">${a.r}</span>
+            <span class="detail-rating-label">/ 5.0 تقييم</span>
+          </div>
+          <div class="detail-dl-btns">${dlBtns.join('')}</div>
+        </div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="detail-grid">
+        <div class="detail-main">
+          <div class="detail-section">
+            <div class="detail-section-hdr"><span class="detail-section-ico">📋</span><h3>عن التطبيق</h3></div>
+            <div class="detail-section-body">
+              <div class="detail-desc">${a.desc}</div>
+            </div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-section-hdr"><span class="detail-section-ico">📊</span><h3>إحصائيات التطبيق</h3></div>
+            <div class="kpis-grid">
+              <div class="kpi-cell"><div class="kpi-val">${a.dl}</div><div class="kpi-lbl">تنزيل / سنة</div></div>
+              <div class="kpi-cell"><div class="kpi-val">${a.mau}</div><div class="kpi-lbl">مستخدم شهري</div></div>
+              <div class="kpi-cell"><div class="kpi-val">${a.sz}</div><div class="kpi-lbl">حجم الملف</div></div>
+            </div>
+          </div>
+          ${a.apk?`<div class="apk-box">
+            <div class="apk-box-title">⚠️ تحميل APK مباشر</div>
+            <div class="apk-box-desc">${a.apkDesc||''}</div>
+            <div class="apk-links">${(a.apkLinks||[]).map(l=>`<a class="apk-link" href="${l.u}" target="_blank" rel="noopener">📥 ${l.n}</a>`).join('')}</div>
+          </div>`:''}
+        </div>
+        <div class="detail-side">
+          <div class="detail-section">
+            <div class="detail-section-hdr"><span class="detail-section-ico">ℹ️</span><h3>معلومات</h3></div>
+            <div class="info-table">
+              <div class="info-row"><span class="info-key">التقييم</span><span class="info-val orange">${a.r} ★</span></div>
+              <div class="info-row"><span class="info-key">الترتيب العالمي</span><span class="info-val">#${a.rank}</span></div>
+              <div class="info-row"><span class="info-key">التنزيلات السنوية</span><span class="info-val green">↓ ${a.dl}</span></div>
+              <div class="info-row"><span class="info-key">المستخدمون الشهريون</span><span class="info-val">👥 ${a.mau}</span></div>
+              <div class="info-row"><span class="info-key">المطور</span><span class="info-val" style="font-size:.68rem;font-family:'Cairo',sans-serif">${a.dev}</span></div>
+              <div class="info-row"><span class="info-key">السعر</span><span class="info-val ${a.free?'green':'red'}">${a.free?'مجاني':'مدفوع'}</span></div>
+              <div class="info-row"><span class="info-key">الحجم</span><span class="info-val">${a.sz}</span></div>
+              <div class="info-row"><span class="info-key">الفئة</span><span class="info-val" style="font-family:'Cairo',sans-serif;font-size:.74rem">${({social:'تواصل اجتماعي',entertainment:'ترفيه',games:'ألعاب',shopping:'تسوق',productivity:'إنتاجية',finance:'مالية',ai:'ذكاء اصطناعي',transport:'سفر وتنقل',tools:'أدوات',health:'صحة',education:'تعليم',food:'طعام',news:'أخبار'})[a.cat]||a.cat}</span></div>
+            </div>
+          </div>
+          ${similar.length?`<div class="detail-section">
+            <div class="detail-section-hdr"><span class="detail-section-ico">🔗</span><h3>تطبيقات مشابهة</h3></div>
+            <div class="detail-section-body" style="padding:10px">
+              <div class="similar-grid">
+                ${similar.map(s=>`
+                  <div class="similar-item" onclick="openDetail(${s.id})">
+                    ${icoHTML(s,'40px','9px')}
+                    <div class="similar-info">
+                      <div class="similar-name">${s.name}</div>
+                      <div class="similar-dev">${s.dev}</div>
+                    </div>
+                    <div class="similar-r">★ ${s.r}</div>
+                  </div>`).join('')}
+              </div>
+            </div>
+          </div>`:''}
+          <div class="src-note">📊 المصدر: ${a.src}</div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const dp=document.getElementById('detailPage');
+  dp.classList.add('on');
+  dp.scrollTop=0;
+  document.getElementById('mainPage').style.display='none';
+  document.body.style.overflow='hidden auto';
+}
+
+function closeDetail(){
+  document.getElementById('detailPage').classList.remove('on');
+  document.getElementById('mainPage').style.display='';
+  document.body.style.overflow='';
+}
+function goHome(){closeDetail();}
+
+// ─── APK LIBRARY ───
+function openApkLib(){document.getElementById('apkOv').classList.add('on');document.body.style.overflow='hidden';renderApk();}
+function closeApkLib(){document.getElementById('apkOv').classList.remove('on');document.body.style.overflow='';}
+function closeApkOuter(e){if(e.target===document.getElementById('apkOv'))closeApkLib();}
+function setApkCat(el,c){document.querySelectorAll('.apk-cat').forEach(b=>b.classList.remove('on'));el.classList.add('on');apkCat=c;renderApk();}
+function renderApk(){
+  const q=(document.getElementById('apkQ').value||'').toLowerCase().trim();
+  let list=APK_DATA;
+  if(apkCat!=='all')list=list.filter(a=>a.cat===apkCat);
+  if(q)list=list.filter(a=>a.name.toLowerCase().includes(q)||a.dev.toLowerCase().includes(q));
+  const el=document.getElementById('apkList');
+  if(!list.length){el.innerHTML='<div class="apk-empty">🔍 لا توجد نتائج</div>';return;}
+  const bl={official:'رسمي ✓',mirror:'مرآة'};
+  el.innerHTML=list.map(a=>`
+    <div class="apk-item">
+      <div class="apk-ico" style="background:${a.color};font-size:1.4rem">${a.fb}</div>
+      <div class="apk-body">
+        <div class="apk-name">${a.name}</div>
+        <div class="apk-dev">${a.dev}</div>
+        <div class="apk-badges"><span class="badge ${a.badge}">${bl[a.badge]||a.badge}</span><span class="apk-ver">v${a.version}</span></div>
+      </div>
+      <div class="apk-acts">${a.sources.map((s,i)=>`<a class="apk-dl ${i>0?'sec':''}" href="${s.u}" target="_blank" rel="noopener">📥 ${s.n}</a>`).join('')}</div>
+    </div>`).join('');
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    if(document.getElementById('apkOv').classList.contains('on'))closeApkLib();
+    else if(document.getElementById('detailPage').classList.contains('on'))closeDetail();
+  }
+});
+
+initCounts();initSbTop();initFeatured();renderGrid(filtered());
+</script>
+</body>
+</html>
