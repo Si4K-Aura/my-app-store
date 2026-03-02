@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AppVault Pro v13 — الفلترة الكاملة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0f172a; --card: #1e293b; --border: #334155; --text: #f8fafc; --primary: #38bdf8; --success: #22c55e; --error: #ef4444; }
+        body.light-theme { --bg: #f8fafc; --card: #ffffff; --border: #e2e8f0; --text: #0f172a; --primary: #0ea5e9; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; transition: 0.2s; }
+        body { background: var(--bg); color: var(--text); line-height: 1.6; }
+
+        /* Header */
+        .header { padding: 15px 20px; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; gap: 15px; }
+        .logo { font-weight: 900; color: var(--primary); text-decoration: none; font-size: 1.3rem; }
+        .search-input { flex: 1; background: var(--card); border: 1px solid var(--border); padding: 10px 15px; border-radius: 12px; color: var(--text); }
+        
+        /* Filters Bar */
+        .filters-wrapper { max-width: 1200px; margin: 15px auto; padding: 0 20px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .btn-filter { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 16px; border-radius: 50px; cursor: pointer; font-size: 0.85rem; border: 1px solid var(--border); }
+        .btn-filter.active { background: var(--primary); color: #000; font-weight: bold; border-color: var(--primary); }
+
+        /* Skeleton Loading */
+        .skeleton { background: linear-gradient(90deg, var(--card) 25%, var(--border) 50%, var(--card) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 12px; }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        /* Grid & Cards */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; padding: 0 20px 40px; max-width: 1200px; margin: 0 auto; }
+        .app-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 18px; display: flex; gap: 15px; text-decoration: none; color: inherit; cursor: pointer; position: relative; }
+        .app-card:hover { border-color: var(--primary); transform: translateY(-3px); }
+        .app-icon { width: 60px; height: 60px; border-radius: 14px; object-fit: contain; background: #fff; padding: 5px; flex-shrink: 0; }
+        
+        /* Badges */
+        .new-tag { position: absolute; top: -10px; left: 15px; background: var(--primary); color: #000; font-size: 0.65rem; font-weight: bold; padding: 2px 10px; border-radius: 20px; }
+        .size-tag { font-size: 0.7rem; color: var(--primary); font-weight: bold; margin-top: 5px; display: block; }
+
+        /* Overlay */
+        .overlay { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 2000; overflow-y: auto; padding: 20px; }
+        .overlay.active { display: block; }
+        .error-msg { text-align: center; padding: 40px; color: var(--error); border: 2px dashed var(--border); border-radius: 20px; grid-column: 1/-1; }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <a href="#" class="logo">📦 AppVault</a>
+    <input type="text" id="searchInput" class="search-input" placeholder="بحث في الاسم والوصف..." oninput="app.updateSearch(this.value)">
+    <button class="btn-filter" onclick="document.body.classList.toggle('light-theme')">🌓</button>
+</header>
+
+<div class="filters-wrapper" id="filterBar"></div>
+
+<div class="grid" id="appGrid"></div>
+
+<div id="dlOverlay" class="overlay">
+    <div style="max-width: 600px; margin: 40px auto; text-align: center;">
+        <button class="btn-filter" onclick="location.hash=''">✕ إغلاق</button>
+        <div id="detailContent" style="margin-top:25px;"></div>
+    </div>
+</div>
+
+<script>
+// تسجيل الـ Service Worker للعمل أوفلاين
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        const swBlob = new Blob([`self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));`], {type:'text/javascript'});
+        navigator.serviceWorker.register(URL.createObjectURL(swBlob));
+    });
+}
+
+const app = {
+    state: { search: "", filter: "الكل", loading: true },
+    db: [
+        { id: "whatsapp", name: "واتساب", cat: "تواصل", size: "38MB", isNew: false, icon: "https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg", desc: "المراسلة الرسمية من ميتا برابط مباشر.", url: "https://www.whatsapp.com/android/current/WhatsApp.apk" },
+        { id: "telegram", name: "تيليغرام", cat: "تواصل", size: "72MB", isNew: true, icon: "https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg", desc: "نسخة APK المستقلة مع تحديثات سريعة.", url: "https://telegram.org/dl/android/apk" },
+        { id: "newpipe", name: "نيوبايت", cat: "فيديو", size: "12MB", isNew: true, icon: "https://newpipe.net/img/logo.svg", desc: "يوتيوب مفتوح المصدر بدون إعلانات.", repo: "TeamNewPipe/NewPipe" },
+        { id: "smarttube", name: "SmartTube", cat: "فيديو", size: "18MB", isNew: true, icon: "https://raw.githubusercontent.com/yuliskov/SmartTube/master/common/src/main/res/drawable-nodpi/ic_launcher_round.png", desc: "يوتيوب لشاشات التلفزيون بدون إعلانات.", repo: "yuliskov/SmartTube" },
+        { id: "adaway", name: "AdAway", cat: "أدوات", size: "10MB", isNew: false, icon: "https://adaway.org/assets/img/logo.png", desc: "حجب الإعلانات عبر ملفات الـ Hosts.", repo: "AdAway/AdAway" }
+    ],
+
+    init() {
+        this.renderSkeletons();
+        setTimeout(() => {
+            this.state.loading = false;
+            this.renderFilters();
+            this.render();
+        }, 800);
+        window.onhashchange = () => this.handleRoute();
+    },
+
+    renderSkeletons() {
+        document.getElementById('appGrid').innerHTML = Array(6).fill(0).map(() => `
+            <div class="app-card" style="border:none">
+                <div class="skeleton" style="width:60px; height:60px;"></div>
+                <div style="flex:1"><div class="skeleton" style="width:60%; height:15px; margin-bottom:10px;"></div><div class="skeleton" style="width:90%; height:10px;"></div></div>
+            </div>
+        `).join('');
+    },
+
+    renderFilters() {
+        const cats = ["الكل", ...new Set(this.db.map(a => a.cat))];
+        document.getElementById('filterBar').innerHTML = cats.map(c => `
+            <button class="btn-filter ${this.state.filter === c ? 'active' : ''}" 
+                    onclick="app.state.filter='${c}'; app.renderFilters(); app.render();">${c}</button>
+        `).join('');
+    },
+
+    updateSearch(v) { this.state.search = v.toLowerCase(); this.render(); },
+
+    sanitize(str) {
+        const d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+    },
+
+    render() {
+        const grid = document.getElementById('appGrid');
+        const filtered = this.db.filter(a => {
+            const mSearch = a.name.toLowerCase().includes(this.state.search) || a.desc.toLowerCase().includes(this.state.search);
+            const mCat = this.state.filter === "الكل" || a.cat === this.state.filter;
+            return mSearch && mCat;
+        });
+
+        if (filtered.length === 0) {
+            grid.innerHTML = `<div class="error-msg">لا توجد نتائج مطابقة لبحثك في فئة ${this.state.filter}</div>`;
+            return;
+        }
+
+        grid.innerHTML = filtered.map(item => `
+            <a href="#${item.id}" class="app-card">
+                ${item.isNew ? '<div class="new-tag">جديد ✨</div>' : ''}
+                <img src="${item.icon}" class="app-icon" onerror="this.src='https://ui-avatars.com/api/?name=${item.name}&background=random'">
+                <div style="flex:1; overflow:hidden">
+                    <div style="font-weight:bold">${this.sanitize(item.name)}</div>
+                    <div style="font-size:0.75rem; opacity:0.7; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${this.sanitize(item.desc)}</div>
+                    <span class="size-tag">📦 ${item.size}</span>
+                </div>
+            </a>
+        `).join('');
+    },
+
+    async handleRoute() {
+        const id = window.location.hash.slice(1);
+        const overlay = document.getElementById('dlOverlay');
+        if (!id) { overlay.classList.remove('active'); return; }
+
+        const item = this.db.find(a => a.id === id);
+        if (!item) return;
+
+        overlay.classList.add('active');
+        const content = document.getElementById('detailContent');
+        content.innerHTML = `<div class="skeleton" style="height:250px; width:100%;"></div>`;
+
+        let dlLink = item.url || "#";
+        let changelog = "• تحسينات استقرار المصدر الرسمي.";
+
+        if (item.repo) {
+            try {
+                const res = await fetch(`https://api.github.com/repos/${item.repo}/releases/latest`);
+                const data = await res.json();
+                dlLink = data.assets.find(as => as.name.endsWith('.apk'))?.browser_download_url || dlLink;
+                changelog = data.body.split('\n').filter(l => l.length > 5).slice(0, 3).map(l => `• ${this.sanitize(l)}`).join('<br>');
+            } catch(e) { changelog = "• فشل جلب التحديثات من GitHub."; }
+        }
+
+        content.innerHTML = `
+            <img src="${item.icon}" style="width:80px; margin-bottom:15px;" onerror="this.src='https://ui-avatars.com/api/?name=${item.name}'">
+            <h1>${this.sanitize(item.name)}</h1>
+            <p style="opacity:0.8">${this.sanitize(item.desc)}</p>
+            <div style="background:var(--card); padding:15px; border-radius:15px; margin:20px 0; text-align:right; font-size:0.85rem; border:1px solid var(--border);">
+                <strong style="color:var(--primary)">سجل التغييرات:</strong><br>${changelog}
+            </div>
+            <a href="${dlLink}" class="btn-filter" style="display:block; background:var(--success); color:#000; padding:15px; font-weight:bold; text-decoration:none;">تحميل APK مباشر</a>
+            <p style="font-size:0.7rem; margin-top:10px; color:var(--primary)">الرابط من المصدر الرسمي للمطور</p>
+        `;
+    }
+};
+
+app.init();
+</script>
+</body>
+</html>
